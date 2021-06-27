@@ -24,9 +24,9 @@
 */
 import React from 'react';
 import { CellProps, WithClassname } from '@jsonforms/core';
-import Input from '@material-ui/core/Input';
 import { areEqual } from '@jsonforms/react';
 import merge from 'lodash/merge';
+import { InputNumber } from 'antd';
 
 export const MuiInputInteger = React.memo(
   (props: CellProps & WithClassname) => {
@@ -40,22 +40,19 @@ export const MuiInputInteger = React.memo(
       handleChange,
       config
     } = props;
-    const inputProps = { step: '1' };
     const toNumber = (value: string) =>
       value === '' ? undefined : parseInt(value, 10);
     const appliedUiSchemaOptions = merge({}, config, uischema.options);
 
     return (
-      <Input
-        type='number'
+      <InputNumber
         value={data !== undefined && data !== null ? data : ''}
-        onChange={ev => handleChange(path, toNumber(ev.target.value))}
+        onChange={value => handleChange(path, toNumber(value))}
         className={className}
         id={id}
         disabled={!enabled}
         autoFocus={appliedUiSchemaOptions.focus}
-        inputProps={inputProps}
-        fullWidth={true}
+        style={{ width: '100%' }}
       />
     );
   },

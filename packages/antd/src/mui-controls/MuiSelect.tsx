@@ -25,11 +25,11 @@
 import React from 'react';
 import { EnumCellProps, WithClassname } from '@jsonforms/core';
 
-import Select from '@material-ui/core/Select';
-import { MenuItem } from '@material-ui/core';
+import { Select } from 'antd';
 import { areEqual } from '@jsonforms/react';
 import merge from 'lodash/merge';
 
+const { Option } = Select;
 export const MuiSelect = React.memo((props: EnumCellProps & WithClassname) => {
   const {
     data,
@@ -51,14 +51,14 @@ export const MuiSelect = React.memo((props: EnumCellProps & WithClassname) => {
       disabled={!enabled}
       autoFocus={appliedUiSchemaOptions.focus}
       value={data || ''}
-      onChange={ev => handleChange(path, ev.target.value)}
-      fullWidth={true}
+      onChange={value => handleChange(path, value)}
+      style={{ width: '100%' }}
     >
-      {[<MenuItem value='' key={'empty'} />].concat(
+      {[<Option value='' key={'empty'}> </Option>].concat(
         options.map(optionValue => (
-          <MenuItem value={optionValue.value} key={optionValue.value}>
+          <Option value={optionValue.value} key={optionValue.value}>
             {optionValue.label}
-          </MenuItem>
+          </Option>
         ))
       )}
     </Select>

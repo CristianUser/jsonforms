@@ -25,11 +25,10 @@
 import React, { ReactNode } from 'react';
 import { EnumCellProps, EnumOption, WithClassname } from '@jsonforms/core';
 
-import Input from '@material-ui/core/Input';
-import Autocomplete, { AutocompleteRenderOptionState } from '@material-ui/lab/Autocomplete';
+import { AutocompleteRenderOptionState } from '@material-ui/lab/Autocomplete';
 import { areEqual } from '@jsonforms/react';
-import merge from 'lodash/merge';
 import { FilterOptionsState } from '@material-ui/lab/useAutocomplete';
+import { Select } from 'antd';
 
 export interface WithOptionLabel {
     getOptionLabel?(option: EnumOption) : string;
@@ -43,51 +42,29 @@ export const MuiAutocomplete = React.memo((props: EnumCellProps & WithClassname 
     className,
     id,
     enabled,
-    uischema,
+    // uischema,
     path,
     handleChange,
     options,
-    config,
-    getOptionLabel,
-    renderOption,
-    filterOptions
+    // config,
+    // getOptionLabel,
+    // renderOption,
+    // filterOptions
   } = props;
-  const appliedUiSchemaOptions = merge({}, config, uischema.options);
   const [inputValue, setInputValue] = React.useState(data ?? '');
 
-  const findOption = options.find(o => o.value === data) ?? null;
   return (
-    <Autocomplete
+    <Select
+      showSearch={true}
       className={className}
       id={id}
       disabled={!enabled}
-      value={findOption}
-      onChange={(_event: any, newValue: EnumOption | null) => {
-        handleChange(path, newValue?.value);
-      }}
+      value={data}
+      onChange={(newValue: any) => handleChange(path, newValue)}
       inputValue={inputValue}
-      onInputChange={(_event, newInputValue) => {
-        setInputValue(newInputValue);
-      }}
-      autoHighlight
-      autoSelect
-      autoComplete
-      fullWidth
+      onSearch={setInputValue}
       options={options}
-      getOptionLabel={getOptionLabel || (option => option?.label)}
-      style={{ marginTop: 16 }}
-      renderInput={params => (
-        <Input
-          style={{ width: '100%' }}
-          type='text'
-          inputProps={params.inputProps}
-          inputRef={params.InputProps.ref}
-          autoFocus={appliedUiSchemaOptions.focus}
-          disabled={!enabled}
-        />
-      )}
-      renderOption={renderOption}
-      filterOptions={filterOptions}
+      style={{ width: '100%' }}
     />
   );
 }, areEqual);

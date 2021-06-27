@@ -44,7 +44,7 @@ export const MuiToggle = React.memo((props: CellProps & WithClassname) => {
   return (
     <Switch
       checked={checked}
-      onChange={(isChecked, _ev) => handleChange(path, isChecked)}
+      onChange={(isChecked) => handleChange(path, isChecked)}
       className={className}
       disabled={!enabled}
       autoFocus={!!appliedUiSchemaOptions.focus}

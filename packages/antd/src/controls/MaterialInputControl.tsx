@@ -32,9 +32,10 @@ import {
 } from '@jsonforms/core';
 import { Control } from '@jsonforms/react';
 
-import { Hidden, InputLabel } from '@material-ui/core';
-import { FormControl, FormHelperText } from '@material-ui/core';
+import { Hidden } from '@material-ui/core';
+// import { FormHelperText } from '@material-ui/core';
 import merge from 'lodash/merge';
+import { Form } from 'antd'
 
 export interface WithInput {
   input: any;
@@ -69,42 +70,42 @@ export abstract class MaterialInputControl extends Control<
     const firstFormHelperText = showDescription
       ? description
       : !isValid
-      ? errors
-      : null;
+        ? errors
+        : null;
     const secondFormHelperText = showDescription && !isValid ? errors : null;
     const InnerComponent = input;
+    const style = !appliedUiSchemaOptions.trim ? { width: '100%' } : {};
 
     return (
       <Hidden xsUp={!visible}>
-        <FormControl
-          fullWidth={!appliedUiSchemaOptions.trim}
-          onFocus={this.onFocus}
-          onBlur={this.onBlur}
+        <Form.Item
+          required={required}
+          hasFeedback={!isValid}
+          validateStatus={isValid ? 'success' : 'error' }
+          label={computeLabel(
+            isPlainLabel(label) ? label : label.default,
+            required,
+            appliedUiSchemaOptions.hideRequiredAsterisk
+          )}
+          help={firstFormHelperText || secondFormHelperText}
+          style={style}
           id={id}
         >
-          <InputLabel
-            htmlFor={id + '-input'}
-            error={!isValid}
-          >
-            {computeLabel(
-              isPlainLabel(label) ? label : label.default,
-              required,
-              appliedUiSchemaOptions.hideRequiredAsterisk
-            )}
-          </InputLabel>
           <InnerComponent
             {...this.props}
+            onFocus={this.onFocus}
+            onBlur={this.onBlur}
             id={id + '-input'}
             isValid={isValid}
             visible={visible}
           />
-          <FormHelperText error={!isValid && !showDescription}>
+          {/* <FormHelperText error={!isValid && !showDescription}>
             {firstFormHelperText}
           </FormHelperText>
           <FormHelperText error={!isValid}>
             {secondFormHelperText}
-          </FormHelperText>
-        </FormControl>
+          </FormHelperText> */}
+        </Form.Item>
       </Hidden>
     );
   }

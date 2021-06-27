@@ -31,8 +31,9 @@ import {
   ControlProps
 } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { FormControlLabel, Hidden } from '@material-ui/core';
+import { Hidden } from '@material-ui/core';
 import { MuiCheckbox } from '../mui-controls/MuiCheckbox';
+import { Form } from 'antd';
 
 export const MaterialBooleanControl = ({
   data,
@@ -48,28 +49,31 @@ export const MaterialBooleanControl = ({
   path,
   config
 }: ControlProps) => {
+  const isValid = isEmpty(errors);
+
   return (
     <Hidden xsUp={!visible}>
-      <FormControlLabel
+      <Form.Item
         label={label}
         id={id}
-        control={
-          <MuiCheckbox
-            id={`${id}-input`}
-            isValid={isEmpty(errors)}
-            data={data}
-            enabled={enabled}
-            visible={visible}
-            path={path}
-            uischema={uischema}
-            schema={schema}
-            rootSchema={rootSchema}
-            handleChange={handleChange}
-            errors={errors}
-            config={config}
-          />
-        }
-      />
+        hasFeedback={!isValid}
+        help={!isValid ? errors : null}
+      >
+        <MuiCheckbox
+          id={`${id}-input`}
+          isValid={isEmpty(errors)}
+          data={data}
+          enabled={enabled}
+          visible={visible}
+          path={path}
+          uischema={uischema}
+          schema={schema}
+          rootSchema={rootSchema}
+          handleChange={handleChange}
+          errors={errors}
+          config={config}
+        />
+      </Form.Item>
     </Hidden>
   );
 };

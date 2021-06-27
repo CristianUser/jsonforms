@@ -37,8 +37,8 @@ import {
 } from '@jsonforms/core';
 import { Hidden } from '@material-ui/core';
 import { Control, withJsonFormsControlProps } from '@jsonforms/react';
-import TextField from '@material-ui/core/TextField';
 import merge from 'lodash/merge';
+import { Form, Input } from 'antd';
 
 export class MaterialNativeControl extends Control<ControlProps, ControlState> {
   render() {
@@ -71,26 +71,32 @@ export class MaterialNativeControl extends Control<ControlProps, ControlState> {
       appliedUiSchemaOptions.showUnfocusedDescription
     );
 
+    const inputStyle = appliedUiSchemaOptions.trim ? {} : { width: '100%' }
+
     return (
       <Hidden xsUp={!visible}>
-        <TextField
-          id={id + '-input'}
+        <Form.Item
+          required={required}
           label={computeLabel(
             isPlainLabel(label) ? label : label.default,
             required,
             appliedUiSchemaOptions.hideRequiredAsterisk
           )}
-          type={fieldType}
-          error={!isValid}
-          disabled={!enabled}
-          fullWidth={!appliedUiSchemaOptions.trim}
-          onFocus={this.onFocus}
-          onBlur={this.onBlur}
-          helperText={!isValid ? errors : showDescription ? description : null}
-          InputLabelProps={{ shrink: true }}
-          value={data}
-          onChange={onChange}
-        />
+          hasFeedback={!isValid}
+          status={isValid ? 'success' : 'error'}
+          help={!isValid ? errors : showDescription ? description : null}
+        >
+          <Input
+            id={id + '-input'}
+            type={fieldType}
+            disabled={!enabled}
+            style={inputStyle}
+            onFocus={this.onFocus}
+            onBlur={this.onBlur}
+            value={data}
+            onChange={onChange}
+          />
+        </Form.Item>
       </Hidden>
     );
   }

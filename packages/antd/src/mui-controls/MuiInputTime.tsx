@@ -24,9 +24,9 @@
 */
 import React from 'react';
 import { CellProps, WithClassname } from '@jsonforms/core';
-import Input from '@material-ui/core/Input';
 import { areEqual } from '@jsonforms/react';
 import merge from 'lodash/merge';
+import { TimePicker } from 'antd';
 
 export const MuiInputTime = React.memo((props: CellProps & WithClassname) => {
   const {
@@ -41,15 +41,14 @@ export const MuiInputTime = React.memo((props: CellProps & WithClassname) => {
   } = props;
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
   return (
-    <Input
-      type='time'
+    <TimePicker
       value={data || ''}
-      onChange={ev => handleChange(path, ev.target.value)}
+      onChange={(_mValue, strValue) => handleChange(path, strValue)}
       className={className}
       id={id}
       disabled={!enabled}
       autoFocus={appliedUiSchemaOptions.focus}
-      fullWidth={true}
+      style={{ width: '100%' }}
     />
   );
 }, areEqual);

@@ -35,14 +35,9 @@ import {
 } from '@jsonforms/core';
 import { Control, withJsonFormsControlProps } from '@jsonforms/react';
 
-import {
-  FormControl,
-  FormHelperText,
-  Hidden,
-  Slider,
-  Typography
-} from '@material-ui/core';
+import { Hidden } from '@material-ui/core';
 import merge from 'lodash/merge';
+import { Form, Slider } from 'antd';
 
 export class MaterialSliderControl extends Control<ControlProps, ControlState> {
   render() {
@@ -66,18 +61,6 @@ export class MaterialSliderControl extends Control<ControlProps, ControlState> {
       config,
       this.props.uischema.options
     );
-    const labelStyle: { [x: string]: any } = {
-      whiteSpace: 'nowrap',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-      width: '100%'
-    };
-    const rangeContainerStyle: { [x: string]: any } = {
-      display: 'flex'
-    };
-    const rangeItemStyle: { [x: string]: any } = {
-      flexGrow: '1'
-    };
     const sliderStyle: { [x: string]: any } = {
       marginTop: '7px'
     };
@@ -88,45 +71,42 @@ export class MaterialSliderControl extends Control<ControlProps, ControlState> {
       this.state.isFocused,
       appliedUiSchemaOptions.showUnfocusedDescription
     );
+
+    const marks = {
+      [schema.minimum]: schema.minimum,
+      [schema.maximum]: schema.maximum
+    }
+    const controlStyle = !appliedUiSchemaOptions.trim ? { width: '100%' } : {};
+
     return (
       <Hidden xsUp={!visible}>
-        <FormControl
-          fullWidth={!appliedUiSchemaOptions.trim}
-          onFocus={this.onFocus}
-          onBlur={this.onBlur}
-          id={id}
+        <Form.Item
+          required={required}
+          id={id + '-input'}
+          hasFeedback={!isValid}
+          status={isValid ? 'success' : 'error'}
+          help={!isValid ? errors : showDescription ? description : null}
+          style={controlStyle}
+          label={computeLabel(
+            isPlainLabel(label) ? label : label.default,
+            required,
+            appliedUiSchemaOptions.hideRequiredAsterisk
+          )}
         >
-          <Typography id={id + '-typo'} style={labelStyle} variant='caption'>
-            {computeLabel(
-              isPlainLabel(label) ? label : label.default,
-              required,
-              appliedUiSchemaOptions.hideRequiredAsterisk
-            )}
-          </Typography>
-          <div style={rangeContainerStyle}>
-            <Typography style={rangeItemStyle} variant='caption' align='left'>
-              {schema.minimum}
-            </Typography>
-            <Typography style={rangeItemStyle} variant='caption' align='right'>
-              {schema.maximum}
-            </Typography>
-          </div>
           <Slider
+            id={id}
             style={sliderStyle}
             min={schema.minimum}
             max={schema.maximum}
+            marks={marks}
             value={Number(data || schema.default)}
-            onChange={(_ev: any, value: any) => {
+            onChange={(value: any) => {
               handleChange(path, Number(value));
             }}
-            id={id + '-input'}
             disabled={!enabled}
             step={schema.multipleOf || 1}
           />
-          <FormHelperText error={!isValid}>
-            {!isValid ? errors : showDescription ? description : null}
-          </FormHelperText>
-        </FormControl>
+        </Form.Item>
       </Hidden>
     );
   }

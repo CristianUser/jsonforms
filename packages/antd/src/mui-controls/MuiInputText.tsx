@@ -25,14 +25,10 @@
 import React, { useState } from 'react';
 import { CellProps, WithClassname } from '@jsonforms/core';
 import { areEqual } from '@jsonforms/react';
-import Input, { InputProps } from '@material-ui/core/Input';
+import { InputProps } from '@material-ui/core/Input';
 import merge from 'lodash/merge';
-import IconButton from '@material-ui/core/IconButton';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import Close from '@material-ui/icons/Close';
-import { useTheme } from '@material-ui/core/styles';
-import { JsonFormsTheme } from '../util';
 import { InputBaseComponentProps } from '@material-ui/core';
+import { Input } from 'antd';
 
 interface MuiTextInputProps {
   muiInputProps?: InputProps['inputProps'];
@@ -40,7 +36,7 @@ interface MuiTextInputProps {
 }
 
 export const MuiInputText = React.memo((props: CellProps & WithClassname & MuiTextInputProps) => {
-  const [showAdornment, setShowAdornment] = useState(false);
+  const [clearable, setClearable] = useState(false);
   const {
     data,
     config,
@@ -48,12 +44,11 @@ export const MuiInputText = React.memo((props: CellProps & WithClassname & MuiTe
     id,
     enabled,
     uischema,
-    isValid,
     path,
     handleChange,
     schema,
     muiInputProps,
-    inputComponent
+    // inputComponent
   } = props;
   const maxLength = schema.maxLength;
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
@@ -71,11 +66,9 @@ export const MuiInputText = React.memo((props: CellProps & WithClassname & MuiTe
   }
   const onChange = (ev: any) => handleChange(path, ev.target.value);
 
-  const theme: JsonFormsTheme = useTheme();
-  const inputDeleteBackgroundColor = theme.jsonforms?.input?.delete?.background || theme.palette.background.default;
-
+  const InputComponent = appliedUiSchemaOptions.multi ? Input.TextArea : Input
   return (
-    <Input
+    <InputComponent
       type={
         appliedUiSchemaOptions.format === 'password' ? 'password' : 'text'
       }
@@ -85,31 +78,13 @@ export const MuiInputText = React.memo((props: CellProps & WithClassname & MuiTe
       id={id}
       disabled={!enabled}
       autoFocus={appliedUiSchemaOptions.focus}
-      multiline={appliedUiSchemaOptions.multi}
-      fullWidth={!appliedUiSchemaOptions.trim || maxLength === undefined}
-      inputProps={inputProps}
-      error={!isValid}
-      onPointerEnter={() => setShowAdornment(true) }
-      onPointerLeave={() => setShowAdornment(false) }
-      endAdornment={
-        <InputAdornment
-          position='end'
-          style={{
-            display:
-              !showAdornment || !enabled || data === undefined ? 'none' : 'flex',
-            position: 'absolute',
-            right: 0
-          }}
-        >
-          <IconButton
-            aria-label='Clear input field'
-            onClick={() => handleChange(path, undefined)}   
-          >
-            <Close style={{background: inputDeleteBackgroundColor, borderRadius: '50%'}}/>
-          </IconButton>
-        </InputAdornment>
-      }
-      inputComponent={inputComponent}
+      autoSize={appliedUiSchemaOptions.multi}
+      // fullWidth={!appliedUiSchemaOptions.trim || maxLength === undefined}
+      // error={!isValid}
+      onPointerEnter={() => setClearable(true) }
+      onPointerLeave={() => setClearable(false) }
+      maxLength={maxLength}
+      allowClear={clearable}
     />
   );
 }, areEqual);

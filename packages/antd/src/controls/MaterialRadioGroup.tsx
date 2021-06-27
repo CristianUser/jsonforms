@@ -33,15 +33,8 @@ import {
   OwnPropsOfEnum
 } from '@jsonforms/core';
 import { Control } from '@jsonforms/react';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import {
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  FormLabel,
-  Hidden
-} from '@material-ui/core';
+import { Hidden } from '@material-ui/core';
+import { Form, Radio } from 'antd';
 
 export class MaterialRadioGroup extends Control<
   ControlProps & OwnPropsOfEnum,
@@ -50,12 +43,11 @@ export class MaterialRadioGroup extends Control<
   render() {
     const {
       config,
-      id,
       label,
       required,
       description,
       errors,
-      data,
+      // data,
       visible,
       options
     } = this.props;
@@ -72,42 +64,34 @@ export class MaterialRadioGroup extends Control<
       appliedUiSchemaOptions.showUnfocusedDescription
     );
 
+    const controlStyle = !appliedUiSchemaOptions.trim ? { width: '100%' } : {};
+
     return (
       <Hidden xsUp={!visible}>
-        <FormControl
-          component={'fieldset' as 'div'}
-          fullWidth={!appliedUiSchemaOptions.trim}
+        <Form.Item
+          required={required}
+          style={controlStyle}
+          hasFeedback={!isValid}
+          status={isValid ? 'success' : 'error'}
+          help={!isValid ? errors : showDescription ? description : null}
+          label={computeLabel(
+            isPlainLabel(label) ? label : label.default,
+            required,
+            appliedUiSchemaOptions.hideRequiredAsterisk
+          )}
         >
-          <FormLabel
-            htmlFor={id}
-            error={!isValid}
-            component={'legend' as 'label'}
-          >
-            {computeLabel(
-              isPlainLabel(label) ? label : label.default,
-              required,
-              appliedUiSchemaOptions.hideRequiredAsterisk
-            )}
-          </FormLabel>
-
-          <RadioGroup
+          <Radio.Group
             value={this.state.value}
-            onChange={(_ev, value) => this.handleChange(value)}
-            row={true}
+            onChange={(e) => this.handleChange(e.target.value)}
           >
             {options.map(option => (
-              <FormControlLabel
+              <Radio
                 value={option.value}
                 key={option.label}
-                control={<Radio checked={data === option.value} />}
-                label={option.label}
-              />
+              >{option.label}</Radio>
             ))}
-          </RadioGroup>
-          <FormHelperText error={!isValid}>
-            {!isValid ? errors : showDescription ? description : null}
-          </FormHelperText>
-        </FormControl>
+          </Radio.Group>
+        </Form.Item>
       </Hidden>
     );
   }

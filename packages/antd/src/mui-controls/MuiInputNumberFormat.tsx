@@ -24,9 +24,9 @@
 */
 import React from 'react';
 import { CellProps, Formatted, WithClassname } from '@jsonforms/core';
-import Input from '@material-ui/core/Input';
 import { areEqual } from '@jsonforms/react';
 import merge from 'lodash/merge';
+import { Input } from 'antd';
 
 export const MuiInputNumberFormat = React.memo(
   (props: CellProps & WithClassname & Formatted<number>) => {
@@ -35,7 +35,6 @@ export const MuiInputNumberFormat = React.memo(
       id,
       enabled,
       uischema,
-      isValid,
       path,
       handleChange,
       schema,
@@ -43,32 +42,25 @@ export const MuiInputNumberFormat = React.memo(
     } = props;
     const maxLength = schema.maxLength;
     const appliedUiSchemaOptions = merge({}, config, uischema.options);
-    let inputProps;
-    if (appliedUiSchemaOptions.restrict) {
-      inputProps = { maxLength: maxLength };
-    } else {
-      inputProps = {};
-    }
     const formattedNumber = props.toFormatted(props.data);
 
     const onChange = (ev: any) => {
       const validStringNumber = props.fromFormatted(ev.currentTarget.value);
       handleChange(path, validStringNumber);
     };
+    const InputComponent = appliedUiSchemaOptions.multi ? Input.TextArea : Input
+    const inputStyle = !appliedUiSchemaOptions.trim || maxLength === undefined ? { width: '100%' } : {};
 
     return (
-      <Input
-        type='text'
+      <InputComponent
         value={formattedNumber}
         onChange={onChange}
         className={className}
         id={id}
         disabled={!enabled}
         autoFocus={appliedUiSchemaOptions.focus}
-        multiline={appliedUiSchemaOptions.multi}
-        fullWidth={!appliedUiSchemaOptions.trim || maxLength === undefined}
-        inputProps={inputProps}
-        error={!isValid}
+        maxLength={maxLength}
+        style={inputStyle}
       />
     );
   },
