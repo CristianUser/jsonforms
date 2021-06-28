@@ -32,11 +32,11 @@ import {
   WithClassname
 } from '@jsonforms/core';
 import { withJsonFormsCellProps } from '@jsonforms/react';
-import { MuiInputNumberFormat } from '../mui-controls/MuiInputNumberFormat';
+import { AntdInputNumberFormat } from '../antd-controls/AntdInputNumberFormat';
 
 export const MaterialNumberFormatCell = (
   props: CellProps & WithClassname & Formatted<number>
-) => <MuiInputNumberFormat {...props} />;
+) => <AntdInputNumberFormat {...props} />;
 /**
  * Default tester for text-based/string controls.
  * @type {RankedTester}

@@ -22,18 +22,18 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import MaterialGroupLayout, {
-  materialGroupTester
-} from './MaterialGroupLayout';
+import GroupLayout, {
+  antdGroupTester
+} from './GroupLayout';
 import MaterialHorizontalLayout, {
   materialHorizontalLayoutTester
 } from './MaterialHorizontalLayout';
 import MaterialVerticalLayout, {
   materialVerticalLayoutTester
 } from './MaterialVerticalLayout';
-import MaterialCategorizationLayout, {
-  materialCategorizationTester
-} from './MaterialCategorizationLayout';
+import CategorizationLayout, {
+  categorizationTester
+} from './CategorizationLayout';
 import MaterialArrayLayout, {
   materialArrayLayoutTester
 } from './MaterialArrayLayoutRenderer';
@@ -41,10 +41,10 @@ import MaterialArrayLayout, {
 export {
   materialArrayLayoutTester,
   MaterialArrayLayout,
-  MaterialCategorizationLayout,
-  materialCategorizationTester,
-  MaterialGroupLayout,
-  materialGroupTester,
+  CategorizationLayout,
+  categorizationTester,
+  GroupLayout,
+  antdGroupTester,
   MaterialHorizontalLayout,
   materialHorizontalLayoutTester,
   MaterialVerticalLayout,

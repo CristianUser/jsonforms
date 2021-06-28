@@ -23,25 +23,33 @@
   THE SOFTWARE.
 */
 import React from 'react';
-import {
-  CellProps,
-  isNumberControl,
-  RankedTester,
-  rankWith,
-  WithClassname
-} from '@jsonforms/core';
-import { withJsonFormsCellProps } from '@jsonforms/react';
-import { AntdInputNumber } from '../antd-controls/AntdInputNumber';
+import { CellProps, WithClassname } from '@jsonforms/core';
+import { areEqual } from '@jsonforms/react';
+import { TimePicker } from 'antd';
+import merge from 'lodash/merge';
 
-export const MaterialNumberCell = (props: CellProps & WithClassname) => (
-  <AntdInputNumber {...props} />
-);
-/**
- * Default tester for number controls.
- * @type {RankedTester}
- */
-export const materialNumberCellTester: RankedTester = rankWith(
-  2,
-  isNumberControl
-);
-export default withJsonFormsCellProps(MaterialNumberCell);
+export const AntdInputTime = React.memo((props: CellProps & WithClassname) => {
+  const {
+    data,
+    className,
+    id,
+    enabled,
+    uischema,
+    path,
+    handleChange,
+    config
+  } = props;
+  const appliedUiSchemaOptions = merge({}, config, uischema.options);
+
+  return (
+    <TimePicker
+      value={data || ''}
+      onChange={(_mValue, strValue) => handleChange(path, strValue)}
+      className={className}
+      id={id}
+      disabled={!enabled}
+      autoFocus={appliedUiSchemaOptions.focus}
+      style={{ width: '100%' }}
+    />
+  );
+}, areEqual);

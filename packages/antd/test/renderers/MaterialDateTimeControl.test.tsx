@@ -28,9 +28,9 @@ import {
   ControlElement,
   NOT_APPLICABLE,
 } from '@jsonforms/core';
-import MaterialDateTimeControl, {
-  materialDateTimeControlTester
-} from '../../src/controls/MaterialDateTimeControl';
+import DateTimeControl, {
+  dateTimeControlTester
+} from '../../src/controls/DateTimeControl';
 import moment from 'moment';
 import { materialRenderers } from '../../src';
 
@@ -58,18 +58,18 @@ const uischema: ControlElement = {
 
 describe('Material date time control tester', () => {
   it('should fail', () => {
-    expect(materialDateTimeControlTester(undefined, undefined)).toBe(
+    expect(dateTimeControlTester(undefined, undefined)).toBe(
       NOT_APPLICABLE
     );
-    expect(materialDateTimeControlTester(null, undefined)).toBe(NOT_APPLICABLE);
-    expect(materialDateTimeControlTester({ type: 'Foo' }, undefined)).toBe(
+    expect(dateTimeControlTester(null, undefined)).toBe(NOT_APPLICABLE);
+    expect(dateTimeControlTester({ type: 'Foo' }, undefined)).toBe(
       NOT_APPLICABLE
     );
-    expect(materialDateTimeControlTester({ type: 'Control' }, undefined)).toBe(
+    expect(dateTimeControlTester({ type: 'Control' }, undefined)).toBe(
       NOT_APPLICABLE
     );
     expect(
-      materialDateTimeControlTester(uischema, {
+      dateTimeControlTester(uischema, {
         type: 'object',
         properties: {
           foo: { type: 'string' }
@@ -77,7 +77,7 @@ describe('Material date time control tester', () => {
       })
     ).toBe(NOT_APPLICABLE);
     expect(
-      materialDateTimeControlTester(uischema, {
+      dateTimeControlTester(uischema, {
         type: 'object',
         properties: {
           foo: { type: 'string' },
@@ -92,7 +92,7 @@ describe('Material date time control tester', () => {
 
   it('should succeed', () => {
     expect(
-      materialDateTimeControlTester(uischema, {
+      dateTimeControlTester(uischema, {
         type: 'object',
         properties: {
           foo: {
@@ -123,7 +123,7 @@ describe('Material date time control', () => {
     const core = initCore(schema, control, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialDateTimeControl schema={schema} uischema={control} />
+        <DateTimeControl schema={schema} uischema={control} />
       </JsonFormsStateProvider>
     );
     const input = wrapper.find('input').first();
@@ -141,7 +141,7 @@ describe('Material date time control', () => {
     const core = initCore(schema, control, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialDateTimeControl schema={schema} uischema={uischema} />
+        <DateTimeControl schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
     const input = wrapper.find('input').first();
@@ -156,7 +156,7 @@ describe('Material date time control', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialDateTimeControl schema={schema} uischema={control} />
+        <DateTimeControl schema={schema} uischema={control} />
       </JsonFormsStateProvider>
     );
     const input = wrapper.find('input').first();
@@ -167,7 +167,7 @@ describe('Material date time control', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialDateTimeControl schema={schema} uischema={uischema} />
+        <DateTimeControl schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
 
@@ -188,7 +188,7 @@ describe('Material date time control', () => {
             onChangeData.data = data;
           }}
         />
-        <MaterialDateTimeControl schema={schema} uischema={uischema} />
+        <DateTimeControl schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
     const input = wrapper.find('input').first();
@@ -202,7 +202,7 @@ describe('Material date time control', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialDateTimeControl schema={schema} uischema={uischema} />
+        <DateTimeControl schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, foo: moment('1961-04-12 20:15').format() };
@@ -216,7 +216,7 @@ describe('Material date time control', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialDateTimeControl schema={schema} uischema={uischema} />
+        <DateTimeControl schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, foo: null };
@@ -230,7 +230,7 @@ describe('Material date time control', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialDateTimeControl schema={schema} uischema={uischema} />
+        <DateTimeControl schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, foo: undefined };
@@ -244,7 +244,7 @@ describe('Material date time control', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialDateTimeControl schema={schema} uischema={uischema} />
+        <DateTimeControl schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, bar: 'Bar' };
@@ -258,7 +258,7 @@ describe('Material date time control', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialDateTimeControl schema={schema} uischema={uischema} />
+        <DateTimeControl schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, null: '12.04.1961 20:15' };
@@ -272,7 +272,7 @@ describe('Material date time control', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialDateTimeControl schema={schema} uischema={uischema} />
+        <DateTimeControl schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, undefined: '12.04.1961 20:15' };
@@ -286,7 +286,7 @@ describe('Material date time control', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialDateTimeControl
+        <DateTimeControl
           schema={schema}
           uischema={uischema}
           enabled={false}
@@ -301,7 +301,7 @@ describe('Material date time control', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialDateTimeControl schema={schema} uischema={uischema} />
+        <DateTimeControl schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
     const input = wrapper.find('input').first();
@@ -312,7 +312,7 @@ describe('Material date time control', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialDateTimeControl
+        <DateTimeControl
           schema={schema}
           uischema={uischema}
           id='#/properties/foo'
@@ -328,7 +328,7 @@ describe('Material date time control', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialDateTimeControl
+        <DateTimeControl
           schema={schema}
           uischema={uischema}
           visible={false}

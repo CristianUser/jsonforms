@@ -40,7 +40,7 @@ import {
 import { Control, JsonFormsStateProvider, withJsonFormsControlProps } from '@jsonforms/react';
 import { MaterialInputControl } from '../../src/controls/MaterialInputControl';
 import MaterialHorizontalLayoutRenderer from '../../src/layouts/MaterialHorizontalLayout';
-import { MuiInputText } from '../../src/mui-controls';
+import { AntdInputText } from '../../src/mui-controls';
 import { initCore } from './util';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -60,7 +60,7 @@ const uischema: ControlElement = {
 };
 class TestControlInner extends Control<ControlProps, ControlState> {
   render() {
-    return <MaterialInputControl {...this.props} input={MuiInputText} />;
+    return <MaterialInputControl {...this.props} input={AntdInputText} />;
   }
 }
 export const testControlTester: RankedTester = rankWith(1, isControl);
@@ -94,7 +94,7 @@ describe('Material input control', () => {
     expect(inputs).toHaveLength(1);
 
     const validation = wrapper.find('p').first();
-    expect(validation.props().className).toContain('MuiFormHelperText-root');
+    expect(validation.props().className).toContain('AntdFormHelperText-root');
     expect(validation.children()).toHaveLength(0);
   });
 
@@ -121,7 +121,7 @@ describe('Material input control', () => {
     expect(inputs).toHaveLength(1);
 
     const validation = wrapper.find('p').first();
-    expect(validation.props().className).toContain('MuiFormHelperText-root');
+    expect(validation.props().className).toContain('AntdFormHelperText-root');
     expect(validation.children()).toHaveLength(0);
   });
 

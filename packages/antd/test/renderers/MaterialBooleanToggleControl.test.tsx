@@ -30,8 +30,8 @@ import {
   UISchemaElement
 } from '@jsonforms/core';
 import BooleanToggleControl, {
-  materialBooleanToggleControlTester
-} from '../../src/controls/MaterialBooleanToggleControl';
+  booleanToggleControlTester
+} from '../../src/controls/BooleanToggleControl';
 import * as ReactDOM from 'react-dom';
 import { materialRenderers } from '../../src';
 
@@ -69,26 +69,26 @@ describe('Material boolean toggle control tester', () => {
   };
 
   it('should fail', () => {
-    expect(materialBooleanToggleControlTester(undefined, undefined)).toBe(
+    expect(booleanToggleControlTester(undefined, undefined)).toBe(
       NOT_APPLICABLE
     );
-    expect(materialBooleanToggleControlTester(null, undefined)).toBe(
+    expect(booleanToggleControlTester(null, undefined)).toBe(
       NOT_APPLICABLE
     );
-    expect(materialBooleanToggleControlTester({ type: 'Foo' }, undefined)).toBe(
+    expect(booleanToggleControlTester({ type: 'Foo' }, undefined)).toBe(
       NOT_APPLICABLE
     );
     expect(
-      materialBooleanToggleControlTester({ type: 'Control' }, undefined)
+      booleanToggleControlTester({ type: 'Control' }, undefined)
     ).toBe(NOT_APPLICABLE);
     expect(
-      materialBooleanToggleControlTester(control, {
+      booleanToggleControlTester(control, {
         type: 'object',
         properties: { foo: { type: 'string' } }
       })
     ).toBe(NOT_APPLICABLE);
     expect(
-      materialBooleanToggleControlTester(control, {
+      booleanToggleControlTester(control, {
         type: 'object',
         properties: {
           foo: {
@@ -103,7 +103,7 @@ describe('Material boolean toggle control tester', () => {
 
     // Not applicable for boolean control if toggle option is false
     expect(
-      materialBooleanToggleControlTester(
+      booleanToggleControlTester(
         {
           type: 'Control',
           scope: '#/properties/foo',
@@ -124,7 +124,7 @@ describe('Material boolean toggle control tester', () => {
 
     // Not applicable for boolean control if toggle option is not given
     expect(
-      materialBooleanToggleControlTester(
+      booleanToggleControlTester(
         {
           type: 'Control',
           scope: '#/properties/foo',
@@ -143,7 +143,7 @@ describe('Material boolean toggle control tester', () => {
 
   it('should succeed', () => {
     expect(
-      materialBooleanToggleControlTester(control, {
+      booleanToggleControlTester(control, {
         type: 'object',
         properties: {
           foo: {
@@ -241,7 +241,7 @@ describe('Material boolean toggle control', () => {
     );
 
     // Make sure a toggle is rendered by checking for the thumb element
-    expect(wrapper.find('.MuiSwitch-thumb')).toHaveLength(1);
+    expect(wrapper.find('.AntdSwitch-thumb')).toHaveLength(1);
 
     const input = wrapper.find('input').first();    
     expect(input.props().type).toBe('checkbox');

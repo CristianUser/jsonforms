@@ -31,10 +31,10 @@ import {
   WithClassname
 } from '@jsonforms/core';
 import { withJsonFormsCellProps } from '@jsonforms/react';
-import { MuiInputTime } from '../mui-controls/MuiInputTime';
+import { AntdInputTime } from '../antd-controls/AntdInputTime';
 
 export const MaterialTimeCell = (props: CellProps & WithClassname) => (
-  <MuiInputTime {...props} />
+  <AntdInputTime {...props} />
 );
 export const materialTimeCellTester: RankedTester = rankWith(2, isTimeControl);
 export default withJsonFormsCellProps(MaterialTimeCell);

@@ -28,9 +28,9 @@ import {
   ControlElement,
   NOT_APPLICABLE,
 } from '@jsonforms/core';
-import MaterialOneOfRadioGroupControl, {
-  materialOneOfRadioGroupControlTester
-} from '../../src/controls/MaterialOneOfRadioGroupControl';
+import OneOfRadioGroupControl, {
+  oneOfRadioGroupControlTester
+} from '../../src/controls/OneOfRadioGroupControl';
 import { materialRenderers } from '../../src';
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -63,7 +63,7 @@ const uischema: ControlElement = {
 
 describe('Material oneof radio group tester', () => {
   it('should return valid rank for oneof enums with radio format', () => {
-    const rank = materialOneOfRadioGroupControlTester(uischema, oneOfSchema);
+    const rank = oneOfRadioGroupControlTester(uischema, oneOfSchema);
     expect(rank).not.toBe(NOT_APPLICABLE);
   });
 
@@ -72,7 +72,7 @@ describe('Material oneof radio group tester', () => {
       type: 'Control',
       scope: '#/properties/foo'
     };
-    const rank = materialOneOfRadioGroupControlTester(
+    const rank = oneOfRadioGroupControlTester(
       uiSchemaNoRadio,
       oneOfSchema
     );
@@ -92,7 +92,7 @@ describe('Material oneof radio group control', () => {
       <JsonFormsStateProvider
         initState={{ renderers: materialRenderers, core }}
       >
-        <MaterialOneOfRadioGroupControl
+        <OneOfRadioGroupControl
           schema={oneOfSchema}
           uischema={uischema}
         />

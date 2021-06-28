@@ -22,26 +22,66 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
+import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 import {
-  and,
-  CellProps,
   isBooleanControl,
-  optionIs,
   RankedTester,
   rankWith,
-  WithClassname
+  ControlProps,
+  optionIs,
+  and
 } from '@jsonforms/core';
-import { withJsonFormsCellProps } from '@jsonforms/react';
+import { withJsonFormsControlProps } from '@jsonforms/react';
 import { AntdToggle } from '../antd-controls/AntdToggle';
+import { Form } from 'antd';
 
-export const MaterialBooleanToggleCell = (props: CellProps & WithClassname) => {
-  return <AntdToggle {...props} />;
+export const BooleanToggleControl = ({
+  data,
+  visible,
+  label,
+  id,
+  enabled,
+  uischema,
+  schema,
+  rootSchema,
+  handleChange,
+  errors,
+  path,
+  config
+}: ControlProps) => {
+  const isValid = isEmpty(errors);
+
+  return (
+      <Form.Item
+        hidden={!visible}
+        label={label}
+        id={id}
+        hasFeedback={!isValid}
+        help={!isValid ? errors : null}
+      >
+
+        <AntdToggle
+          id={`${id}-input`}
+          isValid={isValid}
+          data={data}
+          enabled={enabled}
+          visible={visible}
+          path={path}
+          uischema={uischema}
+          schema={schema}
+          rootSchema={rootSchema}
+          handleChange={handleChange}
+          errors={errors}
+          config={config}
+        />
+      </Form.Item>
+  );
 };
 
-export const materialBooleanToggleCellTester: RankedTester = rankWith(
+export const booleanToggleControlTester: RankedTester = rankWith(
   3,
   and(isBooleanControl, optionIs('toggle', true))
-);;
+);
 
-export default withJsonFormsCellProps(MaterialBooleanToggleCell);
+export default withJsonFormsControlProps(BooleanToggleControl);

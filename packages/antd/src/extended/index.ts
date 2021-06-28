@@ -25,20 +25,20 @@
 import MaterialAutocompleteEnumControl, {
   materialAutocompleteEnumControlTester,
   MaterialAutocompleteEnumControl as MaterialAutocompleteEnumControlUnwrapped
-} from './MaterialAutocompleteEnumControl';
+} from './AntdAutocompleteEnumControl';
 
 import MaterialAutocompleteOneOfEnumControl, {
   materialAutocompleteOneOfEnumControlTester,
   MaterialAutocompleteOneOfEnumControl as MaterialAutocompleteOneOfEnumControlUnwrapped
-} from './MaterialAutocompleteOneOfEnumControl';
+} from './AntdAutocompleteOneOfEnumControl';
 
 import { JsonFormsRendererRegistryEntry } from '@jsonforms/core';
-import { materialRenderers } from '../';
+import { renderers } from '../index';
 
 /**
  * Includes all 'materialRenderers' and adds additional renderers based on '@material-ui/lab'
  */
-export const extendedMaterialRenderers: JsonFormsRendererRegistryEntry[] = [
+export const extendedRenderers: JsonFormsRendererRegistryEntry[] = [
   {
     tester: materialAutocompleteOneOfEnumControlTester,
     renderer: MaterialAutocompleteOneOfEnumControl
@@ -47,8 +47,7 @@ export const extendedMaterialRenderers: JsonFormsRendererRegistryEntry[] = [
     tester: materialAutocompleteEnumControlTester,
     renderer: MaterialAutocompleteEnumControl
   },
-  ...materialRenderers
-];
+].concat(renderers);
 
 export const ExtendedUnwrapped = {
   MaterialAutocompleteEnumControl: MaterialAutocompleteEnumControlUnwrapped,

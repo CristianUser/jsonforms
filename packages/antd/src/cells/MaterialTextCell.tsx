@@ -31,10 +31,10 @@ import {
   WithClassname
 } from '@jsonforms/core';
 import { withJsonFormsCellProps } from '@jsonforms/react';
-import { MuiInputText } from '../mui-controls/MuiInputText';
+import { AntdInputText } from '../antd-controls/AntdInputText';
 
 export const MaterialTextCell = (props: CellProps & WithClassname) => (
-  <MuiInputText {...props} />
+  <AntdInputText {...props} />
 );
 
 /**

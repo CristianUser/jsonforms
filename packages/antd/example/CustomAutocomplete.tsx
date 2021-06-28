@@ -8,7 +8,7 @@ import {
   Actions
 } from '@jsonforms/core';
 import { ExtendedUnwrapped } from '../src/extended';
-import { materialAutocompleteOneOfEnumControlTester } from '../src/extended/MaterialAutocompleteOneOfEnumControl';
+import { materialAutocompleteOneOfEnumControlTester } from '../src/extended/AntdAutocompleteOneOfEnumControl';
 import { withJsonFormsOneOfEnumProps } from '@jsonforms/react';
 import React from 'react';
 import Typography from '@material-ui/core/Typography';

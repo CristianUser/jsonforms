@@ -1,7 +1,7 @@
 /*
   The MIT License
   
-  Copyright (c) 2017-2019 EclipseSource Munich
+  Copyright (c) 2019 EclipseSource Munich
   https://github.com/eclipsesource/jsonforms
   
   Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,26 +22,10 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import React from 'react';
-import {
-  CellProps,
-  isNumberControl,
-  RankedTester,
-  rankWith,
-  WithClassname
-} from '@jsonforms/core';
-import { withJsonFormsCellProps } from '@jsonforms/react';
-import { AntdInputNumber } from '../antd-controls/AntdInputNumber';
-
-export const MaterialNumberCell = (props: CellProps & WithClassname) => (
-  <AntdInputNumber {...props} />
-);
-/**
- * Default tester for number controls.
- * @type {RankedTester}
- */
-export const materialNumberCellTester: RankedTester = rankWith(
-  2,
-  isNumberControl
-);
-export default withJsonFormsCellProps(MaterialNumberCell);
+export * from './AntdCheckbox';
+export * from './AntdSelect';
+export * from './AntdInputInteger';
+export * from './AntdInputNumber';
+export * from './AntdInputNumberFormat';
+export * from './AntdInputText';
+export * from './AntdInputTime';

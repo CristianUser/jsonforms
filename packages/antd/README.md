@@ -4,9 +4,9 @@
 
 JSON Forms eliminates the tedious task of writing fully-featured forms by hand by leveraging the capabilities of JSON, JSON Schema and Javascript.
 
-## Material Renderers Package
+## Antd Renderers Package
 
-This is the JSON Forms Material Renderers Package. This package only contains renderers and must be combined with [JSON Forms React](https://github.com/eclipsesource/jsonforms/blob/master/packages/react).
+This is the JSON Forms Ant Design Renderers Package. This package only contains renderers and must be combined with [JSON Forms React](https://github.com/eclipsesource/jsonforms/blob/master/packages/react).
 
 See the official [documentation](https://jsonforms.io/docs/integrations/react/) and the JSON Forms React [seed repository](https://github.com/eclipsesource/jsonforms-react-seed) for examples on how to integrate JSON Forms with your application.
 
@@ -16,10 +16,10 @@ Check <https://www.npmjs.com/search?q=%40jsonforms> for all published JSONForms 
 
 ### Quick start
 
-Install JSON Forms Core, React and React Material Renderers
+Install JSON Forms Core, React and React Antd Renderers
 
 ```bash
-npm i --save @jsonforms/core @jsonforms/react @jsonforms/material-renderers
+npm i --save @jsonforms/core @jsonforms/react @jsonforms/antd-renderers
 ```
 
 Use the `JsonForms` component for each form you want to render and hand over the renderer set.
@@ -27,7 +27,7 @@ Use the `JsonForms` component for each form you want to render and hand over the
 ```js
 import React, { useState } from 'react';
 import { JsonForms } from '@jsonforms/react';
-import { materialCells, materialRenderers } from '@jsonforms/material-renderers';
+import { cells, renderers } from '@jsonforms/antd-renderers';
 
 function App() {
   const [data, setData] = useState(initialData);
@@ -37,8 +37,8 @@ function App() {
         schema={schema}
         uischema={uischema}
         data={data}
-        renderers={materialRenderers}
-        cells={materialCells}
+        renderers={renderers}
+        cells={cells}
         onChange={({ data, _errors }) => setData(data)}
       />
     </div>

@@ -31,10 +31,10 @@ import {
   WithClassname
 } from '@jsonforms/core';
 import { withJsonFormsCellProps } from '@jsonforms/react';
-import { MuiCheckbox } from '../mui-controls/MuiCheckbox';
+import { AntdCheckbox } from '../antd-controls/AntdCheckbox';
 
 export const MaterialBooleanCell = (props: CellProps & WithClassname) => {
-  return <MuiCheckbox {...props} />;
+  return <AntdCheckbox {...props} />;
 };
 
 export const materialBooleanCellTester: RankedTester = rankWith(

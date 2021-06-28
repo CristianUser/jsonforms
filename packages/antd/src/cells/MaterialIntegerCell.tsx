@@ -31,10 +31,10 @@ import {
   WithClassname
 } from '@jsonforms/core';
 import { withJsonFormsCellProps } from '@jsonforms/react';
-import { MuiInputInteger } from '../mui-controls/MuiInputInteger';
+import { AntdInputInteger } from '../antd-controls/AntdInputInteger';
 
 export const MaterialIntegerCell = (props: CellProps & WithClassname) => (
-  <MuiInputInteger {...props} />
+  <AntdInputInteger {...props} />
 );
 export const materialIntegerCellTester: RankedTester = rankWith(
   2,

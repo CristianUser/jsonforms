@@ -23,8 +23,8 @@
   THE SOFTWARE.
 */
 import { renderExample } from '../../example/src/index';
-import { materialCells } from '../src';
-import { extendedMaterialRenderers } from '../src/extended';
+import { cells } from '../src';
+import { extendedRenderers } from '../src/extended';
 import { ExampleExtension } from './CustomAutocomplete';
 import { ReactExampleDescription } from '../../example/src/util';
 
@@ -41,7 +41,7 @@ const addCustomAutocompleteControl = (examples: ReactExampleDescription[]) => {
 };
 
 renderExample(
-  extendedMaterialRenderers,
-  materialCells,
+  extendedRenderers,
+  cells,
   addCustomAutocompleteControl
 );

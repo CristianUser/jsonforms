@@ -31,10 +31,10 @@ import {
   WithClassname
 } from '@jsonforms/core';
 import { withJsonFormsOneOfEnumCellProps } from '@jsonforms/react';
-import { MuiSelect } from '../mui-controls/MuiSelect';
+import { AntdSelect } from '../antd-controls/AntdSelect';
 
 export const MaterialOneOfEnumCell = (props: EnumCellProps & WithClassname) => (
-  <MuiSelect {...props} />
+  <AntdSelect {...props} />
 );
 
 /**

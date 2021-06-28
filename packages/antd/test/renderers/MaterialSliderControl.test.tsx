@@ -30,8 +30,8 @@ import {
   NOT_APPLICABLE
 } from '@jsonforms/core';
 import SliderControl, {
-  materialSliderControlTester
-} from '../../src/controls/MaterialSliderControl';
+  sliderControlTester
+} from '../../src/controls/SliderControl';
 import { materialRenderers } from '../../src';
 import { Slider } from '@material-ui/core';
 
@@ -64,21 +64,21 @@ const uischema: ControlElement = {
 
 describe('Material slider tester', () => {
   it('should fail', () => {
-    expect(materialSliderControlTester(undefined, undefined)).toBe(
+    expect(sliderControlTester(undefined, undefined)).toBe(
       NOT_APPLICABLE
     );
-    expect(materialSliderControlTester(null, undefined)).toBe(NOT_APPLICABLE);
-    expect(materialSliderControlTester({ type: 'Foo' }, undefined)).toBe(
+    expect(sliderControlTester(null, undefined)).toBe(NOT_APPLICABLE);
+    expect(sliderControlTester({ type: 'Foo' }, undefined)).toBe(
       NOT_APPLICABLE
     );
-    expect(materialSliderControlTester({ type: 'Control' }, undefined)).toBe(
+    expect(sliderControlTester({ type: 'Control' }, undefined)).toBe(
       NOT_APPLICABLE
     );
   });
 
   it('should fail with wrong schema type', () => {
     expect(
-      materialSliderControlTester(uischema, {
+      sliderControlTester(uischema, {
         type: 'object',
         properties: {
           foo: { type: 'string' }
@@ -89,7 +89,7 @@ describe('Material slider tester', () => {
 
   it('should fail if only sibling has correct prop type', () => {
     expect(
-      materialSliderControlTester(uischema, {
+      sliderControlTester(uischema, {
         type: 'object',
         properties: {
           foo: { type: 'string' },
@@ -101,7 +101,7 @@ describe('Material slider tester', () => {
 
   it('should fail if maximum and minimum are missing', () => {
     expect(
-      materialSliderControlTester(uischema, {
+      sliderControlTester(uischema, {
         type: 'object',
         properties: {
           foo: { type: 'number' }
@@ -112,7 +112,7 @@ describe('Material slider tester', () => {
 
   it('should fail if maximum is missing', () => {
     expect(
-      materialSliderControlTester(uischema, {
+      sliderControlTester(uischema, {
         type: 'object',
         properties: {
           foo: {
@@ -126,7 +126,7 @@ describe('Material slider tester', () => {
 
   it('should fail if minimum is missing', () => {
     expect(
-      materialSliderControlTester(uischema, {
+      sliderControlTester(uischema, {
         type: 'object',
         properties: {
           foo: {
@@ -140,7 +140,7 @@ describe('Material slider tester', () => {
 
   it('should fail is default is missing', () => {
     expect(
-      materialSliderControlTester(uischema, {
+      sliderControlTester(uischema, {
         type: 'object',
         properties: {
           foo: {
@@ -155,7 +155,7 @@ describe('Material slider tester', () => {
 
   it('should succeed with number type', () => {
     expect(
-      materialSliderControlTester(uischema, {
+      sliderControlTester(uischema, {
         type: 'object',
         properties: {
           foo: {
@@ -171,7 +171,7 @@ describe('Material slider tester', () => {
 
   it('should succeed with integer type', () => {
     expect(
-      materialSliderControlTester(uischema, {
+      sliderControlTester(uischema, {
         type: 'object',
         properties: {
           foo: {

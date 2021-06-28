@@ -14,7 +14,7 @@ import {
 } from '@jsonforms/core';
 
 import { withJsonFormsMultiEnumProps } from '@jsonforms/react';
-import { MuiCheckbox } from '../mui-controls';
+import { AntdCheckbox } from '../antd-controls';
 import {
   FormControl,
   FormControlLabel,
@@ -51,7 +51,7 @@ export const MaterialEnumArrayRenderer = ({
                 id={option.value}
                 key={option.value}
                 control={
-                  <MuiCheckbox
+                  <AntdCheckbox
                     key={'checkbox-' + option.value}
                     isValid={isEmpty(errors)}
                     path={optionPath}

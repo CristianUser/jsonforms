@@ -28,7 +28,7 @@ import {
   ControlElement,
   NOT_APPLICABLE
 } from '@jsonforms/core';
-import MaterialRadioGroupControl, { materialRadioGroupControlTester } from '../../src/controls/MaterialRadioGroupControl';
+import RadioGroupControl, { radioGroupControlTesterGroup } from '../../src/controls/RadioGroupControl';
 import { materialRenderers } from '../../src';
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -56,7 +56,7 @@ const uischema: ControlElement = {
 
 describe('Material radio group tester', () => {
   it('should return valid rank for enums with radio format', () => {
-    const rank = materialRadioGroupControlTester(uischema, schema);
+    const rank = radioGroupControlTesterGroup(uischema, schema);
     expect(rank).not.toBe(NOT_APPLICABLE);
   });
 
@@ -65,7 +65,7 @@ describe('Material radio group tester', () => {
       type: 'Control',
       scope: '#/properties/foo'
     };
-    const rank = materialRadioGroupControlTester(uiSchemaNoRadio, schema);
+    const rank = radioGroupControlTesterGroup(uiSchemaNoRadio, schema);
     expect(rank).toBe(NOT_APPLICABLE);
   });
 });
@@ -79,7 +79,7 @@ describe('Material radio group control', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialRadioGroupControl schema={schema} uischema={uischema} />
+        <RadioGroupControl schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
 
@@ -99,7 +99,7 @@ describe('Material radio group control', () => {
 
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialRadioGroupControl schema={schema} uischema={uischema} />
+        <RadioGroupControl schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
     const currentlyChecked = wrapper.find('input[type="radio"][checked=true]');
@@ -111,7 +111,7 @@ describe('Material radio group control', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialRadioGroupControl
+        <RadioGroupControl
           schema={schema}
           uischema={uischema}
           visible={false}
