@@ -26,34 +26,35 @@ import range from 'lodash/range';
 import React from 'react';
 import {
   ArrayLayoutProps,
-  composePaths,
   computeLabel,
   createDefaultValue,
   isPlainLabel
 } from '@jsonforms/core';
+import { Collapse } from 'antd';
+// import { DownOutlined } from '@ant-design/icons'
 import map from 'lodash/map';
 import { ArrayLayoutToolbar } from './ArrayToolbar';
 import ExpandPanelRenderer from './ExpandPanelRenderer';
 import merge from 'lodash/merge';
 
 interface MaterialArrayLayoutState {
-  expanded: string | boolean;
+  expanded: number;
 }
 export class MaterialArrayLayout extends React.PureComponent<
   ArrayLayoutProps,
   MaterialArrayLayoutState
 > {
   state: MaterialArrayLayoutState = {
-    expanded: null
+    expanded: 0
   };
   innerCreateDefaultValue = () => createDefaultValue(this.props.schema);
-  handleChange = (panel: string) => (_event: any, expanded: boolean) => {
+  handleChange = (key: number) => {
     this.setState({
-      expanded: expanded ? panel : false
+      expanded: key
     });
   };
   isExpanded = (index: number) =>
-    this.state.expanded === composePaths(this.props.path, `${index}`);
+    this.state.expanded === index;
   render() {
     const {
       data,
@@ -89,18 +90,26 @@ export class MaterialArrayLayout extends React.PureComponent<
           addItem={addItem}
           createDefault={this.innerCreateDefaultValue}
         />
-        <div>
+        <Collapse
+          accordion
+          expandIconPosition="right"
+          // expandIcon={() => <DownOutlined />}
+          onChange={(key) => { console.log('key', key)}}
+        >
+              <Collapse.Panel header="This is panel header 1" key="1s">
+      <p>asdasda</p>
+    </Collapse.Panel>
           {data > 0 ? (
             map(range(data), index => {
               return (
                 <ExpandPanelRenderer
                   index={index}
-                  expanded={this.isExpanded(index)}
+                  // expanded={this.isExpanded(index)}
                   schema={schema}
                   path={path}
-                  handleExpansion={this.handleChange}
                   uischema={uischema}
                   renderers={renderers}
+                  handleChange={this.handleChange}
                   cells={cells}
                   key={index}
                   rootSchema={rootSchema}
@@ -115,7 +124,7 @@ export class MaterialArrayLayout extends React.PureComponent<
           ) : (
             <p>No data</p>
           )}
-        </div>
+        </Collapse>
       </div>
     );
   }
