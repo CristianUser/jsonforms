@@ -67,6 +67,8 @@ export const MuiInputText = React.memo((props: CellProps & WithClassname & MuiTe
   const onChange = (ev: any) => handleChange(path, ev.target.value);
 
   const InputComponent = appliedUiSchemaOptions.multi ? Input.TextArea : Input
+  const inputStyle = !appliedUiSchemaOptions.trim || maxLength === undefined ? { width: '100%' } : {};
+
   return (
     <InputComponent
       type={
@@ -78,13 +80,12 @@ export const MuiInputText = React.memo((props: CellProps & WithClassname & MuiTe
       id={id}
       disabled={!enabled}
       autoFocus={appliedUiSchemaOptions.focus}
-      autoSize={appliedUiSchemaOptions.multi}
-      // fullWidth={!appliedUiSchemaOptions.trim || maxLength === undefined}
-      // error={!isValid}
+      style={inputStyle}
       onPointerEnter={() => setClearable(true) }
       onPointerLeave={() => setClearable(false) }
       maxLength={maxLength}
       allowClear={clearable}
+      {...(appliedUiSchemaOptions.multi ? { autoSize: true } : {})}
     />
   );
 }, areEqual);

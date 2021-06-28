@@ -24,7 +24,7 @@
 */
 import React from 'react';
 import merge from 'lodash/merge';
-import { Button, Hidden, Step, StepButton, Stepper } from '@material-ui/core';
+import { Hidden } from '@material-ui/core';
 import {
   and,
   Categorization,
@@ -44,6 +44,7 @@ import {
   MaterialLayoutRendererProps,
   withAjvProps
 } from '../util/layout';
+import { Button, Steps } from 'antd';
 
 export const materialCategorizationStepperTester: RankedTester = rankWith(
   2,
@@ -115,22 +116,18 @@ export class MaterialCategorizationStepperLayoutRenderer extends RendererCompone
     );
     return (
       <Hidden xsUp={!visible}>
-        <Stepper activeStep={activeCategory} nonLinear>
-          {categories.map((e: Category, idx: number) => (
-            <Step key={e.label}>
-              <StepButton onClick={() => this.handleStep(idx)}>
-                {e.label}
-              </StepButton>
-            </Step>
-          ))}
-        </Stepper>
+        <Steps current={activeCategory} style={{ marginBottom: '10px' }}>
+        {categories.map((item: Category, idx: number) => (
+          <Steps.Step key={item.label} title={item.label} onClick={() => this.handleStep(idx)}/>
+        ))}
+      </Steps>
         <div>
           <MaterialLayoutRenderer {...childProps} />
         </div>
-        { !!appliedUiSchemaOptions.showNavButtons ? (<div style={buttonWrapperStyle}>
+        { !!appliedUiSchemaOptions.showNavButtons ? (
+        <div style={buttonWrapperStyle}>
           <Button
             style={buttonNextStyle}
-            variant="contained"
             color="primary"
             disabled={activeCategory >= categories.length - 1}
             onClick={() => this.handleStep(activeCategory + 1)}
@@ -140,7 +137,6 @@ export class MaterialCategorizationStepperLayoutRenderer extends RendererCompone
           <Button
             style={buttonStyle}
             color="secondary"
-            variant="contained"
             disabled={activeCategory <= 0}
             onClick={() => this.handleStep(activeCategory - 1)}
           >

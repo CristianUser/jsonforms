@@ -22,9 +22,8 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import isEmpty from 'lodash/isEmpty';
 import React from 'react';
-import { Card, CardContent, CardHeader, Hidden } from '@material-ui/core';
+import { Hidden } from '@material-ui/core';
 import {
   GroupLayout,
   LayoutProps,
@@ -33,11 +32,12 @@ import {
   uiTypeIs,
   withIncreasedRank,
 } from '@jsonforms/core';
+import { withJsonFormsLayoutProps } from '@jsonforms/react';
+import { Card } from 'antd';
 import {
   MaterialLayoutRenderer,
   MaterialLayoutRendererProps
 } from '../util/layout';
-import { withJsonFormsLayoutProps } from '@jsonforms/react';
 
 export const groupTester: RankedTester = rankWith(1, uiTypeIs('Group'));
 const style: { [x: string]: any } = { marginBottom: '10px' };
@@ -46,13 +46,11 @@ const GroupComponent = React.memo(({ visible, enabled, uischema, ...props }: Mat
   const groupLayout = uischema as GroupLayout;
   return (
     <Hidden xsUp={!visible}>
-      <Card style={style}>
-        {!isEmpty(groupLayout.label) && (
-          <CardHeader title={groupLayout.label} />
-        )}
-        <CardContent>
-          <MaterialLayoutRenderer {...props} visible={visible} enabled={enabled} elements={groupLayout.elements} />
-        </CardContent>
+      <Card 
+      title={groupLayout.label}
+      style={style}
+      >
+        <MaterialLayoutRenderer {...props} visible={visible} enabled={enabled} elements={groupLayout.elements} />
       </Card>
     </Hidden>
   );

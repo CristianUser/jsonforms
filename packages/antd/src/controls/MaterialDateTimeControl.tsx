@@ -36,21 +36,7 @@ import {
 import { Control, withJsonFormsControlProps } from '@jsonforms/react';
 import moment from 'moment';
 import { Hidden } from '@material-ui/core';
-import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
-import DateRangeIcon from '@material-ui/icons/DateRange';
-import EventIcon from '@material-ui/icons/Event';
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import {
-  KeyboardDateTimePicker,
-  MuiPickersUtilsProvider
-} from '@material-ui/pickers';
-import MomentUtils from '@date-io/moment';
-
-// Workaround typing problems in @material-ui/pickers@3.2.3
-const AnyPropsKeyboardDateTimepicker: React.FunctionComponent<
-  any
-> = KeyboardDateTimePicker;
+import { DatePicker, Form } from 'antd';
 
 export class MaterialDateTimeControl extends Control<
   ControlProps,
@@ -73,40 +59,36 @@ export class MaterialDateTimeControl extends Control<
     } = this.props;
     const appliedUiSchemaOptions = merge({}, config, uischema.options);
     const isValid = errors.length === 0;
-    const inputProps = {};
+    const pickerStyle = !appliedUiSchemaOptions.trim ? { width: '100%' } : {};
 
     return (
       <Hidden xsUp={!visible}>
-        <MuiPickersUtilsProvider utils={MomentUtils}>
-          <AnyPropsKeyboardDateTimepicker
+          <Form.Item
+          required={required}
+          status={isValid ? 'success' : 'error'}
+          help={!isValid ? errors : description}
+          label={computeLabel(
+            isPlainLabel(label) ? label : label.default,
+            required,
+            appliedUiSchemaOptions.hideRequiredAsterisk
+          )}>
+          <DatePicker
             id={id + '-input'}
-            label={computeLabel(
-              isPlainLabel(label) ? label : label.default,
-              required,
-              appliedUiSchemaOptions.hideRequiredAsterisk
-            )}
-            error={!isValid}
-            fullWidth={!appliedUiSchemaOptions.trim}
-            onFocus={this.onFocus}
-            onBlur={this.onBlur}
-            helperText={!isValid ? errors : description}
-            InputLabelProps={{ shrink: true }}
-            value={data || null}
+            style={pickerStyle}
+            showTime={true}
+            value={data ? moment(data) : null}
             onChange={(datetime: any) =>
-              handleChange(path, datetime ? moment(datetime).format() : '')
+              handleChange(
+                path,
+                datetime ? datetime.format() : ''
+              )
             }
-            format='MM/DD/YYYY h:mm a'
-            clearable={true}
+            format={'MM/DD/YYYY h:mm a'}
+            allowClear={true}
             disabled={!enabled}
             autoFocus={appliedUiSchemaOptions.focus}
-            leftArrowIcon={<KeyboardArrowLeftIcon />}
-            rightArrowIcon={<KeyboardArrowRightIcon />}
-            dateRangeIcon={<DateRangeIcon />}
-            keyboardIcon={<EventIcon />}
-            timeIcon={<AccessTimeIcon />}
-            InputProps={inputProps}
           />
-        </MuiPickersUtilsProvider>
+        </Form.Item>
       </Hidden>
     );
   }

@@ -23,8 +23,7 @@
   THE SOFTWARE.
 */
 import React from 'react';
-import { Hidden, Tab, Tabs } from '@material-ui/core';
-import AppBar from '@material-ui/core/AppBar';
+import { Hidden } from '@material-ui/core';
 import {
   and,
   Categorization,
@@ -38,12 +37,15 @@ import {
   uiTypeIs
 } from '@jsonforms/core';
 import { RendererComponent, withJsonFormsLayoutProps } from '@jsonforms/react';
+import { Tabs } from 'antd';
 import {
   AjvProps,
   MaterialLayoutRenderer,
   MaterialLayoutRendererProps,
   withAjvProps
 } from '../util/layout';
+
+const { TabPane } = Tabs;
 
 export const isSingleLevelCategorization: Tester = and(
   uiTypeIs('Categorization'),
@@ -114,13 +116,11 @@ export class MaterialCategorizationLayoutRenderer extends RendererComponent<
     );
     return (
       <Hidden xsUp={!visible}>
-        <AppBar position='static'>
-          <Tabs value={value} onChange={this.handleChange} variant='scrollable'>
-            {categories.map((e: Category, idx: number) => (
-              <Tab key={idx} label={e.label} />
-            ))}
-          </Tabs>
-        </AppBar>
+        <Tabs activeKey={value?.toString()} onTabClick={this.handleChange}>
+          {categories.map((e: Category, idx: number) => (
+            <TabPane key={idx} tab={e.label} />
+          ))}
+        </Tabs>
         <div style={{ marginTop: '0.5em' }}>
           <MaterialLayoutRenderer {...childProps} />
         </div>
@@ -132,7 +132,7 @@ export class MaterialCategorizationLayoutRenderer extends RendererComponent<
     return this.props.ownState !== undefined ? this.props.ownState : true;
   };
 
-  private handleChange = (_event: any, value: any) => {
+  private handleChange = (value: any, _event: any) => {
     if (this.props.onChange) {
       this.props.onChange(value, this.state.activeCategory);
     }

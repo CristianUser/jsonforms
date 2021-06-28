@@ -25,8 +25,8 @@
 import React from 'react';
 import { CellProps, WithClassname } from '@jsonforms/core';
 import { areEqual } from '@jsonforms/react';
-import merge from 'lodash/merge';
 import { TimePicker } from 'antd';
+import merge from 'lodash/merge';
 
 export const MuiInputTime = React.memo((props: CellProps & WithClassname) => {
   const {
@@ -40,6 +40,7 @@ export const MuiInputTime = React.memo((props: CellProps & WithClassname) => {
     config
   } = props;
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
+
   return (
     <TimePicker
       value={data || ''}

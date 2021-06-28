@@ -22,7 +22,6 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import startsWith from 'lodash/startsWith';
 import merge from 'lodash/merge';
 import React from 'react';
 import {
@@ -38,25 +37,13 @@ import {
 } from '@jsonforms/core';
 import { Control, withJsonFormsControlProps } from '@jsonforms/react';
 import { Hidden } from '@material-ui/core';
-import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
-import EventIcon from '@material-ui/icons/Event';
 import moment from 'moment';
 import { Moment } from 'moment';
-import {
-  KeyboardDatePicker,
-  MuiPickersUtilsProvider
-} from '@material-ui/pickers';
-import MomentUtils from '@date-io/moment';
+import { DatePicker, Form } from 'antd';
 
 export interface DateControl {
   momentLocale?: Moment;
 }
-
-// Workaround typing problems in @material-ui/pickers@3.2.3
-const AnyPropsKeyboardDatePicker: React.FunctionComponent<
-  any
-> = KeyboardDatePicker;
 
 export class MaterialDateControl extends Control<
   StatePropsOfDateControl & DispatchPropsOfControl & DateControl,
@@ -79,8 +66,6 @@ export class MaterialDateControl extends Control<
       config
     } = this.props;
     const defaultLabel = label as string;
-    const cancelLabel = '%cancel';
-    const clearLabel = '%clear';
     const isValid = errors.length === 0;
     const appliedUiSchemaOptions = merge({}, config, uischema.options);
     const showDescription = !isDescriptionHidden(
@@ -89,60 +74,47 @@ export class MaterialDateControl extends Control<
       this.state.isFocused,
       appliedUiSchemaOptions.showUnfocusedDescription
     );
-    const inputProps = {};
     const localeDateTimeFormat = momentLocale
       ? `${momentLocale.localeData().longDateFormat('L')}`
       : 'YYYY-MM-DD';
 
     let labelText;
-    let labelCancel;
-    let labelClear;
 
     if (isPlainLabel(label)) {
       labelText = label;
-      labelCancel = 'Cancel';
-      labelClear = 'Clear';
     } else {
       labelText = defaultLabel;
-      labelCancel = startsWith(cancelLabel, '%') ? 'Cancel' : cancelLabel;
-      labelClear = startsWith(clearLabel, '%') ? 'Clear' : clearLabel;
     }
+
+    const pickerStyle = !appliedUiSchemaOptions.trim ? { width: '100%' } : {};
 
     return (
       <Hidden xsUp={!visible}>
-        <MuiPickersUtilsProvider utils={MomentUtils}>
-          <AnyPropsKeyboardDatePicker
+        <Form.Item
+          required={required}
+          status={isValid ? 'success' : 'error'}
+          help={!isValid ? errors : showDescription ? description : ' '}
+          label={computeLabel(
+            labelText,
+            required,
+            appliedUiSchemaOptions.hideRequiredAsterisk
+          )}>
+          <DatePicker
             id={id + '-input'}
-            label={computeLabel(
-              labelText,
-              required,
-              appliedUiSchemaOptions.hideRequiredAsterisk
-            )}
-            error={!isValid}
-            fullWidth={!appliedUiSchemaOptions.trim}
-            helperText={!isValid ? errors : showDescription ? description : ' '}
-            InputLabelProps={{ shrink: true }}
-            value={data || null}
+            style={pickerStyle}
+            value={data ? moment(data) : null}
             onChange={(datetime: any) =>
               handleChange(
                 path,
-                datetime ? moment(datetime).format('YYYY-MM-DD') : ''
+                datetime ? datetime.format('YYYY-MM-DD') : ''
               )
             }
             format={localeDateTimeFormat}
-            clearable={true}
+            allowClear={true}
             disabled={!enabled}
             autoFocus={appliedUiSchemaOptions.focus}
-            onFocus={this.onFocus}
-            onBlur={this.onBlur}
-            cancelLabel={labelCancel}
-            clearLabel={labelClear}
-            leftArrowIcon={<KeyboardArrowLeftIcon />}
-            rightArrowIcon={<KeyboardArrowRightIcon />}
-            keyboardIcon={<EventIcon />}
-            InputProps={inputProps}
           />
-        </MuiPickersUtilsProvider>
+        </Form.Item>
       </Hidden>
     );
   }

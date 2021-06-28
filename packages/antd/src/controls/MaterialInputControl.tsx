@@ -24,7 +24,6 @@
 */
 import React from 'react';
 import {
-  computeLabel,
   ControlProps,
   ControlState,
   isDescriptionHidden,
@@ -82,11 +81,7 @@ export abstract class MaterialInputControl extends Control<
           required={required}
           hasFeedback={!isValid}
           validateStatus={isValid ? 'success' : 'error' }
-          label={computeLabel(
-            isPlainLabel(label) ? label : label.default,
-            required,
-            appliedUiSchemaOptions.hideRequiredAsterisk
-          )}
+          label={isPlainLabel(label) ? label : label.default}
           help={firstFormHelperText || secondFormHelperText}
           style={style}
           id={id}
@@ -99,12 +94,6 @@ export abstract class MaterialInputControl extends Control<
             isValid={isValid}
             visible={visible}
           />
-          {/* <FormHelperText error={!isValid && !showDescription}>
-            {firstFormHelperText}
-          </FormHelperText>
-          <FormHelperText error={!isValid}>
-            {secondFormHelperText}
-          </FormHelperText> */}
         </Form.Item>
       </Hidden>
     );
