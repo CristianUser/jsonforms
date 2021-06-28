@@ -1,6 +1,6 @@
 {
-  "name": "@jsonforms/antd-renderers",
-  "version": "1.0.0-alpha.0",
+  "name": "@cristianuser/antd-renderers",
+  "version": "0.8.0-alpha.1",
   "description": "Ant Design Renderer Set for JSON Forms",
   "repository": "https://github.com/eclipsesource/jsonforms",
   "bugs": "https://github.com/eclipsesource/jsonforms/issues",

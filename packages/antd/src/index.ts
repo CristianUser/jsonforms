@@ -121,7 +121,7 @@ export * from './cells';
 export * from './mui-controls';
 export * from './util';
 
-export const materialRenderers: JsonFormsRendererRegistryEntry[] = [
+export const renderers: JsonFormsRendererRegistryEntry[] = [
   // controls
   {
     tester: materialArrayControlTester,
@@ -182,7 +182,7 @@ export const materialRenderers: JsonFormsRendererRegistryEntry[] = [
   }
 ];
 
-export const materialCells: JsonFormsCellRendererRegistryEntry[] = [
+export const cells: JsonFormsCellRendererRegistryEntry[] = [
   { tester: materialBooleanCellTester, cell: MaterialBooleanCell },
   { tester: materialBooleanToggleCellTester, cell: MaterialBooleanToggleCell },
   { tester: materialDateCellTester, cell: MaterialDateCell },
