@@ -33,10 +33,9 @@ import {
   StatePropsOfControlWithDetail
 } from '@jsonforms/core';
 import { JsonFormsDispatch, withJsonFormsDetailProps } from '@jsonforms/react';
-import { Hidden } from '@material-ui/core';
 import React, { useMemo } from 'react';
 
-const MaterialObjectRenderer = ({
+const ObjectRenderer = ({
   renderers,
   cells,
   uischemas,
@@ -67,7 +66,7 @@ const MaterialObjectRenderer = ({
     (detailUiSchema as GroupLayout).label = isPlainLabel(label) ? label : label.default;
   }
   return (
-    <Hidden xsUp={!visible}>
+    <div hidden={!visible}>
       <JsonFormsDispatch
         visible={visible}
         enabled={enabled}
@@ -77,12 +76,12 @@ const MaterialObjectRenderer = ({
         renderers={renderers}
         cells={cells}
       />
-    </Hidden>
+    </div>
   );
 };
 
-export const materialObjectControlTester: RankedTester = rankWith(
+export const objectControlTester: RankedTester = rankWith(
   2,
   isObjectControl
 );
-export default withJsonFormsDetailProps(MaterialObjectRenderer);
+export default withJsonFormsDetailProps(ObjectRenderer);

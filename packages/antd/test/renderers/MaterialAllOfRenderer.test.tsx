@@ -28,7 +28,7 @@ import React from 'react';
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { ControlElement } from '@jsonforms/core';
-import { MaterialAllOfRenderer, materialRenderers } from '../../src';
+import { AllOfRenderer, materialRenderers } from '../../src';
 import { JsonForms, JsonFormsStateProvider } from '@jsonforms/react';
 import { initCore } from './util';
 
@@ -70,7 +70,7 @@ describe('Material allOf renderer', () => {
         renderers={materialRenderers}
       />
     );
-    expect(wrapper.find(MaterialAllOfRenderer).length).toBeTruthy();
+    expect(wrapper.find(AllOfRenderer).length).toBeTruthy();
     const inputs = wrapper.find('input');
     expect(inputs.length).toBe(2);
   });
@@ -101,7 +101,7 @@ describe('Material allOf renderer', () => {
     const core = initCore(schema, uischema);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialAllOfRenderer
+        <AllOfRenderer
           schema={schema}
           uischema={uischema}
           visible={false}

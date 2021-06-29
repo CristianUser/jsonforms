@@ -27,9 +27,9 @@ import * as React from 'react';
 import {
   ControlElement
 } from '@jsonforms/core';
-import MaterialOneOfEnumCell, {
-  materialOneOfEnumCellTester
-} from '../../src/cells/MaterialOneOfEnumCell';
+import OneOfEnumCell, {
+  oneOfEnumCellTester
+} from '../../src/cells/OneOfEnumCell';
 import {  materialRenderers } from '../../src';
 
 import Enzyme, { mount } from 'enzyme';
@@ -65,7 +65,7 @@ describe('Material one of enum cell tester', () => {
       scope: '#/properties/country'
     };
     expect(
-      materialOneOfEnumCellTester(control, {
+      oneOfEnumCellTester(control, {
         type: 'object',
         properties: {
           country: schema
@@ -80,7 +80,7 @@ describe('Material enum cell', () => {
     const core = initCore(schema, uischema, data);
     const wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialOneOfEnumCell
+        <OneOfEnumCell
           schema={schema}
           uischema={uischema}
           path='country'

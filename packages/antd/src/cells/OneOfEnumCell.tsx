@@ -1,7 +1,7 @@
 /*
   The MIT License
 
-  Copyright (c) 2017-2021 EclipseSource Munich
+  Copyright (c) 2017-2019 EclipseSource Munich
   https://github.com/eclipsesource/jsonforms
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,24 +24,23 @@
 */
 import React from 'react';
 import {
-  and,
-  CellProps,
-  isBooleanControl,
-  optionIs,
+  EnumCellProps,
+  isOneOfEnumControl,
   RankedTester,
   rankWith,
   WithClassname
 } from '@jsonforms/core';
-import { withJsonFormsCellProps } from '@jsonforms/react';
-import { AntdToggle } from '../antd-controls/AntdToggle';
+import { withJsonFormsOneOfEnumCellProps } from '@jsonforms/react';
+import { AntdSelect } from '../antd-controls/AntdSelect';
 
-export const MaterialBooleanToggleCell = (props: CellProps & WithClassname) => {
-  return <AntdToggle {...props} />;
-};
+export const OneOfEnumCell = (props: EnumCellProps & WithClassname) => (
+  <AntdSelect {...props} />
+);
 
-export const materialBooleanToggleCellTester: RankedTester = rankWith(
-  3,
-  and(isBooleanControl, optionIs('toggle', true))
-);;
+/**
+ * Default tester for oneOf enum controls.
+ * @type {RankedTester}
+ */
+export const oneOfEnumCellTester: RankedTester = rankWith(2, isOneOfEnumControl);
 
-export default withJsonFormsCellProps(MaterialBooleanToggleCell);
+export default withJsonFormsOneOfEnumCellProps(OneOfEnumCell);

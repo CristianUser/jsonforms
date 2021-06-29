@@ -29,8 +29,8 @@ import {
   NOT_APPLICABLE
 } from '@jsonforms/core';
 import IntegerCell, {
-  materialIntegerCellTester
-} from '../../src/cells/MaterialIntegerCell';
+  IntegerCellTester
+} from '../../src/cells/IntegerCell';
 import { materialRenderers } from '../../src';
 
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
@@ -57,24 +57,24 @@ describe('Material integer cells tester', () => {
   };
 
   it('should fail', () => {
-    expect(materialIntegerCellTester(undefined, undefined)).toBe(
+    expect(IntegerCellTester(undefined, undefined)).toBe(
       NOT_APPLICABLE
     );
-    expect(materialIntegerCellTester(null, undefined)).toBe(NOT_APPLICABLE);
-    expect(materialIntegerCellTester({ type: 'Foo' }, undefined)).toBe(
+    expect(IntegerCellTester(null, undefined)).toBe(NOT_APPLICABLE);
+    expect(IntegerCellTester({ type: 'Foo' }, undefined)).toBe(
       NOT_APPLICABLE
     );
-    expect(materialIntegerCellTester({ type: 'Control' }, undefined)).toBe(
+    expect(IntegerCellTester({ type: 'Control' }, undefined)).toBe(
       NOT_APPLICABLE
     );
     expect(
-      materialIntegerCellTester(controlElement, {
+      IntegerCellTester(controlElement, {
         type: 'object',
         properties: { foo: { type: 'string' } }
       })
     ).toBe(NOT_APPLICABLE);
     expect(
-      materialIntegerCellTester(controlElement, {
+      IntegerCellTester(controlElement, {
         type: 'object',
         properties: { foo: { type: 'string' }, bar: { type: 'integer' } }
       })
@@ -83,7 +83,7 @@ describe('Material integer cells tester', () => {
 
   it('should succeed', () => {
     expect(
-      materialIntegerCellTester(controlElement, {
+      IntegerCellTester(controlElement, {
         type: 'object',
         properties: { foo: { type: 'integer' } }
       })

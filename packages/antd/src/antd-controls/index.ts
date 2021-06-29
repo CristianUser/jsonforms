@@ -23,6 +23,7 @@
   THE SOFTWARE.
 */
 export * from './AntdCheckbox';
+export * from './AntdInputDate';
 export * from './AntdSelect';
 export * from './AntdInputInteger';
 export * from './AntdInputNumber';

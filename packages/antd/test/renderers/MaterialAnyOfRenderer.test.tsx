@@ -31,7 +31,7 @@ import {
   ControlElement
 } from '@jsonforms/core';
 import {
-  MaterialAnyOfRenderer,
+  AnyOfRenderer,
   materialCells,
   materialRenderers
 } from '../../src';
@@ -99,7 +99,7 @@ describe('Material anyOf renderer', () => {
         }}
       />
     );
-    expect(wrapper.find(MaterialAnyOfRenderer).length).toBeTruthy();
+    expect(wrapper.find(AnyOfRenderer).length).toBeTruthy();
     const input = wrapper.find('input').first();
     input.simulate('change', { target: { value: 'test' } });
     wrapper.update();
@@ -157,7 +157,7 @@ describe('Material anyOf renderer', () => {
     const core = initCore(schema, uischema);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialAnyOfRenderer
+        <AnyOfRenderer
           schema={schema}
           uischema={uischema}
         />
@@ -236,7 +236,7 @@ describe('Material anyOf renderer', () => {
             onChangeData.data = data;
           }}
         />
-        <MaterialAnyOfRenderer
+        <AnyOfRenderer
           schema={schema}
           uischema={uischema}
         />
@@ -291,7 +291,7 @@ describe('Material anyOf renderer', () => {
     const core = initCore(schema, uischema);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialAnyOfRenderer
+        <AnyOfRenderer
           schema={schema}
           uischema={uischema}
           visible={false}

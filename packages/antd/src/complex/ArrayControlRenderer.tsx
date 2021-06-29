@@ -26,10 +26,9 @@ import React, { useCallback, useState } from 'react';
 import { ArrayLayoutProps } from '@jsonforms/core';
 import { withJsonFormsArrayLayoutProps } from '@jsonforms/react';
 import { MaterialTableControl } from './MaterialTableControl';
-import { Hidden } from '@material-ui/core';
 import { DeleteDialog } from './DeleteDialog';
 
-export const MaterialArrayControlRenderer = (props: ArrayLayoutProps) => {
+export const ArrayControlRenderer = (props: ArrayLayoutProps) => {
   const [open, setOpen] = useState(false);
   const [path, setPath] = useState(undefined);
   const [rowData, setRowData] = useState(undefined);
@@ -49,7 +48,7 @@ export const MaterialArrayControlRenderer = (props: ArrayLayoutProps) => {
   const deleteClose = useCallback(() => setOpen(false), [setOpen]);
 
   return (
-    <Hidden xsUp={!visible}>
+    <div hidden={!visible}>
       <MaterialTableControl
         {...props}
         openDeleteDialog={openDeleteDialog}
@@ -60,8 +59,8 @@ export const MaterialArrayControlRenderer = (props: ArrayLayoutProps) => {
         onConfirm={deleteConfirm}
         onClose={deleteClose}
       />
-    </Hidden>
+    </div>
   );
 };
 
-export default withJsonFormsArrayLayoutProps(MaterialArrayControlRenderer);
+export default withJsonFormsArrayLayoutProps(ArrayControlRenderer);

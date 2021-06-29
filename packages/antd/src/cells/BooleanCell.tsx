@@ -24,23 +24,22 @@
 */
 import React from 'react';
 import {
-  EnumCellProps,
-  isOneOfEnumControl,
+  CellProps,
+  isBooleanControl,
   RankedTester,
   rankWith,
   WithClassname
 } from '@jsonforms/core';
-import { withJsonFormsOneOfEnumCellProps } from '@jsonforms/react';
-import { AntdSelect } from '../antd-controls/AntdSelect';
+import { withJsonFormsCellProps } from '@jsonforms/react';
+import { AntdCheckbox } from '../antd-controls/AntdCheckbox';
 
-export const MaterialOneOfEnumCell = (props: EnumCellProps & WithClassname) => (
-  <AntdSelect {...props} />
+export const BooleanCell = (props: CellProps & WithClassname) => {
+  return <AntdCheckbox {...props} />;
+};
+
+export const BooleanCellTester: RankedTester = rankWith(
+  2,
+  isBooleanControl
 );
 
-/**
- * Default tester for oneOf enum controls.
- * @type {RankedTester}
- */
-export const materialOneOfEnumCellTester: RankedTester = rankWith(2, isOneOfEnumControl);
-
-export default withJsonFormsOneOfEnumCellProps(MaterialOneOfEnumCell);
+export default withJsonFormsCellProps(BooleanCell);

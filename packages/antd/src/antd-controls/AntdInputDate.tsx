@@ -1,19 +1,19 @@
 /*
   The MIT License
-
+  
   Copyright (c) 2017-2019 EclipseSource Munich
   https://github.com/eclipsesource/jsonforms
-
+  
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
   in the Software without restriction, including without limitation the rights
   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
   copies of the Software, and to permit persons to whom the Software is
   furnished to do so, subject to the following conditions:
-
+  
   The above copyright notice and this permission notice shall be included in
   all copies or substantial portions of the Software.
-
+  
   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,27 +23,47 @@
   THE SOFTWARE.
 */
 import React from 'react';
-import {
-  CellProps,
-  Formatted,
-  isNumberFormatControl,
-  RankedTester,
-  rankWith,
-  WithClassname
-} from '@jsonforms/core';
-import { withJsonFormsCellProps } from '@jsonforms/react';
-import { AntdInputNumberFormat } from '../antd-controls/AntdInputNumberFormat';
+import { CellProps, WithClassname } from '@jsonforms/core';
+import { areEqual } from '@jsonforms/react';
+import { DatePicker } from 'antd';
+import merge from 'lodash/merge';
+import moment from 'moment';
 
-export const MaterialNumberFormatCell = (
-  props: CellProps & WithClassname & Formatted<number>
-) => <AntdInputNumberFormat {...props} />;
-/**
- * Default tester for text-based/string controls.
- * @type {RankedTester}
- */
-export const materialNumberFormatCellTester: RankedTester = rankWith(
-  4,
-  isNumberFormatControl
-);
+type AntdInputDateProps = {
+  format?: string;
+};
 
-export default withJsonFormsCellProps(MaterialNumberFormatCell);
+export const AntdInputDate = React.memo((props: CellProps & WithClassname & AntdInputDateProps) => {
+  const {
+    data,
+    className,
+    id,
+    enabled,
+    uischema,
+    path,
+    handleChange,
+    config,
+    format
+  } = props;
+  const appliedUiSchemaOptions = merge({}, config, uischema.options);
+  const inputStyle = !appliedUiSchemaOptions.trim ? { width: '100%' } : {};
+
+  return (
+    <DatePicker
+      value={data ? moment(data) : null}
+      onChange={(datetime: any) =>
+        handleChange(
+          path,
+          datetime ? datetime.format('YYYY-MM-DD') : ''
+        )
+      }
+      className={className}
+      id={id}
+      disabled={!enabled}
+      format={format}
+      allowClear={true}
+      autoFocus={appliedUiSchemaOptions.focus}
+      style={inputStyle}
+    />
+  );
+}, areEqual);

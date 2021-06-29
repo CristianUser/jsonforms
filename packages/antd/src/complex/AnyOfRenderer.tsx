@@ -34,10 +34,10 @@ import {
   StatePropsOfCombinator
 } from '@jsonforms/core';
 import { JsonFormsDispatch, withJsonFormsAnyOfProps } from '@jsonforms/react';
-import { Hidden, Tab, Tabs } from '@material-ui/core';
 import CombinatorProperties from './CombinatorProperties';
+import { Tabs } from 'antd';
 
-const MaterialAnyOfRenderer = ({
+const AnyOfRenderer = ({
   schema,
   rootSchema,
   indexOfFittingSchema,
@@ -50,7 +50,7 @@ const MaterialAnyOfRenderer = ({
 }: StatePropsOfCombinator) => {
   const [selectedAnyOf, setSelectedAnyOf] = useState(indexOfFittingSchema || 0);
   const handleChange = useCallback(
-    (_ev: any, value: number) => setSelectedAnyOf(value),
+    (value: string) => setSelectedAnyOf(parseInt(value)),
     [setSelectedAnyOf]
   );
   const anyOf = 'anyOf';
@@ -65,15 +65,15 @@ const MaterialAnyOfRenderer = ({
   );
 
   return (
-    <Hidden xsUp={!visible}>
+    <div hidden={!visible}>
       <CombinatorProperties
         schema={_schema}
         combinatorKeyword={'anyOf'}
         path={path}
       />
-      <Tabs value={selectedAnyOf} onChange={handleChange}>
-        {anyOfRenderInfos.map(anyOfRenderInfo => (
-          <Tab key={anyOfRenderInfo.label} label={anyOfRenderInfo.label} />
+      <Tabs activeKey={selectedAnyOf?.toString()} onTabClick={handleChange}>
+        {anyOfRenderInfos.map((anyOfRenderInfo, idx) => (
+          <Tabs.TabPane key={idx} tab={anyOfRenderInfo.label} />
         ))}
       </Tabs>
       {anyOfRenderInfos.map(
@@ -89,12 +89,12 @@ const MaterialAnyOfRenderer = ({
             />
           )
       )}
-    </Hidden>
+    </div>
   );
 };
 
-export const materialAnyOfControlTester: RankedTester = rankWith(
+export const anyOfControlTester: RankedTester = rankWith(
   3,
   isAnyOfControl
 );
-export default withJsonFormsAnyOfProps(MaterialAnyOfRenderer);
+export default withJsonFormsAnyOfProps(AnyOfRenderer);

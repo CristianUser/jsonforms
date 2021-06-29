@@ -29,6 +29,7 @@ import { AutocompleteRenderOptionState } from '@material-ui/lab/Autocomplete';
 import { areEqual } from '@jsonforms/react';
 import { FilterOptionsState } from '@material-ui/lab/useAutocomplete';
 import { Select } from 'antd';
+import merge from 'lodash/merge';
 
 export interface WithOptionLabel {
     getOptionLabel?(option: EnumOption) : string;
@@ -42,16 +43,18 @@ export const AntdAutocomplete = React.memo((props: EnumCellProps & WithClassname
     className,
     id,
     enabled,
-    // uischema,
+    uischema,
     path,
     handleChange,
     options,
-    // config,
+    config,
     // getOptionLabel,
     // renderOption,
     // filterOptions
   } = props;
   const [inputValue, setInputValue] = React.useState(data ?? '');
+  const appliedUiSchemaOptions = merge({}, config, uischema.options);
+  const selectStyle = appliedUiSchemaOptions.trim ? {} : { width: '100%' };
 
   return (
     <Select
@@ -64,7 +67,7 @@ export const AntdAutocomplete = React.memo((props: EnumCellProps & WithClassname
       inputValue={inputValue}
       onSearch={setInputValue}
       options={options}
-      style={{ width: '100%' }}
+      style={selectStyle}
     />
   );
 }, areEqual);

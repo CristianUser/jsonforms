@@ -30,8 +30,8 @@ import {
   NOT_APPLICABLE
 } from '@jsonforms/core';
 import TextCell, {
-  materialTextCellTester
-} from '../../src/cells/MaterialTextCell';
+  textCellTester
+} from '../../src/cells/TextCell';
 import { materialRenderers } from '../../src';
 
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
@@ -62,12 +62,12 @@ const uischema: ControlElement = {
 
 describe('Material text cell tester', () => {
   it('should fail', () => {
-    expect(materialTextCellTester(undefined, undefined)).toBe(NOT_APPLICABLE);
-    expect(materialTextCellTester(null, undefined)).toBe(NOT_APPLICABLE);
-    expect(materialTextCellTester({ type: 'Foo' }, undefined)).toBe(
+    expect(textCellTester(undefined, undefined)).toBe(NOT_APPLICABLE);
+    expect(textCellTester(null, undefined)).toBe(NOT_APPLICABLE);
+    expect(textCellTester({ type: 'Foo' }, undefined)).toBe(
       NOT_APPLICABLE
     );
-    expect(materialTextCellTester({ type: 'Control' }, undefined)).toBe(
+    expect(textCellTester({ type: 'Control' }, undefined)).toBe(
       NOT_APPLICABLE
     );
   });
@@ -77,7 +77,7 @@ describe('Material text cell tester', () => {
       scope: '#/properties/foo'
     };
     expect(
-      materialTextCellTester(control, {
+      textCellTester(control, {
         type: 'object',
         properties: {
           foo: {
@@ -94,7 +94,7 @@ describe('Material text cell tester', () => {
       scope: '#/properties/foo'
     };
     expect(
-      materialTextCellTester(control, {
+      textCellTester(control, {
         type: 'object',
         properties: {
           foo: {
@@ -114,7 +114,7 @@ describe('Material text cell tester', () => {
       scope: '#/properties/foo'
     };
     expect(
-      materialTextCellTester(control, {
+      textCellTester(control, {
         type: 'object',
         properties: {
           foo: {

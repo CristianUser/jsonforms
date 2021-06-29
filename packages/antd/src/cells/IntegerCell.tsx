@@ -25,21 +25,20 @@
 import React from 'react';
 import {
   CellProps,
-  isBooleanControl,
+  isIntegerControl,
   RankedTester,
   rankWith,
   WithClassname
 } from '@jsonforms/core';
 import { withJsonFormsCellProps } from '@jsonforms/react';
-import { AntdCheckbox } from '../antd-controls/AntdCheckbox';
+import { AntdInputInteger } from '../antd-controls/AntdInputInteger';
 
-export const MaterialBooleanCell = (props: CellProps & WithClassname) => {
-  return <AntdCheckbox {...props} />;
-};
-
-export const materialBooleanCellTester: RankedTester = rankWith(
+export const IntegerCell = (props: CellProps & WithClassname) => (
+  <AntdInputInteger {...props} />
+);
+export const IntegerCellTester: RankedTester = rankWith(
   2,
-  isBooleanControl
+  isIntegerControl
 );
 
-export default withJsonFormsCellProps(MaterialBooleanCell);
+export default withJsonFormsCellProps(IntegerCell);

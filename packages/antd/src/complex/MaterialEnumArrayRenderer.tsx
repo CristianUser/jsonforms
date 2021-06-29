@@ -17,7 +17,6 @@ import { withJsonFormsMultiEnumProps } from '@jsonforms/react';
 import { AntdCheckbox } from '../antd-controls';
 import {
   FormControl,
-  FormControlLabel,
   FormGroup,
   FormHelperText,
   Hidden
@@ -47,27 +46,22 @@ export const MaterialEnumArrayRenderer = ({
               ? option.value
               : undefined;
             return (
-              <FormControlLabel
+              <AntdCheckbox
                 id={option.value}
                 key={option.value}
-                control={
-                  <AntdCheckbox
-                    key={'checkbox-' + option.value}
-                    isValid={isEmpty(errors)}
-                    path={optionPath}
-                    handleChange={(_childPath, newValue) =>
-                      newValue
-                        ? addItem(path, option.value)
-                        : removeItem(path, option.value)
-                    }
-                    data={checkboxValue}
-                    errors={errors}
-                    schema={schema}
-                    visible={visible}
-                    {...otherProps}
-                  />
-                }
                 label={startCase(option.label)}
+                isValid={isEmpty(errors)}
+                path={optionPath}
+                handleChange={(_childPath, newValue) =>
+                  newValue
+                    ? addItem(path, option.value)
+                    : removeItem(path, option.value)
+                }
+                data={checkboxValue}
+                errors={errors}
+                schema={schema}
+                visible={visible}
+                {...otherProps}
               />
             );
           })}

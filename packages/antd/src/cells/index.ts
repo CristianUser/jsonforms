@@ -22,50 +22,50 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import MaterialBooleanCell, {
-  materialBooleanCellTester
-} from './MaterialBooleanCell';
-import MaterialBooleanToggleCell, {
-  materialBooleanToggleCellTester
-} from './MaterialBooleanToggleCell';
-import MaterialDateCell, { materialDateCellTester } from './MaterialDateCell';
-import MaterialEnumCell, { materialEnumCellTester } from './MaterialEnumCell';
-import MaterialIntegerCell, {
-  materialIntegerCellTester
-} from './MaterialIntegerCell';
-import MaterialNumberCell, {
-  materialNumberCellTester
-} from './MaterialNumberCell';
-import MaterialNumberFormatCell, {
-  materialNumberFormatCellTester
-} from './MaterialNumberFormatCell';
-import MaterialOneOfEnumCell, {
-  materialOneOfEnumCellTester
-} from './MaterialOneOfEnumCell';
-import MaterialTextCell, { materialTextCellTester } from './MaterialTextCell';
-import MaterialTimeCell, { materialTimeCellTester } from './MaterialTimeCell';
+import BooleanCell, {
+  BooleanCellTester
+} from './BooleanCell';
+import BooleanToggleCell, {
+  BooleanToggleCellTester
+} from './BooleanToggleCell';
+import DateCell, { DateCellTester } from './DateCell';
+import EnumCell, { EnumCellTester } from './EnumCell';
+import IntegerCell, {
+  IntegerCellTester
+} from './IntegerCell';
+import NumberCell, {
+  NumberCellTester
+} from './NumberCell';
+import NumberFormatCell, {
+  numberFormatCellTester
+} from './NumberFormatCell';
+import OneOfEnumCell, {
+  oneOfEnumCellTester
+} from './OneOfEnumCell';
+import TextCell, { textCellTester } from './TextCell';
+import TimeCell, { timeCellTester } from './TimeCell';
 
 export {
-  MaterialBooleanCell,
-  materialBooleanCellTester,
-  MaterialBooleanToggleCell,
-  materialBooleanToggleCellTester,
-  MaterialDateCell,
-  materialDateCellTester,
-  MaterialEnumCell,
-  materialEnumCellTester,
-  MaterialIntegerCell,
-  materialIntegerCellTester,
-  MaterialNumberCell,
-  materialNumberCellTester,
-  MaterialNumberFormatCell,
-  materialNumberFormatCellTester,
-  MaterialOneOfEnumCell,
-  materialOneOfEnumCellTester,
-  MaterialTextCell,
-  materialTextCellTester,
-  MaterialTimeCell,
-  materialTimeCellTester
+  BooleanCell,
+  BooleanCellTester,
+  BooleanToggleCell,
+  BooleanToggleCellTester,
+  DateCell,
+  DateCellTester,
+  EnumCell,
+  EnumCellTester,
+  IntegerCell,
+  IntegerCellTester,
+  NumberCell,
+  NumberCellTester,
+  NumberFormatCell,
+  numberFormatCellTester,
+  OneOfEnumCell,
+  oneOfEnumCellTester,
+  TextCell,
+  textCellTester,
+  TimeCell,
+  timeCellTester
 };
 import * as Customizable from './CustomizableCells';
 export { Customizable };

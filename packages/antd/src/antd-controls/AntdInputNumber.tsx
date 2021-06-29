@@ -43,6 +43,7 @@ export const AntdInputNumber = React.memo((props: CellProps & WithClassname) => 
   const toNumber = (value: string) =>
     value === '' ? undefined : parseFloat(value);
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
+  const inputStyle = !appliedUiSchemaOptions.trim ? { width: '100%' } : {};
 
   return (
     <InputNumber
@@ -53,7 +54,7 @@ export const AntdInputNumber = React.memo((props: CellProps & WithClassname) => 
       disabled={!enabled}
       autoFocus={appliedUiSchemaOptions.focus}
       {...inputProps}
-      style={{ width: '100%' }}
+      style={inputStyle}
     />
   );
 }, areEqual);

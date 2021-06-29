@@ -29,8 +29,8 @@ import {
   NOT_APPLICABLE,
 } from '@jsonforms/core';
 import BooleanCell, {
-  materialBooleanCellTester
-} from '../../src/cells/MaterialBooleanCell';
+  BooleanCellTester
+} from '../../src/cells/BooleanCell';
 import * as ReactDOM from 'react-dom';
 import { materialRenderers } from '../../src';
 
@@ -57,24 +57,24 @@ describe('Material boolean cell tester', () => {
   };
 
   it('should fail', () => {
-    expect(materialBooleanCellTester(undefined, undefined)).toBe(
+    expect(BooleanCellTester(undefined, undefined)).toBe(
       NOT_APPLICABLE
     );
-    expect(materialBooleanCellTester(null, undefined)).toBe(NOT_APPLICABLE);
-    expect(materialBooleanCellTester({ type: 'Foo' }, undefined)).toBe(
+    expect(BooleanCellTester(null, undefined)).toBe(NOT_APPLICABLE);
+    expect(BooleanCellTester({ type: 'Foo' }, undefined)).toBe(
       NOT_APPLICABLE
     );
-    expect(materialBooleanCellTester({ type: 'Control' }, undefined)).toBe(
+    expect(BooleanCellTester({ type: 'Control' }, undefined)).toBe(
       NOT_APPLICABLE
     );
     expect(
-      materialBooleanCellTester(control, {
+      BooleanCellTester(control, {
         type: 'object',
         properties: { foo: { type: 'string' } }
       })
     ).toBe(NOT_APPLICABLE);
     expect(
-      materialBooleanCellTester(control, {
+      BooleanCellTester(control, {
         type: 'object',
         properties: {
           foo: {
@@ -90,7 +90,7 @@ describe('Material boolean cell tester', () => {
 
   it('should succeed', () => {
     expect(
-      materialBooleanCellTester(control, {
+      BooleanCellTester(control, {
         type: 'object',
         properties: {
           foo: {

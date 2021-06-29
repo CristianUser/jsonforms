@@ -23,7 +23,6 @@
   THE SOFTWARE.
 */
 import React from 'react';
-import { Hidden } from '@material-ui/core';
 
 import {
   createCombinatorRenderInfos,
@@ -37,7 +36,7 @@ import {
 } from '@jsonforms/core';
 import { JsonFormsDispatch, withJsonFormsAllOfProps } from '@jsonforms/react';
 
-const MaterialAllOfRenderer = ({
+const AllOfRenderer = ({
   schema,
   rootSchema,
   visible,
@@ -55,7 +54,7 @@ const MaterialAllOfRenderer = ({
   );
   if (delegateUISchema) {
     return (
-      <Hidden xsUp={!visible}>
+      <div hidden={!visible}>
         <JsonFormsDispatch
           schema={_schema}
           uischema={delegateUISchema}
@@ -63,7 +62,7 @@ const MaterialAllOfRenderer = ({
           renderers={renderers}
           cells={cells}
         />
-      </Hidden>
+      </div>
     );
   }
   const allOfRenderInfos = createCombinatorRenderInfos(
@@ -76,7 +75,7 @@ const MaterialAllOfRenderer = ({
   );
 
   return (
-    <Hidden xsUp={!visible}>
+    <div hidden={!visible}>
       {allOfRenderInfos.map((allOfRenderInfo, allOfIndex) => (
         <JsonFormsDispatch
           key={allOfIndex}
@@ -87,12 +86,12 @@ const MaterialAllOfRenderer = ({
           cells={cells}
         />
       ))}
-    </Hidden>
+    </div>
   );
 };
 
-export const materialAllOfControlTester: RankedTester = rankWith(
+export const allOfControlTester: RankedTester = rankWith(
   3,
   isAllOfControl
 );
-export default withJsonFormsAllOfProps(MaterialAllOfRenderer);
+export default withJsonFormsAllOfProps(AllOfRenderer);

@@ -24,23 +24,21 @@
 */
 import React from 'react';
 import {
-  EnumCellProps,
-  isEnumControl,
+  CellProps,
+  isDateControl,
   RankedTester,
   rankWith,
   WithClassname
 } from '@jsonforms/core';
-import { withJsonFormsEnumCellProps } from '@jsonforms/react';
-import { AntdSelect } from '../antd-controls/AntdSelect';
+import { withJsonFormsCellProps } from '@jsonforms/react';
+import { AntdInputDate } from '../antd-controls';
 
-export const MaterialEnumCell = (props: EnumCellProps & WithClassname) => (
-  <AntdSelect {...props} />
-);
+export const DateCell = (props: CellProps & WithClassname) => {
 
-/**
- * Default tester for enum controls.
- * @type {RankedTester}
- */
-export const materialEnumCellTester: RankedTester = rankWith(2, isEnumControl);
+  return (
+    <AntdInputDate {...props}/>
+  );
+};
+export const DateCellTester: RankedTester = rankWith(2, isDateControl);
 
-export default withJsonFormsEnumCellProps(MaterialEnumCell);
+export default withJsonFormsCellProps(DateCell);

@@ -30,8 +30,8 @@ import {
   UISchemaElement
 } from '@jsonforms/core';
 import BooleanToggleCell, {
-  materialBooleanToggleCellTester
-} from '../../src/cells/MaterialBooleanToggleCell';
+  BooleanToggleCellTester
+} from '../../src/cells/BooleanToggleCell';
 import * as ReactDOM from 'react-dom';
 import { materialRenderers } from '../../src';
 
@@ -64,26 +64,26 @@ describe('Material boolean toggle cell tester', () => {
   };
 
   it('should fail', () => {
-    expect(materialBooleanToggleCellTester(undefined, undefined)).toBe(
+    expect(BooleanToggleCellTester(undefined, undefined)).toBe(
       NOT_APPLICABLE
     );
-    expect(materialBooleanToggleCellTester(null, undefined)).toBe(
+    expect(BooleanToggleCellTester(null, undefined)).toBe(
       NOT_APPLICABLE
     );
-    expect(materialBooleanToggleCellTester({ type: 'Foo' }, undefined)).toBe(
+    expect(BooleanToggleCellTester({ type: 'Foo' }, undefined)).toBe(
       NOT_APPLICABLE
     );
     expect(
-      materialBooleanToggleCellTester({ type: 'Control' }, undefined)
+      BooleanToggleCellTester({ type: 'Control' }, undefined)
     ).toBe(NOT_APPLICABLE);
     expect(
-      materialBooleanToggleCellTester(control, {
+      BooleanToggleCellTester(control, {
         type: 'object',
         properties: { foo: { type: 'string' } }
       })
     ).toBe(NOT_APPLICABLE);
     expect(
-      materialBooleanToggleCellTester(control, {
+      BooleanToggleCellTester(control, {
         type: 'object',
         properties: {
           foo: {
@@ -98,7 +98,7 @@ describe('Material boolean toggle cell tester', () => {
 
     // Not applicable for boolean cell if toggle option is false
     expect(
-      materialBooleanToggleCellTester(
+      BooleanToggleCellTester(
         {
           type: 'Control',
           scope: '#/properties/foo',
@@ -119,7 +119,7 @@ describe('Material boolean toggle cell tester', () => {
 
     // Not applicable for boolean cell if toggle option is not given
     expect(
-      materialBooleanToggleCellTester(
+      BooleanToggleCellTester(
         {
           type: 'Control',
           scope: '#/properties/foo',
@@ -138,7 +138,7 @@ describe('Material boolean toggle cell tester', () => {
 
   it('should succeed', () => {
     expect(
-      materialBooleanToggleCellTester(control, {
+      BooleanToggleCellTester(control, {
         type: 'object',
         properties: {
           foo: {

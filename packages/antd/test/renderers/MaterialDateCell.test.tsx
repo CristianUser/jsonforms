@@ -29,9 +29,9 @@ import {
   NOT_APPLICABLE
 } from '@jsonforms/core';
 import { JsonFormsStateProvider } from '@jsonforms/react';
-import MaterialDateCell, {
-  materialDateCellTester
-} from '../../src/cells/MaterialDateCell';
+import DateCell, {
+  DateCellTester
+} from '../../src/cells/DateCell';
 import { materialRenderers } from '../../src';
 
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
@@ -52,17 +52,17 @@ const uischema: ControlElement = {
 
 describe('Material date cell', () => {
   it('should fail', () => {
-    expect(materialDateCellTester(undefined, undefined)).toBe(NOT_APPLICABLE);
-    expect(materialDateCellTester(null, undefined)).toBe(NOT_APPLICABLE);
-    expect(materialDateCellTester({ type: 'Foo' }, undefined)).toBe(
+    expect(DateCellTester(undefined, undefined)).toBe(NOT_APPLICABLE);
+    expect(DateCellTester(null, undefined)).toBe(NOT_APPLICABLE);
+    expect(DateCellTester({ type: 'Foo' }, undefined)).toBe(
       NOT_APPLICABLE
     );
-    expect(materialDateCellTester({ type: 'Control' }, undefined)).toBe(
+    expect(DateCellTester({ type: 'Control' }, undefined)).toBe(
       NOT_APPLICABLE
     );
 
     expect(
-      materialDateCellTester(uischema, {
+      DateCellTester(uischema, {
         type: 'object',
         properties: {
           foo: { type: 'string' }
@@ -70,7 +70,7 @@ describe('Material date cell', () => {
       })
     ).toBe(NOT_APPLICABLE);
     expect(
-      materialDateCellTester(uischema, {
+      DateCellTester(uischema, {
         type: 'object',
         properties: {
           foo: { type: 'string' },
@@ -85,7 +85,7 @@ describe('Material date cell', () => {
 
   it('should succeed', () => {
     expect(
-      materialDateCellTester(uischema, {
+      DateCellTester(uischema, {
         type: 'object',
         properties: {
           foo: {
@@ -114,7 +114,7 @@ describe('Material date cell', () => {
     const core = initCore(schema, control, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialDateCell schema={schema} uischema={control} path='foo' />
+        <DateCell schema={schema} uischema={control} path='foo' />
       </JsonFormsStateProvider>
     );
     const input = wrapper.find('input').first();
@@ -132,7 +132,7 @@ describe('Material date cell', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialDateCell schema={schema} uischema={control} path='foo' />
+        <DateCell schema={schema} uischema={control} path='foo' />
       </JsonFormsStateProvider>
     );
     const input = wrapper.find('input').first();
@@ -147,7 +147,7 @@ describe('Material date cell', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialDateCell schema={schema} uischema={control} path='foo' />
+        <DateCell schema={schema} uischema={control} path='foo' />
       </JsonFormsStateProvider>
     );
     const input = wrapper.find('input').first();
@@ -158,7 +158,7 @@ describe('Material date cell', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialDateCell schema={schema} uischema={uischema} path='foo' />
+        <DateCell schema={schema} uischema={uischema} path='foo' />
       </JsonFormsStateProvider>
     );
 
@@ -179,7 +179,7 @@ describe('Material date cell', () => {
             onChangeData.data = data;
           }}
         />
-        <MaterialDateCell schema={schema} uischema={uischema} path='foo' />
+        <DateCell schema={schema} uischema={uischema} path='foo' />
       </JsonFormsStateProvider>
     );
     const input = wrapper.find('input').first();
@@ -191,7 +191,7 @@ describe('Material date cell', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialDateCell schema={schema} uischema={uischema} path='foo' />
+        <DateCell schema={schema} uischema={uischema} path='foo' />
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, foo: '1961-04-12' };
@@ -205,7 +205,7 @@ describe('Material date cell', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialDateCell schema={schema} uischema={uischema} path='foo' />
+        <DateCell schema={schema} uischema={uischema} path='foo' />
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, foo: null };
@@ -219,7 +219,7 @@ describe('Material date cell', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialDateCell schema={schema} uischema={uischema} path='foo' />
+        <DateCell schema={schema} uischema={uischema} path='foo' />
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, foo: undefined };
@@ -233,7 +233,7 @@ describe('Material date cell', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialDateCell schema={schema} uischema={uischema} path='foo' />
+        <DateCell schema={schema} uischema={uischema} path='foo' />
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, bar: 'Bar' };
@@ -247,7 +247,7 @@ describe('Material date cell', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialDateCell schema={schema} uischema={uischema} path='foo' />
+        <DateCell schema={schema} uischema={uischema} path='foo' />
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, null: '1961-04-12' };
@@ -261,7 +261,7 @@ describe('Material date cell', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialDateCell schema={schema} uischema={uischema} path='foo' />
+        <DateCell schema={schema} uischema={uischema} path='foo' />
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, undefined: '1961-04-12' };
@@ -275,7 +275,7 @@ describe('Material date cell', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialDateCell
+        <DateCell
           schema={schema}
           uischema={uischema}
           enabled={false}
@@ -291,7 +291,7 @@ describe('Material date cell', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialDateCell schema={schema} uischema={uischema} path='foo' />
+        <DateCell schema={schema} uischema={uischema} path='foo' />
       </JsonFormsStateProvider>
     );
     const input = wrapper.find('input').first();

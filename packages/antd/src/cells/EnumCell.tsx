@@ -24,26 +24,23 @@
 */
 import React from 'react';
 import {
-  CellProps,
-  isStringControl,
+  EnumCellProps,
+  isEnumControl,
   RankedTester,
   rankWith,
   WithClassname
 } from '@jsonforms/core';
-import { withJsonFormsCellProps } from '@jsonforms/react';
-import { AntdInputText } from '../antd-controls/AntdInputText';
+import { withJsonFormsEnumCellProps } from '@jsonforms/react';
+import { AntdSelect } from '../antd-controls/AntdSelect';
 
-export const MaterialTextCell = (props: CellProps & WithClassname) => (
-  <AntdInputText {...props} />
+export const EnumCell = (props: EnumCellProps & WithClassname) => (
+  <AntdSelect {...props} />
 );
 
 /**
- * Default tester for text-based/string controls.
+ * Default tester for enum controls.
  * @type {RankedTester}
  */
-export const materialTextCellTester: RankedTester = rankWith(
-  1,
-  isStringControl
-);
+export const EnumCellTester: RankedTester = rankWith(2, isEnumControl);
 
-export default withJsonFormsCellProps(MaterialTextCell);
+export default withJsonFormsEnumCellProps(EnumCell);

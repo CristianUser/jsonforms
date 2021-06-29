@@ -29,8 +29,8 @@ import {
   NOT_APPLICABLE
 } from '@jsonforms/core';
 import TimeCell, {
-  materialTimeCellTester
-} from '../../src/cells/MaterialTimeCell';
+  timeCellTester
+} from '../../src/cells/TimeCell';
 import { materialRenderers } from '../../src';
 
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
@@ -54,19 +54,19 @@ const uischema: ControlElement = {
 
 describe('Material time cell tester', () => {
   it('should fail', () => {
-    expect(materialTimeCellTester(undefined, undefined)).toBe(NOT_APPLICABLE);
-    expect(materialTimeCellTester(null, undefined)).toBe(NOT_APPLICABLE);
-    expect(materialTimeCellTester({ type: 'Foo' }, undefined)).toBe(
+    expect(timeCellTester(undefined, undefined)).toBe(NOT_APPLICABLE);
+    expect(timeCellTester(null, undefined)).toBe(NOT_APPLICABLE);
+    expect(timeCellTester({ type: 'Foo' }, undefined)).toBe(
       NOT_APPLICABLE
     );
-    expect(materialTimeCellTester({ type: 'Control' }, undefined)).toBe(
+    expect(timeCellTester({ type: 'Control' }, undefined)).toBe(
       NOT_APPLICABLE
     );
   });
 
   it('should fail with wrong prop type', () => {
     expect(
-      materialTimeCellTester(uischema, {
+      timeCellTester(uischema, {
         type: 'object',
         properties: {
           foo: { type: 'string' }
@@ -77,7 +77,7 @@ describe('Material time cell tester', () => {
 
   it('should fail if only sibling prop has correct type', () => {
     expect(
-      materialTimeCellTester(uischema, {
+      timeCellTester(uischema, {
         type: 'object',
         properties: {
           foo: { type: 'string' },
@@ -92,7 +92,7 @@ describe('Material time cell tester', () => {
 
   it('should succeed with correct prop type', () => {
     expect(
-      materialTimeCellTester(uischema, {
+      timeCellTester(uischema, {
         type: 'object',
         properties: {
           foo: {

@@ -43,6 +43,7 @@ export const AntdInputInteger = React.memo(
     const toNumber = (value: string) =>
       value === '' ? undefined : parseInt(value, 10);
     const appliedUiSchemaOptions = merge({}, config, uischema.options);
+    const inputStyle = !appliedUiSchemaOptions.trim ? { width: '100%' } : {};
 
     return (
       <InputNumber
@@ -52,7 +53,7 @@ export const AntdInputInteger = React.memo(
         id={id}
         disabled={!enabled}
         autoFocus={appliedUiSchemaOptions.focus}
-        style={{ width: '100%' }}
+        style={inputStyle}
       />
     );
   },

@@ -37,36 +37,20 @@ import {
   resolveSubSchemas
 } from '@jsonforms/core';
 import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Hidden,
-  Tab,
-  Tabs
-} from '@material-ui/core';
-import {
   JsonFormsDispatch,
   withJsonFormsOneOfProps
 } from '@jsonforms/react';
 import CombinatorProperties from './CombinatorProperties';
-
+import { Modal, Tabs } from 'antd';
 export interface OwnOneOfProps extends OwnPropsOfControl {
   indexOfFittingSchema?: number;
 }
 
 const oneOf = 'oneOf';
-const MaterialOneOfRenderer =
-  ({ handleChange, schema, path, renderers, cells, rootSchema, id, visible, indexOfFittingSchema, uischema, uischemas, data }: CombinatorProps) => {
-    const [open, setOpen] = useState(false);
+const OneOfRenderer =
+  ({ handleChange, schema, path, renderers, cells, rootSchema, visible, indexOfFittingSchema, uischema, uischemas, data }: CombinatorProps) => {
     const [selectedIndex, setSelectedIndex] = useState(indexOfFittingSchema || 0);
     const [newSelectedIndex, setNewSelectedIndex] = useState(0);
-    const handleClose = useCallback(() => setOpen(false), [setOpen]);
-    const cancel = useCallback(() => {
-      setOpen(false);
-    }, [setOpen]);
     const _schema = resolveSubSchemas(schema, rootSchema, oneOf);
     const oneOfRenderInfos = createCombinatorRenderInfos(
       (_schema as JsonSchema).oneOf,
@@ -75,7 +59,7 @@ const MaterialOneOfRenderer =
       uischema,
       path,
       uischemas
-      );
+    );
 
     const openNewTab = (newIndex: number) => {
       handleChange(
@@ -87,27 +71,35 @@ const MaterialOneOfRenderer =
 
     const confirm = useCallback(() => {
       openNewTab(newSelectedIndex)
-      setOpen(false);
     }, [handleChange, createDefaultValue, newSelectedIndex]);
-    const handleTabChange = useCallback((_event: any, newOneOfIndex: number) => {
+    const handleTabChange = useCallback((value: string, _event: any) => {
+      const newOneOfIndex = parseInt(value, 10);
+
       setNewSelectedIndex(newOneOfIndex);
-      if(isEmpty(data)) {
+      if (isEmpty(data)) {
         openNewTab(newOneOfIndex)
       } else {
-        setOpen(true);
-      }
-
-    }, [setOpen, setSelectedIndex, data]);
+        Modal.confirm({
+          okText: 'Yes',
+          cancelText: 'No',
+          onOk: confirm,
+          title: 'Clear form?',
+          content: 'Your data will be cleared if you navigate away from this tab. \nDo you want to proceed?'
+        })
+      };
+    }, [setSelectedIndex, data]);
 
     return (
-      <Hidden xsUp={!visible}>
+      <div hidden={!visible}>
         <CombinatorProperties
           schema={_schema}
           combinatorKeyword={'oneOf'}
           path={path}
         />
-        <Tabs value={selectedIndex} onChange={handleTabChange}>
-          {oneOfRenderInfos.map(oneOfRenderInfo => <Tab key={oneOfRenderInfo.label} label={oneOfRenderInfo.label} />)}
+        <Tabs activeKey={selectedIndex?.toString()} onTabClick={handleTabChange}>
+          {oneOfRenderInfos.map((oneOfRenderInfo, idx) => (
+            <Tabs.TabPane key={idx} tab={oneOfRenderInfo.label} />
+          ))}
         </Tabs>
         {
           oneOfRenderInfos.map((oneOfRenderInfo, oneOfIndex) => (
@@ -123,31 +115,9 @@ const MaterialOneOfRenderer =
             )
           ))
         }
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby='alert-dialog-title'
-          aria-describedby='alert-dialog-description'
-        >
-          <DialogTitle id='alert-dialog-title'>{'Clear form?'}</DialogTitle>
-          <DialogContent>
-            <DialogContentText id='alert-dialog-description'>
-              Your data will be cleared if you navigate away from this tab.
-              Do you want to proceed?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={cancel} color='primary'>
-              No
-            </Button>
-            <Button onClick={confirm} color='primary' autoFocus id={`oneOf-${id}-confirm-yes`}>
-              Yes
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Hidden>
+      </div>
     );
   };
 
-export const materialOneOfControlTester: RankedTester = rankWith(3, isOneOfControl);
-export default withJsonFormsOneOfProps(MaterialOneOfRenderer);
+export const oneOfControlTester: RankedTester = rankWith(3, isOneOfControl);
+export default withJsonFormsOneOfProps(OneOfRenderer);

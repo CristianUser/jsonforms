@@ -27,16 +27,16 @@ import {
   JsonFormsRendererRegistryEntry
 } from '@jsonforms/core';
 import {
-  materialAllOfControlTester,
-  MaterialAllOfRenderer,
-  materialAnyOfControlTester,
-  MaterialAnyOfRenderer,
-  MaterialArrayControlRenderer,
+  allOfControlTester,
+  AllOfRenderer,
+  anyOfControlTester,
+  AnyOfRenderer,
+  ArrayControlRenderer,
   materialArrayControlTester,
-  materialObjectControlTester,
-  MaterialObjectRenderer,
-  materialOneOfControlTester,
-  MaterialOneOfRenderer,
+  objectControlTester,
+  ObjectRenderer,
+  oneOfControlTester,
+  OneOfRenderer,
   MaterialEnumArrayRenderer,
   materialEnumArrayRendererTester
 } from './complex';
@@ -89,26 +89,26 @@ import {
   materialVerticalLayoutTester
 } from './layouts';
 import {
-  MaterialBooleanCell,
-  materialBooleanCellTester,
-  MaterialBooleanToggleCell,
-  materialBooleanToggleCellTester,
-  MaterialDateCell,
-  materialDateCellTester,
-  MaterialEnumCell,
-  materialEnumCellTester,
-  MaterialIntegerCell,
-  materialIntegerCellTester,
-  MaterialNumberCell,
-  materialNumberCellTester,
-  MaterialNumberFormatCell,
-  materialNumberFormatCellTester,
-  MaterialOneOfEnumCell,
-  materialOneOfEnumCellTester,
-  MaterialTextCell,
-  materialTextCellTester,
-  MaterialTimeCell,
-  materialTimeCellTester
+  BooleanCell,
+  BooleanCellTester,
+  BooleanToggleCell,
+  BooleanToggleCellTester,
+  DateCell,
+  DateCellTester,
+  EnumCell,
+  EnumCellTester,
+  IntegerCell,
+  IntegerCellTester,
+  NumberCell,
+  NumberCellTester,
+  NumberFormatCell,
+  numberFormatCellTester,
+  OneOfEnumCell,
+  oneOfEnumCellTester,
+  TextCell,
+  textCellTester,
+  TimeCell,
+  timeCellTester
 } from './cells';
 import MaterialCategorizationStepperLayout, {
   categorizationStepperTester
@@ -125,7 +125,7 @@ export const renderers: JsonFormsRendererRegistryEntry[] = [
   // controls
   {
     tester: materialArrayControlTester,
-    renderer: MaterialArrayControlRenderer
+    renderer: ArrayControlRenderer
   },
   { tester: booleanControlTester, renderer: BooleanControl },
   { tester: booleanToggleControlTester, renderer: BooleanToggleControl },
@@ -137,10 +137,10 @@ export const renderers: JsonFormsRendererRegistryEntry[] = [
   { tester: dateTimeControlTester, renderer: DateTimeControl },
   { tester: dateControlTester, renderer: MaterialDateControl },
   { tester: sliderControlTester, renderer: SliderControl },
-  { tester: materialObjectControlTester, renderer: MaterialObjectRenderer },
-  { tester: materialAllOfControlTester, renderer: MaterialAllOfRenderer },
-  { tester: materialAnyOfControlTester, renderer: MaterialAnyOfRenderer },
-  { tester: materialOneOfControlTester, renderer: MaterialOneOfRenderer },
+  { tester: objectControlTester, renderer: ObjectRenderer },
+  { tester: allOfControlTester, renderer: AllOfRenderer },
+  { tester: anyOfControlTester, renderer: AnyOfRenderer },
+  { tester: oneOfControlTester, renderer: OneOfRenderer },
   {
     tester: radioGroupControlTesterGroup,
     renderer: RadioGroupControl
@@ -183,14 +183,14 @@ export const renderers: JsonFormsRendererRegistryEntry[] = [
 ];
 
 export const cells: JsonFormsCellRendererRegistryEntry[] = [
-  { tester: materialBooleanCellTester, cell: MaterialBooleanCell },
-  { tester: materialBooleanToggleCellTester, cell: MaterialBooleanToggleCell },
-  { tester: materialDateCellTester, cell: MaterialDateCell },
-  { tester: materialEnumCellTester, cell: MaterialEnumCell },
-  { tester: materialIntegerCellTester, cell: MaterialIntegerCell },
-  { tester: materialNumberCellTester, cell: MaterialNumberCell },
-  { tester: materialNumberFormatCellTester, cell: MaterialNumberFormatCell },
-  { tester: materialOneOfEnumCellTester, cell: MaterialOneOfEnumCell },
-  { tester: materialTextCellTester, cell: MaterialTextCell },
-  { tester: materialTimeCellTester, cell: MaterialTimeCell }
+  { tester: BooleanCellTester, cell: BooleanCell },
+  { tester: BooleanToggleCellTester, cell: BooleanToggleCell },
+  { tester: DateCellTester, cell: DateCell },
+  { tester: EnumCellTester, cell: EnumCell },
+  { tester: IntegerCellTester, cell: IntegerCell },
+  { tester: NumberCellTester, cell: NumberCell },
+  { tester: numberFormatCellTester, cell: NumberFormatCell },
+  { tester: oneOfEnumCellTester, cell: OneOfEnumCell },
+  { tester: textCellTester, cell: TextCell },
+  { tester: timeCellTester, cell: TimeCell }
 ];

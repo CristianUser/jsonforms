@@ -40,6 +40,7 @@ export const AntdInputTime = React.memo((props: CellProps & WithClassname) => {
     config
   } = props;
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
+  const inputStyle = !appliedUiSchemaOptions.trim ? { width: '100%' } : {};
 
   return (
     <TimePicker
@@ -49,7 +50,7 @@ export const AntdInputTime = React.memo((props: CellProps & WithClassname) => {
       id={id}
       disabled={!enabled}
       autoFocus={appliedUiSchemaOptions.focus}
-      style={{ width: '100%' }}
+      style={inputStyle}
     />
   );
 }, areEqual);

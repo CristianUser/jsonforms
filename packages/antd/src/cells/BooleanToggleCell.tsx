@@ -1,7 +1,7 @@
 /*
   The MIT License
 
-  Copyright (c) 2017-2019 EclipseSource Munich
+  Copyright (c) 2017-2021 EclipseSource Munich
   https://github.com/eclipsesource/jsonforms
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,21 +24,24 @@
 */
 import React from 'react';
 import {
+  and,
   CellProps,
-  isIntegerControl,
+  isBooleanControl,
+  optionIs,
   RankedTester,
   rankWith,
   WithClassname
 } from '@jsonforms/core';
 import { withJsonFormsCellProps } from '@jsonforms/react';
-import { AntdInputInteger } from '../antd-controls/AntdInputInteger';
+import { AntdToggle } from '../antd-controls/AntdToggle';
 
-export const MaterialIntegerCell = (props: CellProps & WithClassname) => (
-  <AntdInputInteger {...props} />
-);
-export const materialIntegerCellTester: RankedTester = rankWith(
-  2,
-  isIntegerControl
-);
+export const BooleanToggleCell = (props: CellProps & WithClassname) => {
+  return <AntdToggle {...props} />;
+};
 
-export default withJsonFormsCellProps(MaterialIntegerCell);
+export const BooleanToggleCellTester: RankedTester = rankWith(
+  3,
+  and(isBooleanControl, optionIs('toggle', true))
+);;
+
+export default withJsonFormsCellProps(BooleanToggleCell);
