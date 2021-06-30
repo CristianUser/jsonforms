@@ -32,17 +32,7 @@ import {
 import startCase from 'lodash/startCase';
 import range from 'lodash/range';
 import React, { Fragment } from 'react';
-import {
-  FormHelperText,
-  Grid,
-  Hidden,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Typography
-} from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import {
   ArrayLayoutProps,
   ControlElement,
@@ -60,59 +50,139 @@ import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 
 import { WithDeleteDialogSupport } from './DeleteDialog';
-import NoBorderTableCell from './NoBorderTableCell';
 import TableToolbar from './TableToolbar';
 import { ErrorObject } from 'ajv';
 import merge from 'lodash/merge';
+import { Table, Typography } from 'antd';
+
+const { Text } = Typography;
 
 // we want a cell that doesn't automatically span
-const styles = {
-  fixedCell: {
-    width: '150px',
-    height: '50px',
-    paddingLeft: 0,
-    paddingRight: 0,
-    textAlign: 'center'
-  },
-  fixedCellSmall: {
-    width: '50px',
-    height: '50px',
-    paddingLeft: 0,
-    paddingRight: 0,
-    textAlign: 'center'
-  }
-};
+// const styles = {
+//   fixedCell: {
+//     width: '150px',
+//     height: '50px',
+//     paddingLeft: 0,
+//     paddingRight: 0,
+//     textAlign: 'center'
+//   },
+//   fixedCellSmall: {
+//     width: '50px',
+//     height: '50px',
+//     paddingLeft: 0,
+//     paddingRight: 0,
+//     textAlign: 'center'
+//   }
+// };
 
-const generateCells = (
-  Cell: React.ComponentType<OwnPropsOfNonEmptyCell | TableHeaderCellProps>,
-  schema: JsonSchema,
-  rowPath: string,
-  enabled: boolean,
-  cells?: JsonFormsCellRendererRegistryEntry[]
-) => {
+const RenderActionsCell = (props: any) => {
+  const {
+    config,
+    uischema,
+    path,
+    index,
+    moveUp,
+    enableUp,
+    moveDown,
+    enableDown,
+    openDeleteDialog
+  } = props;
+  const appliedUiSchemaOptions = merge({}, config, uischema.options);
+  const childPath = Paths.compose(path, `${index}`)
+
+  return <Grid
+          container
+          direction='row'
+          justify='flex-end'
+          alignItems='center'
+        >
+          {appliedUiSchemaOptions.showSortButtons ? (
+            <Fragment>
+              <Grid item>
+                <IconButton
+                  aria-label={`Move up`}
+                  onClick={moveUp}
+                  disabled={!enableUp}
+                >
+                  <ArrowUpward />
+                </IconButton>
+              </Grid>
+              <Grid item>
+                <IconButton
+                  aria-label={`Move down`}
+                  onClick={moveDown}
+                  disabled={!enableDown}
+                >
+                  <ArrowDownward />
+                </IconButton>
+              </Grid>
+            </Fragment>
+          ) : null}
+          <Grid item>
+            <IconButton
+              aria-label={`Delete`}
+              onClick={() => openDeleteDialog(childPath, index)}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Grid>
+        </Grid>
+}
+
+const generateColumns = (props: any) => {
+  const {
+    path,
+    schema,
+    rootSchema,
+    // errors,
+    enabled,
+    renderers,
+    cells
+  } = props;
   if (schema.type === 'object') {
     return getValidColumnProps(schema).map(prop => {
-      const cellPath = Paths.compose(rowPath, prop);
       const props = {
-        propName: prop,
-        schema,
+        dataIndex: prop,
+        editable: enabled,
         title: schema.properties?.[prop]?.title ?? startCase(prop),
-        rowPath,
-        cellPath,
-        enabled,
-        cells
+        render: (_field: any, _row: any, index: number) => {
+          const rowPath = Paths.compose(path, `${index}`);
+
+          return <RenderCell schema={schema} propName={prop} rowPath={rowPath} enabled={enabled}
+            renderers={renderers}
+            cells={cells} />
+        }
       };
-      return <Cell key={cellPath} {...props} />;
-    });
+
+      return props;
+    }).concat([{
+      dataIndex: '',
+      title: '',
+      editable: true,
+      render: (_field: any, _row: any, index: number) => {
+        return <RenderActionsCell {...{index, ...props}}/>
+      }
+    }]);
   } else {
     // primitives
     const props = {
-      schema,
-      rowPath,
-      cellPath: rowPath,
-      enabled
+      editable: enabled,
+      render: () => {
+        return <DispatchCell
+          schema={Resolve.schema(
+            schema,
+            `#/properties/${path}`,
+            rootSchema
+          )}
+          uischema={controlWithoutLabel(`#/properties/${path}`)}
+          path={'path'}
+          enabled={enabled}
+          renderers={renderers}
+          cells={cells}
+        />
+      }
     };
-    return <Cell key={rowPath} {...props} />;
+    return props;
   }
 };
 
@@ -129,30 +199,13 @@ const getValidColumnProps = (scopedSchema: JsonSchema) => {
 export interface EmptyTableProps {
   numColumns: number;
 }
-
-const EmptyTable = ({ numColumns }: EmptyTableProps) => (
-  <TableRow>
-    <NoBorderTableCell colSpan={numColumns}>
-      <Typography align='center'>No data</Typography>
-    </NoBorderTableCell>
-  </TableRow>
-);
-
-interface TableHeaderCellProps {
-  title: string;
-}
-
-const TableHeaderCell = React.memo(({ title }: TableHeaderCellProps) => (
-  <TableCell>{title}</TableCell>
-));
-
-interface NonEmptyCellProps extends OwnPropsOfNonEmptyCell {
+interface RenderCellProps extends OwnPropsOfRenderCell {
   rootSchema: JsonSchema;
   errors: string;
   path: string;
   enabled: boolean;
 }
-interface OwnPropsOfNonEmptyCell {
+interface OwnPropsOfRenderCell {
   rowPath: string;
   propName?: string;
   schema: JsonSchema;
@@ -160,10 +213,10 @@ interface OwnPropsOfNonEmptyCell {
   renderers?: JsonFormsRendererRegistryEntry[];
   cells?: JsonFormsCellRendererRegistryEntry[];
 }
-const ctxToNonEmptyCellProps = (
+const ctxToRenderCellProps = (
   ctx: JsonFormsStateContext,
-  ownProps: OwnPropsOfNonEmptyCell
-): NonEmptyCellProps => {
+  ownProps: OwnPropsOfRenderCell
+): RenderCellProps => {
   const path =
     ownProps.rowPath +
     (ownProps.schema.type === 'object' ? '.' + ownProps.propName : '');
@@ -195,7 +248,7 @@ const controlWithoutLabel = (scope: string): ControlElement => ({
   label: false
 });
 
-const NonEmptyCell = (ownProps: OwnPropsOfNonEmptyCell) => {
+const RenderCell = (ownProps: OwnPropsOfRenderCell) => {
   const ctx = useJsonForms();
   const {
     path,
@@ -206,11 +259,11 @@ const NonEmptyCell = (ownProps: OwnPropsOfNonEmptyCell) => {
     enabled,
     renderers,
     cells
-  } = ctxToNonEmptyCellProps(ctx, ownProps);
+  } = ctxToRenderCellProps(ctx, ownProps);
 
   const isValid = isEmpty(errors);
   return (
-    <NoBorderTableCell>
+    <>
       {schema.properties ? (
         <DispatchCell
           schema={Resolve.schema(
@@ -234,142 +287,8 @@ const NonEmptyCell = (ownProps: OwnPropsOfNonEmptyCell) => {
           cells={cells}
         />
       )}
-      <FormHelperText error={!isValid}>{!isValid && errors}</FormHelperText>
-    </NoBorderTableCell>
-  );
-};
-
-interface NonEmptyRowProps {
-  childPath: string;
-  schema: JsonSchema;
-  rowIndex: number;
-  moveUp: () => void;
-  moveDown: () => void;
-  enableUp: boolean;
-  enableDown: boolean;
-  showSortButtons: boolean;
-  enabled: boolean;
-  cells?: JsonFormsCellRendererRegistryEntry[];
-}
-
-const NonEmptyRow = React.memo(
-  ({
-    childPath,
-    schema,
-    rowIndex,
-    openDeleteDialog,
-    moveUp,
-    moveDown,
-    enableUp,
-    enableDown,
-    showSortButtons,
-    enabled,
-    cells
-  }: NonEmptyRowProps & WithDeleteDialogSupport) => {
-    return (
-      <TableRow key={childPath} hover>
-        {generateCells(NonEmptyCell, schema, childPath, enabled, cells)}
-        {enabled ? (
-          <NoBorderTableCell
-            style={showSortButtons ? styles.fixedCell : styles.fixedCellSmall}
-          >
-            <Grid
-              container
-              direction='row'
-              justify='flex-end'
-              alignItems='center'
-            >
-              {showSortButtons ? (
-                <Fragment>
-                  <Grid item>
-                    <IconButton
-                      aria-label={`Move up`}
-                      onClick={moveUp}
-                      disabled={!enableUp}
-                    >
-                      <ArrowUpward />
-                    </IconButton>
-                  </Grid>
-                  <Grid item>
-                    <IconButton
-                      aria-label={`Move down`}
-                      onClick={moveDown}
-                      disabled={!enableDown}
-                    >
-                      <ArrowDownward />
-                    </IconButton>
-                  </Grid>
-                </Fragment>
-              ) : null}
-              <Grid item>
-                <IconButton
-                  aria-label={`Delete`}
-                  onClick={() => openDeleteDialog(childPath, rowIndex)}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </Grid>
-            </Grid>
-          </NoBorderTableCell>
-        ) : null}
-      </TableRow>
-    );
-  }
-);
-interface TableRowsProp {
-  data: number;
-  path: string;
-  schema: JsonSchema;
-  uischema: ControlElement;
-  config?: any;
-  enabled: boolean;
-  cells?: JsonFormsCellRendererRegistryEntry[];
-  moveUp?(path: string, toMove: number): () => void;
-  moveDown?(path: string, toMove: number): () => void;
-}
-const TableRows = ({
-  data,
-  path,
-  schema,
-  openDeleteDialog,
-  moveUp,
-  moveDown,
-  uischema,
-  config,
-  enabled,
-  cells
-}: TableRowsProp & WithDeleteDialogSupport) => {
-  const isEmptyTable = data === 0;
-
-  if (isEmptyTable) {
-    return <EmptyTable numColumns={getValidColumnProps(schema).length + 1} />;
-  }
-
-  const appliedUiSchemaOptions = merge({}, config, uischema.options);
-
-  return (
-    <React.Fragment>
-      {range(data).map((index: number) => {
-        const childPath = Paths.compose(path, `${index}`);
-
-        return (
-          <NonEmptyRow
-            key={childPath}
-            childPath={childPath}
-            rowIndex={index}
-            schema={schema}
-            openDeleteDialog={openDeleteDialog}
-            moveUp={moveUp(path, index)}
-            moveDown={moveDown(path, index)}
-            enableUp={index !== 0}
-            enableDown={index !== data - 1}
-            showSortButtons={appliedUiSchemaOptions.showSortButtons}
-            enabled={enabled}
-            cells={cells}
-          />
-        );
-      })}
-    </React.Fragment>
+      {!isValid && <Text type={'danger'}>{errors}</Text>}
+    </>
   );
 };
 
@@ -386,45 +305,31 @@ export class MaterialTableControl extends React.Component<
       rootSchema,
       uischema,
       errors,
-      openDeleteDialog,
       visible,
       enabled,
-      cells
+      data
     } = this.props;
 
     const controlElement = uischema as ControlElement;
     const isObjectSchema = schema.type === 'object';
-    const headerCells: any = isObjectSchema
-      ? generateCells(TableHeaderCell, schema, path, enabled, cells)
-      : undefined;
 
+    const columns: any = generateColumns(this.props)
+    const dataSource = isObjectSchema ? range(data).map(index => ({ index })) : []
     return (
-      <Hidden xsUp={!visible}>
-        <Table>
-          <TableHead>
-            <TableToolbar
-              errors={errors}
-              label={label}
-              addItem={this.addItem}
-              numColumns={isObjectSchema ? headerCells.length : 1}
-              path={path}
-              uischema={controlElement}
-              schema={schema}
-              rootSchema={rootSchema}
-              enabled={enabled}
-            />
-            {isObjectSchema && (
-              <TableRow>
-                {headerCells}
-                {enabled ? <TableCell /> : null}
-              </TableRow>
-            )}
-          </TableHead>
-          <TableBody>
-            <TableRows openDeleteDialog={openDeleteDialog} {...this.props} />
-          </TableBody>
-        </Table>
-      </Hidden>
+      <div hidden={!visible}>
+        <TableToolbar
+          errors={errors}
+          label={label}
+          addItem={this.addItem}
+          numColumns={isObjectSchema ? columns.length : 1}
+          path={path}
+          uischema={controlElement}
+          schema={schema}
+          rootSchema={rootSchema}
+          enabled={enabled}
+        />
+        <Table columns={columns} dataSource={dataSource} />
+      </div>
     );
   }
 }
