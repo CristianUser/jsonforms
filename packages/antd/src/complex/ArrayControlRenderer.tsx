@@ -25,7 +25,7 @@
 import React, { useCallback, useState } from 'react';
 import { ArrayLayoutProps } from '@jsonforms/core';
 import { withJsonFormsArrayLayoutProps } from '@jsonforms/react';
-import { MaterialTableControl } from './MaterialTableControl';
+import { TableControl } from './TableControl';
 import { DeleteDialog } from './DeleteDialog';
 
 export const ArrayControlRenderer = (props: ArrayLayoutProps) => {
@@ -49,7 +49,7 @@ export const ArrayControlRenderer = (props: ArrayLayoutProps) => {
 
   return (
     <div hidden={!visible}>
-      <MaterialTableControl
+      <TableControl
         {...props}
         openDeleteDialog={openDeleteDialog}
       />
