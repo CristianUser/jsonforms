@@ -38,13 +38,13 @@ import {
   ControlElement,
   errorsAt,
   formatErrorMessage,
+  JsonFormsCellRendererRegistryEntry,
+  JsonFormsRendererRegistryEntry,
   JsonSchema,
   Paths,
-  Resolve,
-  JsonFormsRendererRegistryEntry,
-  JsonFormsCellRendererRegistryEntry
+  Resolve
 } from '@jsonforms/core';
-import { ArrowUpOutlined, ArrowDownOutlined, DeleteFilled } from '@ant-design/icons';
+import { ArrowDownOutlined, ArrowUpOutlined, DeleteFilled } from '@ant-design/icons';
 import { Button, Form, Table, Tooltip } from 'antd';
 import { ErrorObject } from 'ajv';
 
@@ -64,24 +64,24 @@ const RenderActionsCell = (props: ArrayLayoutProps & WithDeleteDialogSupport & a
     openDeleteDialog
   } = props;
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
-  const childPath = Paths.compose(path, `${index}`)
+  const childPath = Paths.compose(path, `${index}`);
 
   return <div style={{ marginBottom: '24px' }}>
     {appliedUiSchemaOptions.showSortButtons ? (
       <Fragment>
-        <Tooltip title="Move up">
-          <Button shape="circle" icon={<ArrowUpOutlined />} onClick={moveUp} disabled={!enableUp} />
+        <Tooltip title='Move up'>
+          <Button shape='circle' icon={<ArrowUpOutlined />} onClick={moveUp} disabled={!enableUp} />
         </Tooltip>
-        <Tooltip title="Move down">
-          <Button shape="circle" icon={<ArrowDownOutlined />} onClick={moveDown} disabled={!enableDown} />
+        <Tooltip title='Move down'>
+          <Button shape='circle' icon={<ArrowDownOutlined />} onClick={moveDown} disabled={!enableDown} />
         </Tooltip>
       </Fragment>
     ) : null}
-    <Tooltip title="Delete">
+    <Tooltip title='Delete'>
       <Button icon={<DeleteFilled />} onClick={() => openDeleteDialog(childPath, index)} />
     </Tooltip>
-  </div>
-}
+  </div>;
+};
 
 const generateColumns = (props: ArrayLayoutProps) => {
   const {
@@ -103,12 +103,12 @@ const generateColumns = (props: ArrayLayoutProps) => {
 
           return <RenderCell schema={schema} propName={prop} rowPath={rowPath} enabled={enabled}
             renderers={renderers}
-            cells={cells} />
+            cells={cells} />;
         }
       };
 
       return column;
-    })
+    });
   } else {
     // primitives
     const columns = [{
@@ -118,7 +118,7 @@ const generateColumns = (props: ArrayLayoutProps) => {
 
         return <RenderCell schema={schema} rowPath={rowPath} enabled={enabled}
           renderers={renderers}
-          cells={cells} />
+          cells={cells} />;
       }
     }];
     return columns;
@@ -135,9 +135,9 @@ const withActionsColumn = (columns: any, props: ArrayLayoutProps) => {
     editable: true,
     width,
     render: (_field: any, _row: any, index: number) => {
-      return <RenderActionsCell {...{ index, ...props }} />
+      return <RenderActionsCell {...{ index, ...props }} />;
     }
-  }])
+  }]);
 };
 
 const getValidColumnProps = (scopedSchema: JsonSchema) => {

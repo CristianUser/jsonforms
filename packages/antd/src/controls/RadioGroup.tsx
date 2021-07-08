@@ -76,13 +76,15 @@ export class RadioGroup extends Control<
       >
         <Radio.Group
           value={this.state.value}
-          onChange={(e) => this.handleChange(e.target.value)}
+          onChange={e => this.handleChange(e.target.value)}
         >
           {options.map(option => (
             <Radio
               value={option.value}
               key={option.label}
-            >{option.label}</Radio>
+            >
+              {option.label}
+            </Radio>
           ))}
         </Radio.Group>
       </Form.Item>

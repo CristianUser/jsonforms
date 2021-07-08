@@ -33,12 +33,12 @@ import {
   AnyOfRenderer,
   ArrayControlRenderer,
   arrayControlTester,
+  EnumArrayRenderer,
+  enumArrayRendererTester,
   objectControlTester,
   ObjectRenderer,
   oneOfControlTester,
-  OneOfRenderer,
-  EnumArrayRenderer,
-  enumArrayRendererTester
+  OneOfRenderer
 } from './complex';
 import {
   LabelRenderer,
@@ -53,38 +53,38 @@ import {
   booleanControlTester,
   BooleanToggleControl,
   booleanToggleControlTester,
-  MaterialDateControl,
   dateControlTester,
   DateTimeControl,
   dateTimeControlTester,
-  MaterialEnumControl,
   enumControlTester,
   IntegerControl,
   integerControlTester,
+  MaterialDateControl,
+  MaterialEnumControl,
+  MaterialNumberControl,
   NativeControl,
   nativeControlTester,
-  MaterialNumberControl,
   numberControlTester,
   OneOfEnumControl,
   oneOfEnumControlTester,
+  OneOfRadioGroupControl,
+  oneOfRadioGroupControlTester,
   RadioGroupControl,
   radioGroupControlTesterGroup,
   SliderControl,
   sliderControlTester,
   TextControl,
-  textControlTester,
-  OneOfRadioGroupControl,
-  oneOfRadioGroupControlTester
+  textControlTester
 } from './controls';
 import {
-  MaterialArrayLayout,
-  materialArrayLayoutTester,
+  antdGroupTester,
   CategorizationLayout,
   categorizationTester,
   GroupLayout,
-  antdGroupTester,
   HorizontalLayout,
   horizontalLayoutTester,
+  MaterialArrayLayout,
+  materialArrayLayoutTester,
   VerticalLayout,
   verticalLayoutTester
 } from './layouts';

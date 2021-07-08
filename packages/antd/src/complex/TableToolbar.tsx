@@ -33,7 +33,7 @@ import { Button, Col, PageHeader, Row, Tooltip, Typography } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import ValidationIcon from './ValidationIcon';
 
-const { Title } = Typography
+const { Title } = Typography;
 export interface MaterialTableToolbarProps {
   errors: string;
   label: string | Labels;
@@ -45,7 +45,7 @@ export interface MaterialTableToolbarProps {
   addItem(path: string, value: any): () => void;
 }
 
-const renderTitle = (label: string | Labels, errors: string) => 
+const renderTitle = (label: string | Labels, errors: string) =>
 (<Row>
   <Col>
     <Title level={3} >{label}</Title>
@@ -53,7 +53,7 @@ const renderTitle = (label: string | Labels, errors: string) =>
   <Col style={{ padding: '0 10px' }}>
     <ValidationIcon id='tooltip-validation' errorMessages={errors} />
   </Col>
-</Row>)
+</Row>);
 
 const TableToolbar = React.memo(
   ({
@@ -68,8 +68,8 @@ const TableToolbar = React.memo(
       ghost={false}
       title={renderTitle(label, errors)}
       extra={enabled ? [
-        <Tooltip key="1" title={`Add to ${label}`}>
-          <Button type="primary" onClick={addItem(path, createDefaultValue(schema))} shape="circle" icon={<PlusOutlined />} />
+        <Tooltip key='1' title={`Add to ${label}`}>
+          <Button type='primary' onClick={addItem(path, createDefaultValue(schema))} shape='circle' icon={<PlusOutlined />} />
         </Tooltip>
       ] : []}
     />

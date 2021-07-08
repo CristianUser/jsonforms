@@ -66,7 +66,7 @@ export const AntdInputText = React.memo((props: CellProps & WithClassname & Antd
   }
   const onChange = (ev: any) => handleChange(path, ev.target.value);
 
-  const InputComponent = appliedUiSchemaOptions.multi ? Input.TextArea : Input
+  const InputComponent = appliedUiSchemaOptions.multi ? Input.TextArea : Input;
   const inputStyle = !appliedUiSchemaOptions.trim || maxLength === undefined ? { width: '100%' } : {};
 
   return (
@@ -81,8 +81,8 @@ export const AntdInputText = React.memo((props: CellProps & WithClassname & Antd
       disabled={!enabled}
       autoFocus={appliedUiSchemaOptions.focus}
       style={inputStyle}
-      onPointerEnter={() => setClearable(true) }
-      onPointerLeave={() => setClearable(false) }
+      onPointerEnter={() => setClearable(true)}
+      onPointerLeave={() => setClearable(false)}
       maxLength={maxLength}
       allowClear={clearable}
       {...(appliedUiSchemaOptions.multi ? { autoSize: true } : {})}

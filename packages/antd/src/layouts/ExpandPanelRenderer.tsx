@@ -12,15 +12,15 @@ import {
   composePaths,
   ControlElement,
   findUISchema,
+  getFirstPrimitiveProp,
+  JsonFormsCellRendererRegistryEntry,
   JsonFormsRendererRegistryEntry,
+  JsonFormsUISchemaRegistryEntry,
   JsonSchema,
   moveDown,
   moveUp,
   Resolve,
-  update,
-  JsonFormsCellRendererRegistryEntry,
-  JsonFormsUISchemaRegistryEntry,
-  getFirstPrimitiveProp
+  update
 } from '@jsonforms/core';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import IconButton from '@material-ui/core/IconButton';

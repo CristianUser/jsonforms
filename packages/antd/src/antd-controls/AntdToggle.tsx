@@ -44,7 +44,7 @@ export const AntdToggle = React.memo((props: CellProps & WithClassname) => {
   return (
     <Switch
       checked={checked}
-      onChange={(isChecked) => handleChange(path, isChecked)}
+      onChange={isChecked => handleChange(path, isChecked)}
       className={className}
       disabled={!enabled}
       autoFocus={!!appliedUiSchemaOptions.focus}

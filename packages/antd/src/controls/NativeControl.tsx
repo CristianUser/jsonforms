@@ -69,7 +69,7 @@ export class NativeControl extends Control<ControlProps, ControlState> {
       appliedUiSchemaOptions.showUnfocusedDescription
     );
 
-    const inputStyle = appliedUiSchemaOptions.trim ? {} : { width: '100%' }
+    const inputStyle = appliedUiSchemaOptions.trim ? {} : { width: '100%' };
 
     return (
       <Form.Item

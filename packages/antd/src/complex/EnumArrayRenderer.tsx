@@ -88,7 +88,7 @@ export const enumArrayRendererTester: RankedTester = rankWith(
         schema =>
           hasType(schema, 'array') &&
           !Array.isArray(schema.items) &&
-          schema.uniqueItems === true
+          schema.uniqueItems
       ),
       schemaSubPathMatches('items', schema => {
         return hasOneOfItems(schema) || hasEnumItems(schema);

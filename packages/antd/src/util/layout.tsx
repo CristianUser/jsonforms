@@ -36,7 +36,7 @@ import {
 } from '@jsonforms/core';
 import { areEqual, JsonFormsDispatch, useJsonForms } from '@jsonforms/react';
 import { Col, Row } from 'antd';
-import './layout.css'; 
+import './layout.css';
 
 export const renderLayoutElements = (
   elements: UISchemaElement[],

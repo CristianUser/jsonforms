@@ -39,7 +39,7 @@ const ValidationIcon: React.FC<ValidationProps> =
         id={id}
         title={errorMessages}
       >
-        <Badge count={errorMessages.split('\n').length} size="small" >
+        <Badge count={errorMessages.split('\n').length} size='small' >
           <ExclamationCircleOutlined color='inherit' style={{ fontSize: '20px' }}/>
         </Badge>
       </Tooltip>

@@ -127,7 +127,7 @@ export class CategorizationStepperLayoutRenderer extends RendererComponent<
         <div style={buttonWrapperStyle}>
           <Button
             style={buttonNextStyle}
-            color="primary"
+            color='primary'
             disabled={activeCategory >= categories.length - 1}
             onClick={() => this.handleStep(activeCategory + 1)}
           >
@@ -135,13 +135,14 @@ export class CategorizationStepperLayoutRenderer extends RendererComponent<
           </Button>
           <Button
             style={buttonStyle}
-            color="secondary"
+            color='secondary'
             disabled={activeCategory <= 0}
             onClick={() => this.handleStep(activeCategory - 1)}
           >
             Previous
           </Button>
-        </div>) : (<></>)}
+        </div>
+        ) : (<></>)}
       </div>
     );
   }

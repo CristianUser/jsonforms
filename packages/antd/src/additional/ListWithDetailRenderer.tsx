@@ -136,7 +136,7 @@ export const ListWithDetailRenderer = ({
               path={composePaths(path, `${selectedIndex}`)}
             />
           ) : (
-            <Empty description="No Selection"/>
+            <Empty description='No Selection'/>
           )}
         </Col>
       </Row>

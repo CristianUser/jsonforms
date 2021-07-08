@@ -18,4 +18,9 @@ module.exports = merge(baseConfig, {
     /@material-ui\/icons\/.*/,
     /@material-ui\/lab\/.*/,
   ],
+  module: {
+    rules: [
+        { test: /\.css$/, use: ['style-loader', 'css-loader'] }
+    ]
+},
 });

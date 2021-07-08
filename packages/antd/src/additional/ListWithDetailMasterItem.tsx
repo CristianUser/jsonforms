@@ -24,7 +24,7 @@
 */
 import { StatePropsOfMasterItem } from '@jsonforms/core';
 import { withJsonFormsMasterListItemProps } from '@jsonforms/react';
-import { DeleteFilled } from '@ant-design/icons'
+import { DeleteFilled } from '@ant-design/icons';
 import { Avatar, Button, List, Tooltip } from 'antd';
 import React from 'react';
 
@@ -35,7 +35,7 @@ const ListWithDetailMasterItem = ({ index, childLabel, selected, handleSelect, r
         <List.Item
             onClick={handleSelect(index)}
             actions={[
-                <Tooltip title="Delete" key="action_1">
+                <Tooltip title='Delete' key='action_1'>
                     <Button icon={<DeleteFilled />} onClick={removeItem(path, index)} />
                 </Tooltip>
             ]}

@@ -25,12 +25,12 @@
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 import {
-  isBooleanControl,
-  RankedTester,
-  rankWith,
+  and,
   ControlProps,
+  isBooleanControl,
   optionIs,
-  and
+  RankedTester,
+  rankWith
 } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import { AntdToggle } from '../antd-controls/AntdToggle';

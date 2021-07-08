@@ -67,17 +67,17 @@ const OneOfRenderer =
         createDefaultValue(schema.oneOf[newIndex])
       );
       setSelectedIndex(newIndex);
-    }
+    };
 
     const confirm = useCallback(() => {
-      openNewTab(newSelectedIndex)
+      openNewTab(newSelectedIndex);
     }, [handleChange, createDefaultValue, newSelectedIndex]);
     const handleTabChange = useCallback((value: string, _event: any) => {
       const newOneOfIndex = parseInt(value, 10);
 
       setNewSelectedIndex(newOneOfIndex);
       if (isEmpty(data)) {
-        openNewTab(newOneOfIndex)
+        openNewTab(newOneOfIndex);
       } else {
         Modal.confirm({
           okText: 'Yes',
@@ -85,8 +85,8 @@ const OneOfRenderer =
           onOk: confirm,
           title: 'Clear form?',
           content: 'Your data will be cleared if you navigate away from this tab. \nDo you want to proceed?'
-        })
-      };
+        });
+      }
     }, [setSelectedIndex, data]);
 
     return (

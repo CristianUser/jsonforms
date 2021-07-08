@@ -69,6 +69,7 @@ const AntdAutocompleteInputText = (props: EnumCellProps & WithClassname) => {
   const inputStyle = !appliedUiSchemaOptions.trim || maxLength === undefined ? { width: '100%' } : {};
 
   return (
+
     <AutoComplete
       className={className}
       id={id}
@@ -79,8 +80,7 @@ const AntdAutocompleteInputText = (props: EnumCellProps & WithClassname) => {
       onChange={onChange}
       options={enumSchema.enum}
       style={inputStyle}
-    >
-    </AutoComplete>
+    />
   );
 };
 

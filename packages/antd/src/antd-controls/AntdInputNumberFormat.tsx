@@ -48,7 +48,7 @@ export const AntdInputNumberFormat = React.memo(
       const validStringNumber = props.fromFormatted(ev.currentTarget.value);
       handleChange(path, validStringNumber);
     };
-    const InputComponent = appliedUiSchemaOptions.multi ? Input.TextArea : Input
+    const InputComponent = appliedUiSchemaOptions.multi ? Input.TextArea : Input;
     const inputStyle = !appliedUiSchemaOptions.trim || maxLength === undefined ? { width: '100%' } : {};
 
     return (

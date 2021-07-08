@@ -30,7 +30,7 @@ import {
   isPlainLabel
 } from '@jsonforms/core';
 import { Control } from '@jsonforms/react';
-import { Form } from 'antd'
+import { Form } from 'antd';
 import merge from 'lodash/merge';
 
 export interface WithInput {

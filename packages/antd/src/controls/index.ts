@@ -23,63 +23,63 @@
   THE SOFTWARE.
 */
 import BooleanControl, {
-  booleanControlTester,
-  BooleanControl as BooleanControlUnwrapped
+  BooleanControl as BooleanControlUnwrapped,
+  booleanControlTester
 } from './BooleanControl';
 import BooleanToggleControl, {
-  booleanToggleControlTester,
-  BooleanToggleControl as BooleanToggleControlUnwrapped
+  BooleanToggleControl as BooleanToggleControlUnwrapped,
+  booleanToggleControlTester
 } from './BooleanToggleControl';
 import MaterialEnumControl, {
-  enumControlTester,
-  EnumControl as EnumControlUnwrapped
+  EnumControl as EnumControlUnwrapped,
+  enumControlTester
 } from './EnumControl';
 import NativeControl, {
-  nativeControlTester,
-  NativeControl as NativeControlUnwrapped
+  NativeControl as NativeControlUnwrapped,
+  nativeControlTester
 } from './NativeControl';
 import MaterialDateControl, {
-  dateControlTester,
-  DateControl as MaterialDateControlUnwrapped
+  DateControl as MaterialDateControlUnwrapped,
+  dateControlTester
 } from './DateControl';
 import DateTimeControl, {
-  dateTimeControlTester,
-  DateTimeControl as DateTimeControlUnwrapped
+  DateTimeControl as DateTimeControlUnwrapped,
+  dateTimeControlTester
 } from './DateTimeControl';
 import SliderControl, {
-  sliderControlTester,
-  SliderControl as SliderControlUnwrapped
+  SliderControl as SliderControlUnwrapped,
+  sliderControlTester
 } from './SliderControl';
 import RadioGroupControl, {
-  radioGroupControlTesterGroup,
-  RadioGroupControl as RadioGroupControlUnwrapped
+  RadioGroupControl as RadioGroupControlUnwrapped,
+  radioGroupControlTesterGroup
 } from './RadioGroupControl';
 import IntegerControl, {
-  integerControlTester,
-  IntegerControl as IntegerControlUnwrapped
+  IntegerControl as IntegerControlUnwrapped,
+  integerControlTester
 } from './IntegerControl';
 import MaterialNumberControl, {
-  numberControlTester,
-  NumberControl as NumberControlUnwrapped
+  NumberControl as NumberControlUnwrapped,
+  numberControlTester
 } from './NumberControl';
 import TextControl, {
-  textControlTester,
-  TextControl as TextControlUnwrapped
+  TextControl as TextControlUnwrapped,
+  textControlTester
 } from './TextControl';
 
 import AnyOfStringOrEnumControl, {
-  anyOfStringOrEnumControlTester,
-  AnyOfStringOrEnumControl as AnyOfStringOrEnumControlUnwrapped
+  AnyOfStringOrEnumControl as AnyOfStringOrEnumControlUnwrapped,
+  anyOfStringOrEnumControlTester
 } from './AnyOfStringOrEnumControl';
 
 import OneOfEnumControl, {
-  oneOfEnumControlTester,
-  OneOfEnumControl as OneOfEnumControlUnwrapped
+  OneOfEnumControl as OneOfEnumControlUnwrapped,
+  oneOfEnumControlTester
 } from './OneOfEnumControl';
 
 import OneOfRadioGroupControl, {
-  oneOfRadioGroupControlTester,
-  OneOfRadioGroupControl as OneOfRadioGroupControlUnwrapped
+  OneOfRadioGroupControl as OneOfRadioGroupControlUnwrapped,
+  oneOfRadioGroupControlTester
 } from './OneOfRadioGroupControl';
 
 export const Unwrapped = {

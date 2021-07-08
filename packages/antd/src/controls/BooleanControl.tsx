@@ -25,10 +25,10 @@
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 import {
+  ControlProps,
   isBooleanControl,
   RankedTester,
-  rankWith,
-  ControlProps
+  rankWith
 } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import { AntdCheckbox } from '../antd-controls/AntdCheckbox';

@@ -42,6 +42,6 @@ export const BooleanToggleCell = (props: CellProps & WithClassname) => {
 export const BooleanToggleCellTester: RankedTester = rankWith(
   3,
   and(isBooleanControl, optionIs('toggle', true))
-);;
+);
 
 export default withJsonFormsCellProps(BooleanToggleCell);

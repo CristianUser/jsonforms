@@ -55,13 +55,13 @@ export const AntdSelect = React.memo((props: EnumCellProps & WithClassname) => {
       onChange={value => handleChange(path, value)}
       style={selectStyle}
     >
-      {[<Option value='' key={'empty'}> </Option>].concat(
-        options.map(optionValue => (
+      {
+        [{ label: '', value: '' }].concat(options).map(optionValue => (
           <Option value={optionValue.value} key={optionValue.value}>
             {optionValue.label}
           </Option>
         ))
-      )}
+      }
     </Select>
   );
 }, areEqual);

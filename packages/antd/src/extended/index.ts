@@ -23,13 +23,13 @@
   THE SOFTWARE.
 */
 import MaterialAutocompleteEnumControl, {
-  materialAutocompleteEnumControlTester,
-  MaterialAutocompleteEnumControl as MaterialAutocompleteEnumControlUnwrapped
+  MaterialAutocompleteEnumControl as MaterialAutocompleteEnumControlUnwrapped,
+  materialAutocompleteEnumControlTester
 } from './AntdAutocompleteEnumControl';
 
 import MaterialAutocompleteOneOfEnumControl, {
-  materialAutocompleteOneOfEnumControlTester,
-  MaterialAutocompleteOneOfEnumControl as MaterialAutocompleteOneOfEnumControlUnwrapped
+  MaterialAutocompleteOneOfEnumControl as MaterialAutocompleteOneOfEnumControlUnwrapped,
+  materialAutocompleteOneOfEnumControlTester
 } from './AntdAutocompleteOneOfEnumControl';
 
 import { JsonFormsRendererRegistryEntry } from '@jsonforms/core';

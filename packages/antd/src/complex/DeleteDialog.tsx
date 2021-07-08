@@ -39,13 +39,13 @@ export interface WithDeleteDialogSupport {
 export const DeleteDialog = React.memo(({ open, onClose, onConfirm, onCancel }: DeleteDialogProps) => {
     return (
         <Modal
-            title="Confirm Deletion"
+            title='Confirm Deletion'
             visible={open}
             afterClose={onClose}
             onOk={onConfirm}
             onCancel={onCancel}
-            okText="Yes"
-            cancelText="No"
+            okText='Yes'
+            cancelText='No'
         >
             <p> Are you sure you want to delete the selected entry?</p>
         </Modal>

@@ -72,7 +72,7 @@ export class SliderControl extends Control<ControlProps, ControlState> {
     const marks = {
       [schema.minimum]: schema.minimum,
       [schema.maximum]: schema.maximum
-    }
+    };
     const controlStyle = !appliedUiSchemaOptions.trim ? { width: '100%' } : {};
 
     return (
