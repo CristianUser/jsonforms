@@ -22,14 +22,14 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import MaterialAutocompleteEnumControl, {
-  MaterialAutocompleteEnumControl as MaterialAutocompleteEnumControlUnwrapped,
-  materialAutocompleteEnumControlTester
+import AutocompleteEnumControl, {
+  AutocompleteEnumControl as AutocompleteEnumControlUnwrapped,
+  autocompleteEnumControlTester
 } from './AntdAutocompleteEnumControl';
 
-import MaterialAutocompleteOneOfEnumControl, {
-  MaterialAutocompleteOneOfEnumControl as MaterialAutocompleteOneOfEnumControlUnwrapped,
-  materialAutocompleteOneOfEnumControlTester
+import AutocompleteOneOfEnumControl, {
+  AutocompleteOneOfEnumControl as AutocompleteOneOfEnumControlUnwrapped,
+  autocompleteOneOfEnumControlTester
 } from './AntdAutocompleteOneOfEnumControl';
 
 import { JsonFormsRendererRegistryEntry } from '@jsonforms/core';
@@ -40,16 +40,16 @@ import { renderers } from '../index';
  */
 export const extendedRenderers: JsonFormsRendererRegistryEntry[] = [
   {
-    tester: materialAutocompleteOneOfEnumControlTester,
-    renderer: MaterialAutocompleteOneOfEnumControl
+    tester: autocompleteOneOfEnumControlTester,
+    renderer: AutocompleteOneOfEnumControl
   },
   {
-    tester: materialAutocompleteEnumControlTester,
-    renderer: MaterialAutocompleteEnumControl
+    tester: autocompleteEnumControlTester,
+    renderer: AutocompleteEnumControl
   },
 ].concat(renderers);
 
 export const ExtendedUnwrapped = {
-  MaterialAutocompleteEnumControl: MaterialAutocompleteEnumControlUnwrapped,
-  MaterialAutocompleteOneOfEnumControl: MaterialAutocompleteOneOfEnumControlUnwrapped
+  AutocompleteEnumControl: AutocompleteEnumControlUnwrapped,
+  AutocompleteOneOfEnumControl: AutocompleteOneOfEnumControlUnwrapped
 };

@@ -36,7 +36,7 @@ import merge from 'lodash/merge';
 import { InputControl } from '../controls/InputControl';
 import { AntdAutocomplete, WithOptionLabel } from './AntdAutocomplete';
 
-export const MaterialAutocompleteEnumControl = (props: ControlProps & OwnPropsOfEnum & WithOptionLabel) => {
+export const AutocompleteEnumControl = (props: ControlProps & OwnPropsOfEnum & WithOptionLabel) => {
   const {config, uischema} = props;
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
   return (
@@ -47,9 +47,9 @@ export const MaterialAutocompleteEnumControl = (props: ControlProps & OwnPropsOf
   );
 };
 
-export const materialAutocompleteEnumControlTester: RankedTester = rankWith(
+export const autocompleteEnumControlTester: RankedTester = rankWith(
   10,
   isEnumControl
 );
 
-export default withJsonFormsEnumProps(MaterialAutocompleteEnumControl);
+export default withJsonFormsEnumProps(AutocompleteEnumControl);

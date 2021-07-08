@@ -28,7 +28,7 @@ import {
   NOT_APPLICABLE
 } from '@jsonforms/core';
 import * as React from 'react';
-import { materialRenderers } from '../../src';
+import { renderers } from '../../src';
 import ObjectRenderer, {
   objectControlTester
 } from '../../src/complex/ObjectRenderer';
@@ -117,7 +117,7 @@ describe('Material object control', () => {
   it('should render all children', () => {
     const core = initCore(schema, uischema1, data);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <ObjectRenderer schema={schema} uischema={uischema1} />
       </JsonFormsStateProvider>
     );
@@ -133,7 +133,7 @@ describe('Material object control', () => {
   it('should render only itself', () => {
     const core = initCore(schema, uischema1, data);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <ObjectRenderer schema={schema} uischema={uischema2} />
       </JsonFormsStateProvider>
     );
@@ -147,7 +147,7 @@ describe('Material object control', () => {
   it('should be enabled by default', () => {
     const core = initCore(schema, uischema2, data);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <ObjectRenderer schema={schema} uischema={uischema2} />
       </JsonFormsStateProvider>
     );
@@ -158,7 +158,7 @@ describe('Material object control', () => {
   it('can be invisible', () => {
     const core = initCore(schema, uischema2, data);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <ObjectRenderer
           schema={schema}
           uischema={uischema2}
@@ -173,7 +173,7 @@ describe('Material object control', () => {
   it('should be visible by default', () => {
     const core = initCore(schema, uischema2, data);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <ObjectRenderer schema={schema} uischema={uischema2} />
       </JsonFormsStateProvider>
     );

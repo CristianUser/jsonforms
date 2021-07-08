@@ -93,7 +93,7 @@ describe('Material anyOf renderer', () => {
         data={undefined}
         schema={schema}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
         onChange={({ data }) => {
           onChangeData.data = data;
         }}
@@ -156,7 +156,7 @@ describe('Material anyOf renderer', () => {
     };
     const core = initCore(schema, uischema);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <AnyOfRenderer
           schema={schema}
           uischema={uischema}
@@ -230,7 +230,7 @@ describe('Material anyOf renderer', () => {
     };
     const core = initCore(schema, uischema);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, cells: materialCells, core }}>
+      <JsonFormsStateProvider initState={{ renderers, cells: materialCells, core }}>
         <TestEmitter
           onChange={({ data }) => {
             onChangeData.data = data;
@@ -290,7 +290,7 @@ describe('Material anyOf renderer', () => {
     };
     const core = initCore(schema, uischema);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <AnyOfRenderer
           schema={schema}
           uischema={uischema}

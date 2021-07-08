@@ -25,7 +25,7 @@
 import './MatchMediaMock';
 import React from 'react';
 import Enzyme, { mount } from 'enzyme';
-import { materialRenderers } from '../../src';
+import { renderers } from '../../src';
 import {
   ControlElement,
   Layout,
@@ -141,7 +141,7 @@ describe('Layout Tests', () => {
         data={data}
         schema={schema}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
   };
@@ -424,7 +424,7 @@ describe('Special Layout Tests', () => {
           data={data}
           schema={schema}
           uischema={uischema}
-          renderers={materialRenderers}
+          renderers={renderers}
         />
       );
       expect(
@@ -445,7 +445,7 @@ describe('Special Layout Tests', () => {
           data={data}
           schema={schema}
           uischema={uischema}
-          renderers={materialRenderers}
+          renderers={renderers}
         />
       );
       expect(
@@ -496,7 +496,7 @@ describe('Special Layout Tests', () => {
           data={data}
           schema={schema}
           uischema={uischema}
-          renderers={materialRenderers}
+          renderers={renderers}
         />
       );
       expect(
@@ -522,7 +522,7 @@ describe('Special Layout Tests', () => {
           data={data}
           schema={schema}
           uischema={uischema}
-          renderers={materialRenderers}
+          renderers={renderers}
         />
       );
       expect(

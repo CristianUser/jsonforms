@@ -32,7 +32,7 @@ import {
 import SliderControl, {
   sliderControlTester
 } from '../../src/controls/SliderControl';
-import { materialRenderers } from '../../src';
+import { renderers } from '../../src';
 import { Slider } from '@material-ui/core';
 
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
@@ -205,7 +205,7 @@ describe('Material slider control', () => {
     };
     const core = initCore(jsonSchema, uischema, data);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <SliderControl
           schema={jsonSchema}
           uischema={uischema}
@@ -225,7 +225,7 @@ describe('Material slider control', () => {
         data={data}
         schema={schema}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
     expect(wrapper.find(SliderControl).length).toBeTruthy();
@@ -259,7 +259,7 @@ describe('Material slider control', () => {
         data={data}
         schema={schemaWithMultipleOf}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
     expect(wrapper.find(SliderControl).length).toBeTruthy();
@@ -273,7 +273,7 @@ describe('Material slider control', () => {
         data={data}
         schema={schema}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
     expect(wrapper.find(SliderControl).length).toBeTruthy();
@@ -290,7 +290,7 @@ describe('Material slider control', () => {
         data={data}
         schema={schema}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
     expect(wrapper.find(SliderControl).length).toBeTruthy();
@@ -307,7 +307,7 @@ describe('Material slider control', () => {
         data={data}
         schema={schema}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
     expect(wrapper.find(SliderControl).length).toBeTruthy();
@@ -324,7 +324,7 @@ describe('Material slider control', () => {
         data={data}
         schema={schema}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
     expect(wrapper.find(SliderControl).length).toBeTruthy();
@@ -341,7 +341,7 @@ describe('Material slider control', () => {
         data={data}
         schema={schema}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
     expect(wrapper.find(SliderControl).length).toBeTruthy();
@@ -355,7 +355,7 @@ describe('Material slider control', () => {
   it('can be disabled', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <SliderControl
           schema={schema}
           uischema={uischema}
@@ -373,7 +373,7 @@ describe('Material slider control', () => {
         data={data}
         schema={schema}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
     expect(wrapper.find(SliderControl).length).toBeTruthy();
@@ -384,7 +384,7 @@ describe('Material slider control', () => {
   it('should render id and input id', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <SliderControl
           schema={schema}
           uischema={uischema}
@@ -415,7 +415,7 @@ describe('Material slider control', () => {
     };
     const core = initCore(schema, uischema, { foo: 5 });
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <SliderControl
           schema={jsonSchema}
           uischema={uischema}

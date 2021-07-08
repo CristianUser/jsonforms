@@ -31,7 +31,7 @@ import {
 import OneOfRadioGroupControl, {
   oneOfRadioGroupControlTester
 } from '../../src/controls/OneOfRadioGroupControl';
-import { materialRenderers } from '../../src';
+import { renderers } from '../../src';
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import {
@@ -90,7 +90,7 @@ describe('Material oneof radio group control', () => {
 
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <OneOfRadioGroupControl
           schema={oneOfSchema}

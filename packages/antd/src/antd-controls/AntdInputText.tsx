@@ -25,17 +25,10 @@
 import React, { useState } from 'react';
 import { CellProps, WithClassname } from '@jsonforms/core';
 import { areEqual } from '@jsonforms/react';
-import { InputProps } from '@material-ui/core/Input';
 import merge from 'lodash/merge';
-import { InputBaseComponentProps } from '@material-ui/core';
 import { Input } from 'antd';
 
-interface AntdTextInputProps {
-  muiInputProps?: InputProps['inputProps'];
-  inputComponent?: InputProps['inputComponent'];
-}
-
-export const AntdInputText = React.memo((props: CellProps & WithClassname & AntdTextInputProps) => {
+export const AntdInputText = React.memo((props: CellProps & WithClassname) => {
   const [clearable, setClearable] = useState(false);
   const {
     data,
@@ -46,20 +39,18 @@ export const AntdInputText = React.memo((props: CellProps & WithClassname & Antd
     uischema,
     path,
     handleChange,
-    schema,
-    muiInputProps,
-    // inputComponent
+    schema
   } = props;
   const maxLength = schema.maxLength;
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
-  let inputProps: InputBaseComponentProps;
+  let inputProps: any;
   if (appliedUiSchemaOptions.restrict) {
     inputProps = { maxLength: maxLength };
   } else {
     inputProps = {};
   }
 
-  inputProps = merge(inputProps, muiInputProps);
+  inputProps = merge(inputProps);
 
   if (appliedUiSchemaOptions.trim && maxLength !== undefined) {
     inputProps.size = maxLength;

@@ -108,7 +108,7 @@ describe('Material any of string or enum control', () => {
         data={'foo'}
         schema={schema}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
     expect(wrapper.find(AnyOfStringOrEnumControl).length).toBeTruthy();

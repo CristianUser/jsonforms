@@ -30,7 +30,7 @@ import {
 import EnumCell, {
   EnumCellTester
 } from '../../src/cells/EnumCell';
-import { materialRenderers } from '../../src';
+import { renderers } from '../../src';
 
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -73,7 +73,7 @@ describe('Material enum cell', () => {
   it('should select an item from dropdown list', () => {
     const core = initCore(schema, uischema, data);
     const wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <EnumCell
           schema={schema}
           uischema={uischema}

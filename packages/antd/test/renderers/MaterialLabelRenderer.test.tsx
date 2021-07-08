@@ -31,7 +31,7 @@ import '../../src/cells';
 import LabelRenderer, {
   labelRendererTester
 } from '../../src/additional/LabelRenderer';
-import { materialRenderers } from '../../src';
+import { renderers } from '../../src';
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { JsonForms, JsonFormsStateProvider } from '@jsonforms/react';
@@ -73,7 +73,7 @@ describe('Material Label Renderer', () => {
         data={undefined}
         schema={schema}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
     expect(wrapper.find(LabelRenderer).length).toBeTruthy();
@@ -85,7 +85,7 @@ describe('Material Label Renderer', () => {
   it('can be hidden', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <LabelRenderer
           schema={schema}
           uischema={uischema}
@@ -103,7 +103,7 @@ describe('Material Label Renderer', () => {
         data={undefined}
         schema={schema}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
     expect(wrapper.find(LabelRenderer).length).toBeTruthy();

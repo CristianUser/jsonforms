@@ -33,7 +33,7 @@ import BooleanToggleCell, {
   BooleanToggleCellTester
 } from '../../src/cells/BooleanToggleCell';
 import * as ReactDOM from 'react-dom';
-import { materialRenderers } from '../../src';
+import { renderers } from '../../src';
 
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -175,7 +175,7 @@ describe('Material boolean toggle cell', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <BooleanToggleCell schema={schema} uischema={control} path='foo' />
       </JsonFormsStateProvider>
@@ -196,7 +196,7 @@ describe('Material boolean toggle cell', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <BooleanToggleCell schema={schema} uischema={control} path='foo' />
       </JsonFormsStateProvider>
@@ -216,7 +216,7 @@ describe('Material boolean toggle cell', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <BooleanToggleCell schema={schema} uischema={control} path='foo' />
       </JsonFormsStateProvider>
@@ -229,7 +229,7 @@ describe('Material boolean toggle cell', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <BooleanToggleCell schema={schema} uischema={uischema} path='foo' />
       </JsonFormsStateProvider>
@@ -250,7 +250,7 @@ describe('Material boolean toggle cell', () => {
     };
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <TestEmitter
           onChange={({ data }) => {
@@ -273,7 +273,7 @@ describe('Material boolean toggle cell', () => {
     };
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <TestEmitter
           onChange={({ data }) => {
@@ -284,7 +284,7 @@ describe('Material boolean toggle cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, foo: false };
-    wrapper.setProps({ initState: { renderers: materialRenderers, core } });
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().checked).toBeFalsy();
@@ -298,7 +298,7 @@ describe('Material boolean toggle cell', () => {
     };
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <TestEmitter
           onChange={({ data }) => {
@@ -309,7 +309,7 @@ describe('Material boolean toggle cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, foo: undefined };
-    wrapper.setProps({ initState: { renderers: materialRenderers, core } });
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().checked).toBeFalsy();
@@ -322,7 +322,7 @@ describe('Material boolean toggle cell', () => {
     };
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <TestEmitter
           onChange={({ data }) => {
@@ -333,7 +333,7 @@ describe('Material boolean toggle cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, foo: null };
-    wrapper.setProps({ initState: { renderers: materialRenderers, core } });
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().checked).toBeFalsy();
@@ -346,7 +346,7 @@ describe('Material boolean toggle cell', () => {
     };
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <TestEmitter
           onChange={({ data }) => {
@@ -357,7 +357,7 @@ describe('Material boolean toggle cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, bar: 11 };
-    wrapper.setProps({ initState: { renderers: materialRenderers, core } });
+    wrapper.setProps({ initState: { renderers, core } });
     const input = wrapper.find('input').first();
     expect(input.props().checked).toBeTruthy();
   });
@@ -369,7 +369,7 @@ describe('Material boolean toggle cell', () => {
     };
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <TestEmitter
           onChange={({ data }) => {
@@ -380,7 +380,7 @@ describe('Material boolean toggle cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, null: false };
-    wrapper.setProps({ initState: { renderers: materialRenderers, core } });
+    wrapper.setProps({ initState: { renderers, core } });
     const input = wrapper.find('input').first();
     expect(input.props().checked).toBeTruthy();
   });
@@ -392,7 +392,7 @@ describe('Material boolean toggle cell', () => {
     };
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <TestEmitter
           onChange={({ data }) => {
@@ -403,7 +403,7 @@ describe('Material boolean toggle cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, undefined: false };
-    wrapper.setProps({ initState: { renderers: materialRenderers, core } });
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().checked).toBeTruthy();
@@ -413,7 +413,7 @@ describe('Material boolean toggle cell', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <BooleanToggleCell
           schema={schema}
@@ -431,7 +431,7 @@ describe('Material boolean toggle cell', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <BooleanToggleCell schema={schema} uischema={uischema} path='foo' />
       </JsonFormsStateProvider>
@@ -444,7 +444,7 @@ describe('Material boolean toggle cell', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <BooleanToggleCell
           schema={schema}
