@@ -36,7 +36,16 @@ import {
 } from '@jsonforms/core';
 import { areEqual, JsonFormsDispatch, useJsonForms } from '@jsonforms/react';
 import { Col, Row } from 'antd';
-import './layout.css';
+import { createUseStyles } from 'react-jss'
+
+const useStyles = createUseStyles({
+  row: {
+    width: '100%',
+    '& div:not(.ant-col)': {
+      width: '100%'
+    }
+  }
+})
 
 export const renderLayoutElements = (
   elements: UISchemaElement[],
@@ -49,11 +58,12 @@ export const renderLayoutElements = (
 ) => {
   const GridChild = direction === 'row' ? Col : Row;
   const containerProps: any = {};
+  const styles = useStyles();
 
   if (direction === 'row') {
     containerProps.flex = 1;
   } else {
-    containerProps.style = { width: '100%' };
+    containerProps.className=styles.row;
   }
 
   return elements.map((child, index) => (
