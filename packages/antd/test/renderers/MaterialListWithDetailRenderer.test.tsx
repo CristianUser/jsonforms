@@ -29,9 +29,9 @@ import {
 import * as React from 'react';
 
 import { materialRenderers } from '../../src';
-import MaterialListWithDetailRenderer, {
-  materialListWithDetailTester
-} from '../../src/additional/MaterialListWithDetailRenderer';
+import ListWithDetailRenderer, {
+  listWithDetailTester
+} from '../../src/additional/ListWithDetailRenderer';
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { JsonFormsStateProvider } from '@jsonforms/react';
@@ -110,13 +110,13 @@ describe('Material list with detail tester', () => {
         type: 'string'
       }
     };
-    expect(materialListWithDetailTester(uischema, schema)).toBe(-1);
-    expect(materialListWithDetailTester(correctUISchema, wrongSchema)).toBe(-1);
-    expect(materialListWithDetailTester(correctUISchema, schema)).toBe(4);
-    expect(materialListWithDetailTester(correctUISchema, nestedSchema)).toBe(
+    expect(listWithDetailTester(uischema, schema)).toBe(-1);
+    expect(listWithDetailTester(correctUISchema, wrongSchema)).toBe(-1);
+    expect(listWithDetailTester(correctUISchema, schema)).toBe(4);
+    expect(listWithDetailTester(correctUISchema, nestedSchema)).toBe(
       -1
     );
-    expect(materialListWithDetailTester(correctUISchema, nestedSchema2)).toBe(
+    expect(listWithDetailTester(correctUISchema, nestedSchema2)).toBe(
       4
     );
   });
@@ -130,7 +130,7 @@ describe('Material list with detail renderer', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialListWithDetailRenderer schema={schema} uischema={uischema} />
+        <ListWithDetailRenderer schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
 
@@ -141,7 +141,7 @@ describe('Material list with detail renderer', () => {
     const core = initCore(schema, uischema, []);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialListWithDetailRenderer schema={schema} uischema={uischema} />
+        <ListWithDetailRenderer schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
 
@@ -156,7 +156,7 @@ describe('Material list with detail renderer', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialListWithDetailRenderer
+        <ListWithDetailRenderer
           schema={schema}
           uischema={uischema}
           visible={false}
@@ -172,7 +172,7 @@ describe('Material list with detail renderer', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialListWithDetailRenderer schema={schema} uischema={uischema} />
+        <ListWithDetailRenderer schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
 
@@ -194,7 +194,7 @@ describe('Material list with detail renderer', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialListWithDetailRenderer
+        <ListWithDetailRenderer
           schema={schema}
           uischema={uischemaWithLabel}
         />
@@ -213,7 +213,7 @@ describe('Material list with detail renderer', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialListWithDetailRenderer
+        <ListWithDetailRenderer
           schema={titleSchema}
           uischema={uischema}
         />
@@ -228,7 +228,7 @@ describe('Material list with detail renderer', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialListWithDetailRenderer schema={schema} uischema={uischema} />
+        <ListWithDetailRenderer schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
 
@@ -246,7 +246,7 @@ describe('Material list with detail renderer', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialListWithDetailRenderer schema={schema} uischema={uischema} />
+        <ListWithDetailRenderer schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
 
@@ -263,7 +263,7 @@ describe('Material list with detail renderer', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialListWithDetailRenderer schema={schema} uischema={uischema} />
+        <ListWithDetailRenderer schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
 

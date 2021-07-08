@@ -32,7 +32,7 @@ import {
   anyOfControlTester,
   AnyOfRenderer,
   ArrayControlRenderer,
-  materialArrayControlTester,
+  arrayControlTester,
   objectControlTester,
   ObjectRenderer,
   oneOfControlTester,
@@ -41,10 +41,10 @@ import {
   enumArrayRendererTester
 } from './complex';
 import {
-  MaterialLabelRenderer,
-  materialLabelRendererTester,
-  MaterialListWithDetailRenderer,
-  materialListWithDetailTester
+  LabelRenderer,
+  labelRendererTester,
+  ListWithDetailRenderer,
+  listWithDetailTester
 } from './additional';
 import {
   AnyOfStringOrEnumControl,
@@ -83,10 +83,10 @@ import {
   categorizationTester,
   GroupLayout,
   antdGroupTester,
-  MaterialHorizontalLayout,
-  materialHorizontalLayoutTester,
-  MaterialVerticalLayout,
-  materialVerticalLayoutTester
+  HorizontalLayout,
+  horizontalLayoutTester,
+  VerticalLayout,
+  verticalLayoutTester
 } from './layouts';
 import {
   BooleanCell,
@@ -124,7 +124,7 @@ export * from './util';
 export const renderers: JsonFormsRendererRegistryEntry[] = [
   // controls
   {
-    tester: materialArrayControlTester,
+    tester: arrayControlTester,
     renderer: ArrayControlRenderer
   },
   { tester: booleanControlTester, renderer: BooleanControl },
@@ -153,10 +153,10 @@ export const renderers: JsonFormsRendererRegistryEntry[] = [
   // layouts
   { tester: antdGroupTester, renderer: GroupLayout },
   {
-    tester: materialHorizontalLayoutTester,
-    renderer: MaterialHorizontalLayout
+    tester: horizontalLayoutTester,
+    renderer: HorizontalLayout
   },
-  { tester: materialVerticalLayoutTester, renderer: MaterialVerticalLayout },
+  { tester: verticalLayoutTester, renderer: VerticalLayout },
   {
     tester: categorizationTester,
     renderer: CategorizationLayout
@@ -167,10 +167,10 @@ export const renderers: JsonFormsRendererRegistryEntry[] = [
   },
   { tester: materialArrayLayoutTester, renderer: MaterialArrayLayout },
   // additional
-  { tester: materialLabelRendererTester, renderer: MaterialLabelRenderer },
+  { tester: labelRendererTester, renderer: LabelRenderer },
   {
-    tester: materialListWithDetailTester,
-    renderer: MaterialListWithDetailRenderer
+    tester: listWithDetailTester,
+    renderer: ListWithDetailRenderer
   },
   {
     tester: anyOfStringOrEnumControlTester,

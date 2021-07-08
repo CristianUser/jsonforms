@@ -28,9 +28,9 @@ import {
   NOT_APPLICABLE
 } from '@jsonforms/core';
 import '../../src/cells';
-import MaterialLabelRenderer, {
-  materialLabelRendererTester
-} from '../../src/additional/MaterialLabelRenderer';
+import LabelRenderer, {
+  labelRendererTester
+} from '../../src/additional/LabelRenderer';
 import { materialRenderers } from '../../src';
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -51,14 +51,14 @@ const uischema = {
 
 describe('Material Label Renderer tester', () => {
   it('should fail', () => {
-    expect(materialLabelRendererTester(undefined, undefined)).toBe(
+    expect(labelRendererTester(undefined, undefined)).toBe(
       NOT_APPLICABLE
     );
-    expect(materialLabelRendererTester(null, undefined)).toBe(NOT_APPLICABLE);
-    expect(materialLabelRendererTester({ type: 'Foo' }, undefined)).toBe(
+    expect(labelRendererTester(null, undefined)).toBe(NOT_APPLICABLE);
+    expect(labelRendererTester({ type: 'Foo' }, undefined)).toBe(
       NOT_APPLICABLE
     );
-    expect(materialLabelRendererTester({ type: 'Label' }, undefined)).toBe(1);
+    expect(labelRendererTester({ type: 'Label' }, undefined)).toBe(1);
   });
 });
 
@@ -76,7 +76,7 @@ describe('Material Label Renderer', () => {
         renderers={materialRenderers}
       />
     );
-    expect(wrapper.find(MaterialLabelRenderer).length).toBeTruthy();
+    expect(wrapper.find(LabelRenderer).length).toBeTruthy();
 
     const label = wrapper.find('h6').first();
     expect(label.text()).toBe('Foo');
@@ -86,7 +86,7 @@ describe('Material Label Renderer', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialLabelRenderer
+        <LabelRenderer
           schema={schema}
           uischema={uischema}
           visible={false}
@@ -106,7 +106,7 @@ describe('Material Label Renderer', () => {
         renderers={materialRenderers}
       />
     );
-    expect(wrapper.find(MaterialLabelRenderer).length).toBeTruthy();
+    expect(wrapper.find(LabelRenderer).length).toBeTruthy();
     const label = wrapper.find('h6').first();
     expect(label.props().hidden).toBeFalsy();
   });

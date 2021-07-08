@@ -24,37 +24,27 @@
 */
 import { StatePropsOfMasterItem } from '@jsonforms/core';
 import { withJsonFormsMasterListItemProps } from '@jsonforms/react';
-import {
-    Avatar,
-    IconButton,
-    ListItem,
-    ListItemAvatar,
-    ListItemSecondaryAction,
-    ListItemText,
-} from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
+import { DeleteFilled } from '@ant-design/icons'
+import { Avatar, Button, List, Tooltip } from 'antd';
 import React from 'react';
 
 const ListWithDetailMasterItem = ({ index, childLabel, selected, handleSelect, removeItem, path }: StatePropsOfMasterItem) => {
+    const avatarStyle = selected ? { backgroundColor: '#1890FF' } : {};
+
     return (
-        <ListItem
-            button
-            selected={selected}
+        <List.Item
             onClick={handleSelect(index)}
+            actions={[
+                <Tooltip title="Delete" key="action_1">
+                    <Button icon={<DeleteFilled />} onClick={removeItem(path, index)} />
+                </Tooltip>
+            ]}
         >
-            <ListItemAvatar>
-                <Avatar aria-label='Index'>{index + 1}</Avatar>
-            </ListItemAvatar>
-            <ListItemText primary={childLabel} />
-            <ListItemSecondaryAction>
-                <IconButton
-                    aria-label='Delete'
-                    onClick={removeItem(path, index)}
-                >
-                    <DeleteIcon />
-                </IconButton>
-            </ListItemSecondaryAction>
-        </ListItem>
+            <List.Item.Meta
+                avatar={<Avatar style={avatarStyle}>{index + 1}</Avatar>}
+                title={childLabel}
+            />
+        </List.Item>
     );
 };
 

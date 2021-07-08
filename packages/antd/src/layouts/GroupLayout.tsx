@@ -34,14 +34,14 @@ import {
 import { withJsonFormsLayoutProps } from '@jsonforms/react';
 import { Card } from 'antd';
 import {
-  MaterialLayoutRenderer,
-  MaterialLayoutRendererProps
+  LayoutRenderer,
+  LayoutRendererProps
 } from '../util/layout';
 
 export const groupTester: RankedTester = rankWith(1, uiTypeIs('Group'));
 const style: { [x: string]: any } = { marginBottom: '10px' };
 
-const GroupComponent = React.memo(({ visible, enabled, uischema, ...props }: MaterialLayoutRendererProps) => {
+const GroupComponent = React.memo(({ visible, enabled, uischema, ...props }: LayoutRendererProps) => {
   const groupLayout = uischema as GroupLayout;
   return (
     <Card
@@ -49,7 +49,7 @@ const GroupComponent = React.memo(({ visible, enabled, uischema, ...props }: Mat
       title={groupLayout.label}
       style={style}
     >
-      <MaterialLayoutRenderer {...props} visible={visible} enabled={enabled} elements={groupLayout.elements} />
+      <LayoutRenderer {...props} visible={visible} enabled={enabled} elements={groupLayout.elements} />
     </Card>
   );
 });

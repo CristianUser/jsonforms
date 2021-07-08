@@ -25,12 +25,12 @@
 import GroupLayout, {
   antdGroupTester
 } from './GroupLayout';
-import MaterialHorizontalLayout, {
-  materialHorizontalLayoutTester
-} from './MaterialHorizontalLayout';
-import MaterialVerticalLayout, {
-  materialVerticalLayoutTester
-} from './MaterialVerticalLayout';
+import HorizontalLayout, {
+  horizontalLayoutTester
+} from './HorizontalLayout';
+import VerticalLayout, {
+  verticalLayoutTester
+} from './VerticalLayout';
 import CategorizationLayout, {
   categorizationTester
 } from './CategorizationLayout';
@@ -45,8 +45,8 @@ export {
   categorizationTester,
   GroupLayout,
   antdGroupTester,
-  MaterialHorizontalLayout,
-  materialHorizontalLayoutTester,
-  MaterialVerticalLayout,
-  materialVerticalLayoutTester
+  HorizontalLayout,
+  horizontalLayoutTester,
+  VerticalLayout,
+  verticalLayoutTester
 };

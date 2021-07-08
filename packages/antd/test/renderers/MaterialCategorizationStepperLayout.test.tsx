@@ -38,7 +38,7 @@ import Enzyme, { mount } from 'enzyme';
 import MaterialCategorizationStepperLayoutRenderer, {
   materialCategorizationStepperTester
 } from '../../src/layouts/MaterialCategorizationStepperLayout';
-import { MaterialLayoutRenderer, materialRenderers } from '../../src';
+import { LayoutRenderer, materialRenderers } from '../../src';
 import { Button, Step, StepButton, Stepper } from '@material-ui/core';
 import Adapter from 'enzyme-adapter-react-16';
 import { initCore } from './util';
@@ -380,7 +380,7 @@ describe('Material categorization stepper layout', () => {
       </JsonFormsStateProvider>
     );
 
-    const materialArrayLayout = wrapper.find(MaterialLayoutRenderer);
+    const materialArrayLayout = wrapper.find(LayoutRenderer);
     expect(materialArrayLayout.props().renderers).toHaveLength(0);
   });
 

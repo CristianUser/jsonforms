@@ -39,7 +39,7 @@ import {
 } from '@jsonforms/core';
 import { Control, JsonFormsStateProvider, withJsonFormsControlProps } from '@jsonforms/react';
 import { MaterialInputControl } from '../../src/controls/MaterialInputControl';
-import MaterialHorizontalLayoutRenderer from '../../src/layouts/MaterialHorizontalLayout';
+import HorizontalLayoutRenderer from '../../src/layouts/MaterialHorizontalLayout';
 import { AntdInputText } from '../../src/mui-controls';
 import { initCore } from './util';
 
@@ -247,7 +247,7 @@ describe('Material input control', () => {
     const core = initCore(jsonSchema, layout, newData);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }} >
-        <MaterialHorizontalLayoutRenderer
+        <HorizontalLayoutRenderer
           schema={jsonSchema}
           uischema={layout}
         />

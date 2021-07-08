@@ -39,8 +39,8 @@ import {
 import { RendererComponent, withJsonFormsLayoutProps } from '@jsonforms/react';
 import {
   AjvProps,
-  MaterialLayoutRenderer as LayoutRenderer,
-  MaterialLayoutRendererProps as LayoutRendererProps,
+  LayoutRenderer as LayoutRenderer,
+  LayoutRendererProps as LayoutRendererProps,
   withAjvProps
 } from '../util/layout';
 import { Button, Steps } from 'antd';

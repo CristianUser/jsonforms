@@ -46,7 +46,7 @@ import EnumArrayRenderer, {
   enumArrayRendererTester
 } from './EnumArrayRenderer';
 
-export const materialArrayControlTester: RankedTester = rankWith(
+export const arrayControlTester: RankedTester = rankWith(
   3,
   or(isObjectArrayControl, isPrimitiveArrayControl)
 );

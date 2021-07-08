@@ -23,13 +23,11 @@
   THE SOFTWARE.
 */
 import {
-  and,
   ArrayLayoutProps,
   composePaths,
   computeLabel,
   createDefaultValue,
   findUISchema,
-  isObjectArray,
   isPlainLabel,
   RankedTester,
   rankWith,
@@ -39,15 +37,15 @@ import {
   JsonFormsDispatch,
   withJsonFormsArrayLayoutProps
 } from '@jsonforms/react';
-import { Grid, Hidden, List, Typography } from '@material-ui/core';
-import map from 'lodash/map';
+import { Col, Empty, List, Row } from 'antd';
 import range from 'lodash/range';
+import merge from 'lodash/merge';
 import React, { useCallback, useMemo, useState } from 'react';
+
 import { ArrayLayoutToolbar } from '../layouts/ArrayToolbar';
 import ListWithDetailMasterItem from './ListWithDetailMasterItem';
-import merge from 'lodash/merge';
 
-export const MaterialListWithDetailRenderer = ({
+export const ListWithDetailRenderer = ({
   uischemas,
   schema,
   uischema,
@@ -98,7 +96,7 @@ export const MaterialListWithDetailRenderer = ({
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
 
   return (
-    <Hidden xsUp={!visible}>
+    <div hidden={!visible}>
       <ArrayLayoutToolbar
         label={computeLabel(
           isPlainLabel(label) ? label : label.default,
@@ -110,27 +108,24 @@ export const MaterialListWithDetailRenderer = ({
         addItem={addItem}
         createDefault={handleCreateDefaultValue}
       />
-      <Grid container direction='row' spacing={2}>
-        <Grid item xs={3}>
-          <List>
-            {data > 0 ? (
-              map(range(data), index => (
-                <ListWithDetailMasterItem
-                  index={index}
-                  path={path}
-                  schema={schema}
-                  handleSelect={handleListItemClick}
-                  removeItem={handleRemoveItem}
-                  selected={selectedIndex === index}
-                  key={index}
-                />
-              ))
-            ) : (
-              <p>No data</p>
-            )}
-          </List>
-        </Grid>
-        <Grid item xs>
+      <Row gutter={10}>
+        <Col xs={6}>
+          <List
+            dataSource={range(data)}
+            renderItem={(_item, index) =>
+              <ListWithDetailMasterItem
+                index={index}
+                path={path}
+                schema={schema}
+                handleSelect={handleListItemClick}
+                removeItem={handleRemoveItem}
+                selected={selectedIndex === index}
+                key={index}
+              />
+            }
+          />
+        </Col>
+        <Col xs={18}>
           {selectedIndex !== undefined ? (
             <JsonFormsDispatch
               renderers={renderers}
@@ -141,17 +136,17 @@ export const MaterialListWithDetailRenderer = ({
               path={composePaths(path, `${selectedIndex}`)}
             />
           ) : (
-            <Typography variant='h6'>No Selection</Typography>
+            <Empty description="No Selection"/>
           )}
-        </Grid>
-      </Grid>
-    </Hidden>
+        </Col>
+      </Row>
+    </div>
   );
 };
 
-export const materialListWithDetailTester: RankedTester = rankWith(
+export const listWithDetailTester: RankedTester = rankWith(
   4,
-  and(uiTypeIs('ListWithDetail'), isObjectArray)
+  uiTypeIs('ListWithDetail')
 );
 
-export default withJsonFormsArrayLayoutProps(MaterialListWithDetailRenderer);
+export default withJsonFormsArrayLayoutProps(ListWithDetailRenderer);

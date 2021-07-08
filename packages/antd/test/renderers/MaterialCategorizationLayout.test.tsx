@@ -38,7 +38,7 @@ import Enzyme, { mount } from 'enzyme';
 import MaterialCategorizationLayoutRenderer, {
   materialCategorizationTester
 } from '../../src/layouts/MaterialCategorizationLayout';
-import { MaterialLayoutRenderer, materialRenderers } from '../../src';
+import { LayoutRenderer, materialRenderers } from '../../src';
 import { Tab, Tabs } from '@material-ui/core';
 import Adapter from 'enzyme-adapter-react-16';
 import { initCore } from './util';
@@ -369,7 +369,7 @@ describe('Material categorization layout', () => {
       </JsonFormsStateProvider>
     );
 
-    const materialArrayLayout = wrapper.find(MaterialLayoutRenderer);
+    const materialArrayLayout = wrapper.find(LayoutRenderer);
     expect(materialArrayLayout.props().renderers).toHaveLength(0);
   });
 });

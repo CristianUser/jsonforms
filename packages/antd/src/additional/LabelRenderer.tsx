@@ -31,29 +31,28 @@ import {
   uiTypeIs,
 } from '@jsonforms/core';
 import { withJsonFormsLayoutProps } from '@jsonforms/react';
-import {
-  Hidden,
-  Typography
-} from '@material-ui/core';
+import { Typography } from 'antd';
 
 /**
  * Default tester for a label.
  * @type {RankedTester}
  */
-export const materialLabelRendererTester: RankedTester = rankWith(1, uiTypeIs('Label'));
+export const labelRendererTester: RankedTester = rankWith(1, uiTypeIs('Label'));
+
+const { Title } = Typography;
 
 /**
  * Default renderer for a label.
  */
-export const MaterialLabelRenderer = ({ uischema, visible }: OwnPropsOfRenderer) => {
+export const LabelRenderer = ({ uischema, visible }: OwnPropsOfRenderer) => {
   const labelElement: LabelElement = uischema as LabelElement;
   return (
-    <Hidden xsUp={!visible}>
-      <Typography variant='h6'>
+    <div hidden={!visible}>
+      <Title level={4}>
         {labelElement.text !== undefined && labelElement.text !== null && labelElement.text}
-      </Typography>
-    </Hidden>
+      </Title>
+    </div>
   );
 };
 
-export default withJsonFormsLayoutProps(MaterialLabelRenderer);
+export default withJsonFormsLayoutProps(LabelRenderer);

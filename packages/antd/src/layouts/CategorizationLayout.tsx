@@ -39,8 +39,8 @@ import { RendererComponent, withJsonFormsLayoutProps } from '@jsonforms/react';
 import { Tabs } from 'antd';
 import {
   AjvProps,
-  MaterialLayoutRenderer as LayoutRenderer,
-  MaterialLayoutRendererProps as LayoutRendererProps,
+  LayoutRenderer as LayoutRenderer,
+  LayoutRendererProps as LayoutRendererProps,
   withAjvProps
 } from '../util/layout';
 

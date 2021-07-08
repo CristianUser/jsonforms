@@ -24,39 +24,39 @@
 */
 import React from 'react';
 import {
-  HorizontalLayout,
   LayoutProps,
   RankedTester,
   rankWith,
   uiTypeIs,
+  VerticalLayout,
 } from '@jsonforms/core';
-import { withJsonFormsLayoutProps } from '@jsonforms/react';
 import {
-  MaterialLayoutRenderer,
-  MaterialLayoutRendererProps
+  LayoutRenderer,
+  LayoutRendererProps
 } from '../util/layout';
+import { withJsonFormsLayoutProps } from '@jsonforms/react';
 
 /**
- * Default tester for a horizontal layout.
+ * Default tester for a vertical layout.
  * @type {RankedTester}
  */
-export const materialHorizontalLayoutTester: RankedTester = rankWith(
-  2,
-  uiTypeIs('HorizontalLayout')
+export const verticalLayoutTester: RankedTester = rankWith(
+  1,
+  uiTypeIs('VerticalLayout')
 );
 
-export const MaterialHorizontalLayoutRenderer = ({ uischema, renderers, cells, schema, path, enabled, visible }: LayoutProps) => {
-  const layout = uischema as HorizontalLayout;
-  const childProps: MaterialLayoutRendererProps = {
-    elements: layout.elements,
+export const VerticalLayoutRenderer = ({ uischema, schema, path, enabled, visible, renderers, cells }: LayoutProps) => {
+  const verticalLayout = uischema as VerticalLayout;
+  const childProps: LayoutRendererProps = {
+    elements: verticalLayout.elements,
     schema,
     path,
     enabled,
-    direction: 'row',
+    direction: 'column',
     visible
   };
 
-  return <MaterialLayoutRenderer {...childProps} renderers={renderers} cells={cells} />;
+  return <LayoutRenderer {...childProps} renderers={renderers} cells={cells} />;
 };
 
-export default withJsonFormsLayoutProps(MaterialHorizontalLayoutRenderer);
+export default withJsonFormsLayoutProps(VerticalLayoutRenderer);
