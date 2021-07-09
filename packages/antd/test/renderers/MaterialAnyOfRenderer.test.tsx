@@ -31,9 +31,9 @@ import {
   ControlElement
 } from '@jsonforms/core';
 import {
-  MaterialAnyOfRenderer,
-  materialCells,
-  materialRenderers
+  AnyOfRenderer,
+  cells,
+  renderers
 } from '../../src';
 import { JsonForms, JsonFormsStateProvider } from '@jsonforms/react';
 import { initCore, TestEmitter } from './util';
@@ -93,13 +93,13 @@ describe('Material anyOf renderer', () => {
         data={undefined}
         schema={schema}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
         onChange={({ data }) => {
           onChangeData.data = data;
         }}
       />
     );
-    expect(wrapper.find(MaterialAnyOfRenderer).length).toBeTruthy();
+    expect(wrapper.find(AnyOfRenderer).length).toBeTruthy();
     const input = wrapper.find('input').first();
     input.simulate('change', { target: { value: 'test' } });
     wrapper.update();
@@ -156,8 +156,8 @@ describe('Material anyOf renderer', () => {
     };
     const core = initCore(schema, uischema);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialAnyOfRenderer
+      <JsonFormsStateProvider initState={{ renderers, core }}>
+        <AnyOfRenderer
           schema={schema}
           uischema={uischema}
         />
@@ -230,13 +230,13 @@ describe('Material anyOf renderer', () => {
     };
     const core = initCore(schema, uischema);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, cells: materialCells, core }}>
+      <JsonFormsStateProvider initState={{ renderers, cells, core }}>
         <TestEmitter
           onChange={({ data }) => {
             onChangeData.data = data;
           }}
         />
-        <MaterialAnyOfRenderer
+        <AnyOfRenderer
           schema={schema}
           uischema={uischema}
         />
@@ -290,8 +290,8 @@ describe('Material anyOf renderer', () => {
     };
     const core = initCore(schema, uischema);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialAnyOfRenderer
+      <JsonFormsStateProvider initState={{ renderers, core }}>
+        <AnyOfRenderer
           schema={schema}
           uischema={uischema}
           visible={false}

@@ -29,35 +29,35 @@ import {
   RankedTester,
   rankWith
 } from '@jsonforms/core';
-import MaterialArrayControlRenderer from './MaterialArrayControlRenderer';
-import MaterialObjectRenderer, {
-  materialObjectControlTester
-} from './MaterialObjectRenderer';
-import MaterialAllOfRenderer, {
-  materialAllOfControlTester
-} from './MaterialAllOfRenderer';
-import MaterialAnyOfRenderer, {
-  materialAnyOfControlTester
-} from './MaterialAnyOfRenderer';
-import MaterialOneOfRenderer, {
-  materialOneOfControlTester
-} from './MaterialOneOfRenderer';
-import MaterialEnumArrayRenderer, {
-  materialEnumArrayRendererTester
-} from './MaterialEnumArrayRenderer';
+import ArrayControlRenderer from './ArrayControlRenderer';
+import ObjectRenderer, {
+  objectControlTester
+} from './ObjectRenderer';
+import AllOfRenderer, {
+  allOfControlTester
+} from './AllOfRenderer';
+import AnyOfRenderer, {
+  anyOfControlTester
+} from './AnyOfRenderer';
+import OneOfRenderer, {
+  oneOfControlTester
+} from './OneOfRenderer';
+import EnumArrayRenderer, {
+  enumArrayRendererTester
+} from './EnumArrayRenderer';
 
-export const materialArrayControlTester: RankedTester = rankWith(
+export const arrayControlTester: RankedTester = rankWith(
   3,
   or(isObjectArrayControl, isPrimitiveArrayControl)
 );
-export { MaterialArrayControlRenderer };
-export { MaterialObjectRenderer };
-export { MaterialAllOfRenderer };
-export { MaterialAnyOfRenderer };
-export { MaterialOneOfRenderer };
-export { MaterialEnumArrayRenderer };
-export { materialObjectControlTester };
-export { materialAllOfControlTester };
-export { materialAnyOfControlTester };
-export { materialOneOfControlTester };
-export { materialEnumArrayRendererTester };
+export { ArrayControlRenderer };
+export { ObjectRenderer };
+export { AllOfRenderer };
+export { AnyOfRenderer };
+export { OneOfRenderer };
+export { EnumArrayRenderer };
+export { objectControlTester };
+export { allOfControlTester };
+export { anyOfControlTester };
+export { oneOfControlTester };
+export { enumArrayRendererTester };

@@ -22,112 +22,112 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import MaterialBooleanControl, {
-  materialBooleanControlTester,
-  MaterialBooleanControl as MaterialBooleanControlUnwrapped
-} from './MaterialBooleanControl';
-import MaterialBooleanToggleControl, {
-  materialBooleanToggleControlTester,
-  MaterialBooleanToggleControl as MaterialBooleanToggleControlUnwrapped
-} from './MaterialBooleanToggleControl';
+import BooleanControl, {
+  BooleanControl as BooleanControlUnwrapped,
+  booleanControlTester
+} from './BooleanControl';
+import BooleanToggleControl, {
+  BooleanToggleControl as BooleanToggleControlUnwrapped,
+  booleanToggleControlTester
+} from './BooleanToggleControl';
 import MaterialEnumControl, {
-  materialEnumControlTester,
-  MaterialEnumControl as MaterialEnumControlUnwrapped
-} from './MaterialEnumControl';
-import MaterialNativeControl, {
-  materialNativeControlTester,
-  MaterialNativeControl as MaterialNativeControlUnwrapped
-} from './MaterialNativeControl';
+  EnumControl as EnumControlUnwrapped,
+  enumControlTester
+} from './EnumControl';
+import NativeControl, {
+  NativeControl as NativeControlUnwrapped,
+  nativeControlTester
+} from './NativeControl';
 import MaterialDateControl, {
-  materialDateControlTester,
-  MaterialDateControl as MaterialDateControlUnwrapped
-} from './MaterialDateControl';
-import MaterialDateTimeControl, {
-  materialDateTimeControlTester,
-  MaterialDateTimeControl as MaterialDateTimeControlUnwrapped
-} from './MaterialDateTimeControl';
-import MaterialSliderControl, {
-  materialSliderControlTester,
-  MaterialSliderControl as MaterialSliderControlUnwrapped
-} from './MaterialSliderControl';
-import MaterialRadioGroupControl, {
-  materialRadioGroupControlTester,
-  MaterialRadioGroupControl as MaterialRadioGroupControlUnwrapped
-} from './MaterialRadioGroupControl';
-import MaterialIntegerControl, {
-  materialIntegerControlTester,
-  MaterialIntegerControl as MaterialIntegerControlUnwrapped
-} from './MaterialIntegerControl';
+  DateControl as MaterialDateControlUnwrapped,
+  dateControlTester
+} from './DateControl';
+import DateTimeControl, {
+  DateTimeControl as DateTimeControlUnwrapped,
+  dateTimeControlTester
+} from './DateTimeControl';
+import SliderControl, {
+  SliderControl as SliderControlUnwrapped,
+  sliderControlTester
+} from './SliderControl';
+import RadioGroupControl, {
+  RadioGroupControl as RadioGroupControlUnwrapped,
+  radioGroupControlTesterGroup
+} from './RadioGroupControl';
+import IntegerControl, {
+  IntegerControl as IntegerControlUnwrapped,
+  integerControlTester
+} from './IntegerControl';
 import MaterialNumberControl, {
-  materialNumberControlTester,
-  MaterialNumberControl as MaterialNumberControlUnwrapped
-} from './MaterialNumberControl';
-import MaterialTextControl, {
-  materialTextControlTester,
-  MaterialTextControl as MaterialTextControlUnwrapped
-} from './MaterialTextControl';
+  NumberControl as NumberControlUnwrapped,
+  numberControlTester
+} from './NumberControl';
+import TextControl, {
+  TextControl as TextControlUnwrapped,
+  textControlTester
+} from './TextControl';
 
-import MaterialAnyOfStringOrEnumControl, {
-  materialAnyOfStringOrEnumControlTester,
-  MaterialAnyOfStringOrEnumControl as MaterialAnyOfStringOrEnumControlUnwrapped
-} from './MaterialAnyOfStringOrEnumControl';
+import AnyOfStringOrEnumControl, {
+  AnyOfStringOrEnumControl as AnyOfStringOrEnumControlUnwrapped,
+  anyOfStringOrEnumControlTester
+} from './AnyOfStringOrEnumControl';
 
-import MaterialOneOfEnumControl, {
-  materialOneOfEnumControlTester,
-  MaterialOneOfEnumControl as MaterialOneOfEnumControlUnwrapped
-} from './MaterialOneOfEnumControl';
+import OneOfEnumControl, {
+  OneOfEnumControl as OneOfEnumControlUnwrapped,
+  oneOfEnumControlTester
+} from './OneOfEnumControl';
 
-import MaterialOneOfRadioGroupControl, {
-  materialOneOfRadioGroupControlTester,
-  MaterialOneOfRadioGroupControl as MaterialOneOfRadioGroupControlUnwrapped
-} from './MaterialOneOfRadioGroupControl';
+import OneOfRadioGroupControl, {
+  OneOfRadioGroupControl as OneOfRadioGroupControlUnwrapped,
+  oneOfRadioGroupControlTester
+} from './OneOfRadioGroupControl';
 
 export const Unwrapped = {
-  MaterialBooleanControl: MaterialBooleanControlUnwrapped,
-  MaterialBooleanToggleControl: MaterialBooleanToggleControlUnwrapped,
-  MaterialEnumControl: MaterialEnumControlUnwrapped,
-  MaterialNativeControl: MaterialNativeControlUnwrapped,
+  BooleanControl: BooleanControlUnwrapped,
+  BooleanToggleControl: BooleanToggleControlUnwrapped,
+  MaterialEnumControl: EnumControlUnwrapped,
+  NativeControl: NativeControlUnwrapped,
   MaterialDateControl: MaterialDateControlUnwrapped,
-  MaterialDateTimeControl: MaterialDateTimeControlUnwrapped,
-  MaterialSliderControl: MaterialSliderControlUnwrapped,
-  MaterialRadioGroupControl: MaterialRadioGroupControlUnwrapped,
-  MaterialIntegerControl: MaterialIntegerControlUnwrapped,
-  MaterialNumberControl: MaterialNumberControlUnwrapped,
-  MaterialTextControl: MaterialTextControlUnwrapped,
-  MaterialAnyOfStringOrEnumControl: MaterialAnyOfStringOrEnumControlUnwrapped,
-  MaterialOneOfEnumControl: MaterialOneOfEnumControlUnwrapped,
-  MaterialOneOfRadioGroupControl: MaterialOneOfRadioGroupControlUnwrapped
+  DateTimeControl: DateTimeControlUnwrapped,
+  SliderControl: SliderControlUnwrapped,
+  RadioGroupControl: RadioGroupControlUnwrapped,
+  IntegerControl: IntegerControlUnwrapped,
+  MaterialNumberControl: NumberControlUnwrapped,
+  TextControl: TextControlUnwrapped,
+  AnyOfStringOrEnumControl: AnyOfStringOrEnumControlUnwrapped,
+  OneOfEnumControl: OneOfEnumControlUnwrapped,
+  OneOfRadioGroupControl: OneOfRadioGroupControlUnwrapped
 };
 
 export {
-  MaterialBooleanControl,
-  materialBooleanControlTester,
-  MaterialBooleanToggleControl,
-  materialBooleanToggleControlTester,
+  BooleanControl,
+  booleanControlTester,
+  BooleanToggleControl,
+  booleanToggleControlTester,
   MaterialEnumControl,
-  materialEnumControlTester,
-  MaterialNativeControl,
-  materialNativeControlTester,
+  enumControlTester,
+  NativeControl,
+  nativeControlTester,
   MaterialDateControl,
-  materialDateControlTester,
-  MaterialDateTimeControl,
-  materialDateTimeControlTester,
-  MaterialSliderControl,
-  materialSliderControlTester,
-  MaterialRadioGroupControl,
-  materialRadioGroupControlTester,
-  MaterialIntegerControl,
-  materialIntegerControlTester,
+  dateControlTester,
+  DateTimeControl,
+  dateTimeControlTester,
+  SliderControl,
+  sliderControlTester,
+  RadioGroupControl,
+  radioGroupControlTesterGroup,
+  IntegerControl,
+  integerControlTester,
   MaterialNumberControl,
-  materialNumberControlTester,
-  MaterialTextControl,
-  materialTextControlTester,
-  MaterialAnyOfStringOrEnumControl,
-  materialAnyOfStringOrEnumControlTester,
-  MaterialOneOfEnumControl,
-  materialOneOfEnumControlTester,
-  MaterialOneOfRadioGroupControl,
-  materialOneOfRadioGroupControlTester
+  numberControlTester,
+  TextControl,
+  textControlTester,
+  AnyOfStringOrEnumControl,
+  anyOfStringOrEnumControlTester,
+  OneOfEnumControl,
+  oneOfEnumControlTester,
+  OneOfRadioGroupControl,
+  oneOfRadioGroupControlTester
 };
 
-export * from './MaterialInputControl';
+export * from './InputControl';

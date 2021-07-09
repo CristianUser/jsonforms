@@ -27,7 +27,7 @@ import * as React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import MaterialGroupLayout from '../../src/layouts/MaterialGroupLayout';
-import { MaterialLayoutRenderer } from '../../src/util/layout';
+import { LayoutRenderer } from '../../src/util/layout';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -69,7 +69,7 @@ describe('Material group layout', () => {
     const wrapper = mount(
       <MaterialGroupLayout schema={schema} uischema={uischema} />
     );
-    expect(wrapper.find(MaterialLayoutRenderer).props().direction).toBe(
+    expect(wrapper.find(LayoutRenderer).props().direction).toBe(
       'column'
     );
   });
@@ -82,6 +82,6 @@ describe('Material group layout', () => {
         direction={'row'}
       />
     );
-    expect(wrapper.find(MaterialLayoutRenderer).props().direction).toBe('row');
+    expect(wrapper.find(LayoutRenderer).props().direction).toBe('row');
   });
 });

@@ -22,11 +22,11 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import MaterialLabelRenderer, {
-  materialLabelRendererTester
-} from './MaterialLabelRenderer';
-export { MaterialLabelRenderer, materialLabelRendererTester };
-import MaterialListWithDetailRenderer, {
-  materialListWithDetailTester
-} from './MaterialListWithDetailRenderer';
-export { MaterialListWithDetailRenderer, materialListWithDetailTester };
+import LabelRenderer, {
+  labelRendererTester
+} from './LabelRenderer';
+export { LabelRenderer, labelRendererTester };
+import ListWithDetailRenderer, {
+  listWithDetailTester
+} from './ListWithDetailRenderer';
+export { ListWithDetailRenderer, listWithDetailTester };

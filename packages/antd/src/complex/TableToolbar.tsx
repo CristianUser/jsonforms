@@ -29,16 +29,12 @@ import {
   JsonSchema,
   Labels
 } from '@jsonforms/core';
-import IconButton from '@material-ui/core/IconButton';
-import { Grid, Hidden, Typography } from '@material-ui/core';
-import TableRow from '@material-ui/core/TableRow';
-import Tooltip from '@material-ui/core/Tooltip';
-import AddIcon from '@material-ui/icons/Add';
+import { Button, Col, PageHeader, Row, Tooltip, Typography } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import ValidationIcon from './ValidationIcon';
-import NoBorderTableCell from './NoBorderTableCell';
 
+const { Title } = Typography;
 export interface MaterialTableToolbarProps {
-  numColumns: number;
   errors: string;
   label: string | Labels;
   path: string;
@@ -49,14 +45,18 @@ export interface MaterialTableToolbarProps {
   addItem(path: string, value: any): () => void;
 }
 
-const fixedCellSmall = {
-  paddingLeft: 0,
-  paddingRight: 0,
-}
+const renderTitle = (label: string | Labels, errors: string) =>
+(<Row>
+  <Col>
+    <Title level={3} >{label}</Title>
+  </Col>
+  <Col style={{ padding: '0 10px' }}>
+    <ValidationIcon id='tooltip-validation' errorMessages={errors} />
+  </Col>
+</Row>);
 
 const TableToolbar = React.memo(
   ({
-    numColumns,
     errors,
     label,
     path,
@@ -64,46 +64,15 @@ const TableToolbar = React.memo(
     schema,
     enabled
   }: MaterialTableToolbarProps) => (
-    <TableRow>
-      <NoBorderTableCell colSpan={numColumns}>
-        <Grid
-          container
-          justify={'flex-start'}
-          alignItems={'center'}
-          spacing={2}
-        >
-          <Grid item>
-            <Typography variant={'h6'}>{label}</Typography>
-          </Grid>
-          <Grid item>
-            <Hidden smUp={errors.length === 0}>
-              <Grid item>
-                <ValidationIcon
-                  id='tooltip-validation'
-                  errorMessages={errors}
-                />
-              </Grid>
-            </Hidden>
-          </Grid>
-        </Grid>
-      </NoBorderTableCell>
-      {enabled ? (
-        <NoBorderTableCell align='right' style={ fixedCellSmall }>
-          <Tooltip
-            id='tooltip-add'
-            title={`Add to ${label}`}
-            placement='bottom'
-          >
-            <IconButton
-              aria-label={`Add to ${label}`}
-              onClick={addItem(path, createDefaultValue(schema))}
-            >
-              <AddIcon />
-            </IconButton>
-          </Tooltip>
-        </NoBorderTableCell>
-      ) : null}
-    </TableRow>
+    <PageHeader
+      ghost={false}
+      title={renderTitle(label, errors)}
+      extra={enabled ? [
+        <Tooltip key='1' title={`Add to ${label}`}>
+          <Button type='primary' onClick={addItem(path, createDefaultValue(schema))} shape='circle' icon={<PlusOutlined />} />
+        </Tooltip>
+      ] : []}
+    />
   )
 );
 

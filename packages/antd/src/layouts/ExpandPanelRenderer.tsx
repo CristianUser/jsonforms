@@ -12,15 +12,15 @@ import {
   composePaths,
   ControlElement,
   findUISchema,
+  getFirstPrimitiveProp,
+  JsonFormsCellRendererRegistryEntry,
   JsonFormsRendererRegistryEntry,
+  JsonFormsUISchemaRegistryEntry,
   JsonSchema,
   moveDown,
   moveUp,
   Resolve,
-  update,
-  JsonFormsCellRendererRegistryEntry,
-  JsonFormsUISchemaRegistryEntry,
-  getFirstPrimitiveProp
+  update
 } from '@jsonforms/core';
 import { Button, Collapse } from 'antd';
 

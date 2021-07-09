@@ -8,15 +8,16 @@ import {
   Actions
 } from '@jsonforms/core';
 import { ExtendedUnwrapped } from '../src/extended';
-import { materialAutocompleteOneOfEnumControlTester } from '../src/extended/MaterialAutocompleteOneOfEnumControl';
+import { autocompleteOneOfEnumControlTester } from '../src/extended/AntdAutocompleteOneOfEnumControl';
 import { withJsonFormsOneOfEnumProps } from '@jsonforms/react';
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
+import { Typography } from 'antd';
+
 const MyAutocompleteControl = (props: ControlProps & OwnPropsOfEnum) => {
   return (
-    <ExtendedUnwrapped.MaterialAutocompleteOneOfEnumControl
+    <ExtendedUnwrapped.AutocompleteOneOfEnumControl
       {...props}
-      renderOption={option => (<Typography>{`${option?.value}\t-\t${option?.label}`}</Typography>)}
+      renderOption={option => (<Typography.Text>{`${option?.value}\t-\t${option?.label}`}</Typography.Text>)}
       filterOptions={(options, state) => options.filter(o => o.label.includes(state.inputValue) || o.value.includes(state.inputValue))}
     />
   );
@@ -24,7 +25,7 @@ const MyAutocompleteControl = (props: ControlProps & OwnPropsOfEnum) => {
 
 const myAutocompleteTester: RankedTester = withIncreasedRank(
   1,
-  materialAutocompleteOneOfEnumControlTester
+  autocompleteOneOfEnumControlTester
 );
 
 const ConnectedControl = withJsonFormsOneOfEnumProps(MyAutocompleteControl);

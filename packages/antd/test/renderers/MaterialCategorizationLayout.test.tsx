@@ -38,7 +38,7 @@ import Enzyme, { mount } from 'enzyme';
 import MaterialCategorizationLayoutRenderer, {
   materialCategorizationTester
 } from '../../src/layouts/MaterialCategorizationLayout';
-import { MaterialLayoutRenderer, materialRenderers } from '../../src';
+import { LayoutRenderer, renderers } from '../../src';
 import { Tab, Tabs } from '@material-ui/core';
 import Adapter from 'enzyme-adapter-react-16';
 import { initCore } from './util';
@@ -204,7 +204,7 @@ describe('Material categorization layout', () => {
 
     const core = initCore(fixture.schema, fixture.uischema, fixture.data);
     const wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <MaterialCategorizationLayoutRenderer
           {...layoutDefaultProps}
           schema={fixture.schema}
@@ -259,7 +259,7 @@ describe('Material categorization layout', () => {
     const core = initCore(fixture.schema, fixture.uischema, data);
 
     const wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <MaterialCategorizationLayoutRenderer
           {...layoutDefaultProps}
           schema={fixture.schema}
@@ -284,7 +284,7 @@ describe('Material categorization layout', () => {
     const core = initCore(fixture.schema, fixture.uischema, fixture.data);
 
     const wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <MaterialCategorizationLayoutRenderer
           {...layoutDefaultProps}
           schema={fixture.schema}
@@ -301,7 +301,7 @@ describe('Material categorization layout', () => {
   it('is shown by default', () => {
     const core = initCore(fixture.schema, fixture.uischema, fixture.data);
     const wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <MaterialCategorizationLayoutRenderer
           {...layoutDefaultProps}
           schema={fixture.schema}
@@ -342,7 +342,7 @@ describe('Material categorization layout', () => {
     };
     const core = initCore(fixture.schema, fixture.uischema, fixture.data);
     const wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <MaterialCategorizationLayoutRenderer
           {...layoutDefaultProps}
           schema={fixture.schema}
@@ -359,7 +359,7 @@ describe('Material categorization layout', () => {
     const core = initCore(fixture.schema, fixture.uischema, fixture.data);
     const renderers: any[] = [];
     const wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <MaterialCategorizationLayoutRenderer
           {...layoutDefaultProps}
           schema={fixture.schema}
@@ -369,7 +369,7 @@ describe('Material categorization layout', () => {
       </JsonFormsStateProvider>
     );
 
-    const materialArrayLayout = wrapper.find(MaterialLayoutRenderer);
+    const materialArrayLayout = wrapper.find(LayoutRenderer);
     expect(materialArrayLayout.props().renderers).toHaveLength(0);
   });
 });

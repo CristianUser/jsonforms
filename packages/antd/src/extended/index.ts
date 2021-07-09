@@ -22,35 +22,34 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import MaterialAutocompleteEnumControl, {
-  materialAutocompleteEnumControlTester,
-  MaterialAutocompleteEnumControl as MaterialAutocompleteEnumControlUnwrapped
-} from './MaterialAutocompleteEnumControl';
+import AutocompleteEnumControl, {
+  AutocompleteEnumControl as AutocompleteEnumControlUnwrapped,
+  autocompleteEnumControlTester
+} from './AntdAutocompleteEnumControl';
 
-import MaterialAutocompleteOneOfEnumControl, {
-  materialAutocompleteOneOfEnumControlTester,
-  MaterialAutocompleteOneOfEnumControl as MaterialAutocompleteOneOfEnumControlUnwrapped
-} from './MaterialAutocompleteOneOfEnumControl';
+import AutocompleteOneOfEnumControl, {
+  AutocompleteOneOfEnumControl as AutocompleteOneOfEnumControlUnwrapped,
+  autocompleteOneOfEnumControlTester
+} from './AntdAutocompleteOneOfEnumControl';
 
 import { JsonFormsRendererRegistryEntry } from '@jsonforms/core';
-import { materialRenderers } from '../';
+import { renderers } from '../index';
 
 /**
- * Includes all 'materialRenderers' and adds additional renderers based on '@material-ui/lab'
+ * Includes all 'renderers' and adds additional renderers based on '@material-ui/lab'
  */
-export const extendedMaterialRenderers: JsonFormsRendererRegistryEntry[] = [
+export const extendedRenderers: JsonFormsRendererRegistryEntry[] = [
   {
-    tester: materialAutocompleteOneOfEnumControlTester,
-    renderer: MaterialAutocompleteOneOfEnumControl
+    tester: autocompleteOneOfEnumControlTester,
+    renderer: AutocompleteOneOfEnumControl
   },
   {
-    tester: materialAutocompleteEnumControlTester,
-    renderer: MaterialAutocompleteEnumControl
+    tester: autocompleteEnumControlTester,
+    renderer: AutocompleteEnumControl
   },
-  ...materialRenderers
-];
+].concat(renderers);
 
 export const ExtendedUnwrapped = {
-  MaterialAutocompleteEnumControl: MaterialAutocompleteEnumControlUnwrapped,
-  MaterialAutocompleteOneOfEnumControl: MaterialAutocompleteOneOfEnumControlUnwrapped
+  AutocompleteEnumControl: AutocompleteEnumControlUnwrapped,
+  AutocompleteOneOfEnumControl: AutocompleteOneOfEnumControlUnwrapped
 };

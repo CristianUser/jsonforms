@@ -27,10 +27,10 @@ import * as React from 'react';
 import {
   ControlElement
 } from '@jsonforms/core';
-import MaterialEnumCell, {
-  materialEnumCellTester
-} from '../../src/cells/MaterialEnumCell';
-import { materialRenderers } from '../../src';
+import EnumCell, {
+  EnumCellTester
+} from '../../src/cells/EnumCell';
+import { renderers } from '../../src';
 
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -56,7 +56,7 @@ describe('Material enum cell tester', () => {
       scope: '#/properties/nationality'
     };
     expect(
-      materialEnumCellTester(control, {
+      EnumCellTester(control, {
         type: 'object',
         properties: {
           nationality: {
@@ -73,8 +73,8 @@ describe('Material enum cell', () => {
   it('should select an item from dropdown list', () => {
     const core = initCore(schema, uischema, data);
     const wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialEnumCell
+      <JsonFormsStateProvider initState={{ renderers, core }}>
+        <EnumCell
           schema={schema}
           uischema={uischema}
           path='nationality'

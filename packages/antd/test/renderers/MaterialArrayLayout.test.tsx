@@ -28,10 +28,10 @@ import {
 } from '@jsonforms/core';
 import * as React from 'react';
 
-import { materialRenderers } from '../../src';
+import { renderers } from '../../src';
 import {
   MaterialArrayLayout,
-  materialArrayLayoutTester
+  arrayLayoutTester
 } from '../../src/layouts';
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -154,13 +154,13 @@ const uischemaOptions: {
 
 describe('Material array layout tester', () => {
   it('should only be applicable for intermediate array or when containing proper options', () => {
-    expect(materialArrayLayoutTester(uischema, schema)).toBe(-1);
-    expect(materialArrayLayoutTester(uischema, nestedSchema)).toBe(4);
-    expect(materialArrayLayoutTester(uischema, nestedSchema2)).toBe(4);
+    expect(arrayLayoutTester(uischema, schema)).toBe(-1);
+    expect(arrayLayoutTester(uischema, nestedSchema)).toBe(4);
+    expect(arrayLayoutTester(uischema, nestedSchema2)).toBe(4);
 
-    expect(materialArrayLayoutTester(uischemaOptions.default, schema)).toBe(-1);
-    expect(materialArrayLayoutTester(uischemaOptions.generate, schema)).toBe(4);
-    expect(materialArrayLayoutTester(uischemaOptions.inline, schema)).toBe(4);
+    expect(arrayLayoutTester(uischemaOptions.default, schema)).toBe(-1);
+    expect(arrayLayoutTester(uischemaOptions.generate, schema)).toBe(4);
+    expect(arrayLayoutTester(uischemaOptions.inline, schema)).toBe(4);
   });
 });
 
@@ -172,7 +172,7 @@ describe('Material array layout', () => {
   it('should render two by two children', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <MaterialArrayLayout schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
@@ -185,7 +185,7 @@ describe('Material array layout', () => {
   it('should generate uischema when options.detail=GENERATE', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <MaterialArrayLayout schema={schema} uischema={uischemaOptions.generate} />
       </JsonFormsStateProvider>
     );
@@ -198,7 +198,7 @@ describe('Material array layout', () => {
   it('should use inline options.detail uischema', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <MaterialArrayLayout schema={schema} uischema={uischemaOptions.inline} />
       </JsonFormsStateProvider>
     );
@@ -211,7 +211,7 @@ describe('Material array layout', () => {
   it('should be hideable', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <MaterialArrayLayout
           schema={schema}
           uischema={uischema}
@@ -228,7 +228,7 @@ describe('Material array layout', () => {
   it('should have renderers prop via ownProps', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <MaterialArrayLayout
           schema={schema}
           uischema={uischema}
@@ -251,7 +251,7 @@ describe('Material array layout', () => {
         data={data}
         schema={nestedSchema}
         uischema={uischemaWithLabel}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
 
@@ -268,7 +268,7 @@ describe('Material array layout', () => {
     };
     const core = initCore(schema, uischema, data);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <MaterialArrayLayout schema={titleSchema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
@@ -283,7 +283,7 @@ describe('Material array layout', () => {
         data={data}
         schema={nestedSchema}
         uischema={uischemaWithSortOption}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
 
@@ -315,7 +315,7 @@ describe('Material array layout', () => {
         data={data}
         schema={nestedSchema}
         uischema={uischemaWithSortOption}
-        renderers={materialRenderers}
+        renderers={renderers}
         onChange={({ data }) => {
           onChangeData.data = data;
         }}
@@ -352,7 +352,7 @@ describe('Material array layout', () => {
         data={data}
         schema={nestedSchema}
         uischema={uischemaWithSortOption}
-        renderers={materialRenderers}
+        renderers={renderers}
         onChange={({ data }) => {
           onChangeData.data = data;
         }}
@@ -386,7 +386,7 @@ describe('Material array layout', () => {
         data={data}
         schema={nestedSchema}
         uischema={uischemaWithSortOption}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
 
@@ -406,7 +406,7 @@ describe('Material array layout', () => {
         data={data}
         schema={nestedSchema}
         uischema={uischemaWithSortOption}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
 
@@ -436,7 +436,7 @@ describe('Material array layout', () => {
   it('should render first simple property as child label', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <MaterialArrayLayout schema={schema} uischema={uischemaWithSortOption} />
       </JsonFormsStateProvider>
     );
@@ -451,7 +451,7 @@ describe('Material array layout', () => {
         data={data}
         schema={nestedSchema}
         uischema={uischemaWithChildLabelProp}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
 

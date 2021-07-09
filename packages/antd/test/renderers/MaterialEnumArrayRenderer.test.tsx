@@ -5,13 +5,13 @@ import Enzyme, { mount, ReactWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
 import {
-  materialEnumArrayRendererTester,
-  MaterialEnumArrayRenderer
+  enumArrayRendererTester,
+  EnumArrayRenderer
 } from '../../src';
 
-const MaterialEnumArrayRendererRegistration = {
-  tester: materialEnumArrayRendererTester,
-  renderer: MaterialEnumArrayRenderer
+const EnumArrayRendererRegistration = {
+  tester: enumArrayRendererTester,
+  renderer: EnumArrayRenderer
 };
 const data = ['bar'];
 const oneOfSchema = {
@@ -48,13 +48,13 @@ Enzyme.configure({ adapter: new Adapter() });
 describe('EnumArrayControl tester', () => {
   test('should fail', () => {
     expect(
-      materialEnumArrayRendererTester(uischema, {
+      enumArrayRendererTester(uischema, {
         type: 'array',
         items: {}
       })
     ).toBe(NOT_APPLICABLE);
     expect(
-      materialEnumArrayRendererTester(uischema, {
+      enumArrayRendererTester(uischema, {
         type: 'array',
         items: {
           anyOf: []
@@ -64,7 +64,7 @@ describe('EnumArrayControl tester', () => {
   });
 
   it('should succeed for schema with enum items', () => {
-    expect(materialEnumArrayRendererTester(uischema, enumSchema)).toBe(5);
+    expect(enumArrayRendererTester(uischema, enumSchema)).toBe(5);
   });
 });
 
@@ -81,7 +81,7 @@ describe('EnumArrayControl', () => {
         schema={oneOfSchema}
         uischema={uischema}
         data={undefined}
-        renderers={[MaterialEnumArrayRendererRegistration]}
+        renderers={[EnumArrayRendererRegistration]}
       />
     );
     const inputs = wrapper.find('input');
@@ -94,7 +94,7 @@ describe('EnumArrayControl', () => {
         schema={oneOfSchema}
         uischema={uischema}
         data={data}
-        renderers={[MaterialEnumArrayRendererRegistration]}
+        renderers={[EnumArrayRendererRegistration]}
       />
     );
     const inputs = wrapper.find('input');
@@ -108,7 +108,7 @@ describe('EnumArrayControl', () => {
         schema={oneOfSchema}
         uischema={uischema}
         data={data}
-        renderers={[MaterialEnumArrayRendererRegistration]}
+        renderers={[EnumArrayRendererRegistration]}
       />
     );
     const labels = wrapper.find('label');
@@ -123,7 +123,7 @@ describe('EnumArrayControl', () => {
         schema={oneOfSchema}
         uischema={uischema}
         data={myData}
-        renderers={[MaterialEnumArrayRendererRegistration]}
+        renderers={[EnumArrayRendererRegistration]}
         onChange={({ data }) => {
           myData = data;
         }}
@@ -140,7 +140,7 @@ describe('EnumArrayControl', () => {
         schema={enumSchema}
         uischema={uischema}
         data={undefined}
-        renderers={[MaterialEnumArrayRendererRegistration]}
+        renderers={[EnumArrayRendererRegistration]}
       />
     );
     const inputs = wrapper.find('input');
@@ -153,7 +153,7 @@ describe('EnumArrayControl', () => {
         schema={enumSchema}
         uischema={uischema}
         data={['b']}
-        renderers={[MaterialEnumArrayRendererRegistration]}
+        renderers={[EnumArrayRendererRegistration]}
       />
     );
     const inputs = wrapper.find('input');
@@ -168,7 +168,7 @@ describe('EnumArrayControl', () => {
         schema={enumSchema}
         uischema={uischema}
         data={['b']}
-        renderers={[MaterialEnumArrayRendererRegistration]}
+        renderers={[EnumArrayRendererRegistration]}
       />
     );
     const labels = wrapper.find('label');
@@ -184,7 +184,7 @@ describe('EnumArrayControl', () => {
         schema={enumSchema}
         uischema={uischema}
         data={myData}
-        renderers={[MaterialEnumArrayRendererRegistration]}
+        renderers={[EnumArrayRendererRegistration]}
         onChange={({ data }) => {
           myData = data;
         }}

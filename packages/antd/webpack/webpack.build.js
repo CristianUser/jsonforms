@@ -17,5 +17,5 @@ module.exports = merge(baseConfig, {
     /@material-ui\/core\/.*/,
     /@material-ui\/icons\/.*/,
     /@material-ui\/lab\/.*/,
-  ],
+  ]
 });

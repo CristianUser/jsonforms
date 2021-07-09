@@ -32,9 +32,9 @@ import {
   JsonSchema
 } from '@jsonforms/core';
 import {
-  MaterialAnyOfStringOrEnumControl,
-  materialAnyOfStringOrEnumControlTester,
-  materialRenderers
+  AnyOfStringOrEnumControl,
+  anyOfStringOrEnumControlTester,
+  renderers
 } from '../../src';
 import { JsonForms } from '@jsonforms/react';
 
@@ -52,9 +52,9 @@ const uischema: ControlElement = {
 describe('Material simple any of control tester', () => {
   it('should only be applicable for simple any of cases', () => {
     expect(
-      materialAnyOfStringOrEnumControlTester({ type: 'Foo' }, schema)
+      anyOfStringOrEnumControlTester({ type: 'Foo' }, schema)
     ).toBe(-1);
-    expect(materialAnyOfStringOrEnumControlTester(uischema, schema)).toBe(5);
+    expect(anyOfStringOrEnumControlTester(uischema, schema)).toBe(5);
 
     const nestedSchema: JsonSchema = {
       properties: {
@@ -66,7 +66,7 @@ describe('Material simple any of control tester', () => {
       scope: '#/properties/foo'
     };
     expect(
-      materialAnyOfStringOrEnumControlTester(nestedUischema, nestedSchema)
+      anyOfStringOrEnumControlTester(nestedUischema, nestedSchema)
     ).toBe(5);
     const schemaNoEnum: JsonSchema = {
       anyOf: [{ type: 'string' }]
@@ -80,17 +80,17 @@ describe('Material simple any of control tester', () => {
     const schemaNoString: JsonSchema = {
       anyOf: [{ type: 'integer' }, { enum: [1, 2] }]
     };
-    expect(materialAnyOfStringOrEnumControlTester(uischema, schemaNoEnum)).toBe(
+    expect(anyOfStringOrEnumControlTester(uischema, schemaNoEnum)).toBe(
       -1
     );
     expect(
-      materialAnyOfStringOrEnumControlTester(uischema, schemaConflictTypes)
+      anyOfStringOrEnumControlTester(uischema, schemaConflictTypes)
     ).toBe(-1);
     expect(
-      materialAnyOfStringOrEnumControlTester(uischema, schemaAdditionalProps)
+      anyOfStringOrEnumControlTester(uischema, schemaAdditionalProps)
     ).toBe(5);
     expect(
-      materialAnyOfStringOrEnumControlTester(uischema, schemaNoString)
+      anyOfStringOrEnumControlTester(uischema, schemaNoString)
     ).toBe(-1);
   });
 });
@@ -108,10 +108,10 @@ describe('Material any of string or enum control', () => {
         data={'foo'}
         schema={schema}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
-    expect(wrapper.find(MaterialAnyOfStringOrEnumControl).length).toBeTruthy();
+    expect(wrapper.find(AnyOfStringOrEnumControl).length).toBeTruthy();
     const inputs = wrapper.find('input');
     expect(inputs).toHaveLength(1);
 
@@ -120,7 +120,7 @@ describe('Material any of string or enum control', () => {
     expect(datalist.children()).toHaveLength(2);
 
     const validation = wrapper.find('p').first();
-    expect(validation.props().className).toContain('MuiFormHelperText-root');
+    expect(validation.props().className).toContain('AntdFormHelperText-root');
     expect(validation.children()).toHaveLength(0);
   });
 });

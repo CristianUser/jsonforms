@@ -22,9 +22,7 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import { Theme } from '@material-ui/core/styles';
-
-export interface JsonFormsTheme extends Theme {
+export interface JsonFormsTheme {
   jsonforms?: {
     input?: {
       delete?: {

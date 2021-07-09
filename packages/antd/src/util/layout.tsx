@@ -35,18 +35,39 @@ import {
   UISchemaElement
 } from '@jsonforms/core';
 import { areEqual, JsonFormsDispatch, useJsonForms } from '@jsonforms/react';
-import { Grid, Hidden } from '@material-ui/core';
+import { Col, Row } from 'antd';
+import { createUseStyles } from 'react-jss'
+
+const useStyles = createUseStyles({
+  row: {
+    width: '100%',
+    '& div:not([class]), & div.ant-row': {
+      width: '100%'
+    }
+  }
+})
 
 export const renderLayoutElements = (
   elements: UISchemaElement[],
   schema: JsonSchema,
   path: string,
   enabled: boolean,
+  direction: 'row' | 'column',
   renderers?: JsonFormsRendererRegistryEntry[],
-  cells?: JsonFormsCellRendererRegistryEntry[]
+  cells?: JsonFormsCellRendererRegistryEntry[],
 ) => {
+  const GridChild = direction === 'row' ? Col : Row;
+  const containerProps: any = {};
+  const styles = useStyles();
+
+  if (direction === 'row') {
+    containerProps.flex = 1;
+  } else {
+    containerProps.className=styles.row;
+  }
+
   return elements.map((child, index) => (
-    <Grid item key={`${path}-${index}`} xs>
+    <GridChild {...containerProps} key={`${path}-${index}`}>
       <JsonFormsDispatch
         uischema={child}
         schema={schema}
@@ -55,17 +76,17 @@ export const renderLayoutElements = (
         renderers={renderers}
         cells={cells}
       />
-    </Grid>
+    </GridChild>
   ));
 };
 
-export interface MaterialLayoutRendererProps extends OwnPropsOfRenderer {
+export interface LayoutRendererProps extends OwnPropsOfRenderer {
   elements: UISchemaElement[];
   direction: 'row' | 'column';
 }
-export const MaterialLayoutRenderer = React.memo(
+export const LayoutRenderer = React.memo(
   ({
-    visible,
+    // visible,
     elements,
     schema,
     path,
@@ -73,27 +94,32 @@ export const MaterialLayoutRenderer = React.memo(
     direction,
     renderers,
     cells
-  }: MaterialLayoutRendererProps) => {
+  }: LayoutRendererProps) => {
+    const GridContainer = direction === 'row' ? Row : Col;
+    const containerProps: any = {};
+
+    if (direction === 'row') {
+      containerProps.gutter = 2;
+      containerProps.style = { width: '100%' };
+    }
+
     if (isEmpty(elements)) {
       return null;
     } else {
       return (
-        <Hidden xsUp={!visible}>
-          <Grid
-            container
-            direction={direction}
-            spacing={direction === 'row' ? 2 : 0}
-          >
-            {renderLayoutElements(
-              elements,
-              schema,
-              path,
-              enabled,
-              renderers,
-              cells
-            )}
-          </Grid>
-        </Hidden>
+        <GridContainer
+          {...containerProps}
+        >
+          {renderLayoutElements(
+            elements,
+            schema,
+            path,
+            enabled,
+            direction,
+            renderers,
+            cells,
+          )}
+        </GridContainer>
       );
     }
   },
@@ -107,7 +133,7 @@ export interface AjvProps {
 export const withAjvProps = <P extends {}>(Component: ComponentType<AjvProps & P>) =>
   (props: P) => {
     const ctx = useJsonForms();
-    const ajv = getAjv({jsonforms: {...ctx}});
+    const ajv = getAjv({ jsonforms: { ...ctx } });
 
     return (<Component {...props} ajv={ajv} />);
   };

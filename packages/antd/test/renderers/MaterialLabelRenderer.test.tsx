@@ -28,10 +28,10 @@ import {
   NOT_APPLICABLE
 } from '@jsonforms/core';
 import '../../src/cells';
-import MaterialLabelRenderer, {
-  materialLabelRendererTester
-} from '../../src/additional/MaterialLabelRenderer';
-import { materialRenderers } from '../../src';
+import LabelRenderer, {
+  labelRendererTester
+} from '../../src/additional/LabelRenderer';
+import { renderers } from '../../src';
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { JsonForms, JsonFormsStateProvider } from '@jsonforms/react';
@@ -51,14 +51,14 @@ const uischema = {
 
 describe('Material Label Renderer tester', () => {
   it('should fail', () => {
-    expect(materialLabelRendererTester(undefined, undefined)).toBe(
+    expect(labelRendererTester(undefined, undefined)).toBe(
       NOT_APPLICABLE
     );
-    expect(materialLabelRendererTester(null, undefined)).toBe(NOT_APPLICABLE);
-    expect(materialLabelRendererTester({ type: 'Foo' }, undefined)).toBe(
+    expect(labelRendererTester(null, undefined)).toBe(NOT_APPLICABLE);
+    expect(labelRendererTester({ type: 'Foo' }, undefined)).toBe(
       NOT_APPLICABLE
     );
-    expect(materialLabelRendererTester({ type: 'Label' }, undefined)).toBe(1);
+    expect(labelRendererTester({ type: 'Label' }, undefined)).toBe(1);
   });
 });
 
@@ -73,10 +73,10 @@ describe('Material Label Renderer', () => {
         data={undefined}
         schema={schema}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
-    expect(wrapper.find(MaterialLabelRenderer).length).toBeTruthy();
+    expect(wrapper.find(LabelRenderer).length).toBeTruthy();
 
     const label = wrapper.find('h6').first();
     expect(label.text()).toBe('Foo');
@@ -85,8 +85,8 @@ describe('Material Label Renderer', () => {
   it('can be hidden', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialLabelRenderer
+      <JsonFormsStateProvider initState={{ renderers, core }}>
+        <LabelRenderer
           schema={schema}
           uischema={uischema}
           visible={false}
@@ -103,10 +103,10 @@ describe('Material Label Renderer', () => {
         data={undefined}
         schema={schema}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
-    expect(wrapper.find(MaterialLabelRenderer).length).toBeTruthy();
+    expect(wrapper.find(LabelRenderer).length).toBeTruthy();
     const label = wrapper.find('h6').first();
     expect(label.props().hidden).toBeFalsy();
   });

@@ -28,10 +28,10 @@ import {
   NOT_APPLICABLE
 } from '@jsonforms/core';
 import * as React from 'react';
-import { materialRenderers } from '../../src';
-import MaterialObjectRenderer, {
-  materialObjectControlTester
-} from '../../src/complex/MaterialObjectRenderer';
+import { renderers } from '../../src';
+import ObjectRenderer, {
+  objectControlTester
+} from '../../src/complex/ObjectRenderer';
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { JsonFormsStateProvider } from '@jsonforms/react';
@@ -68,18 +68,18 @@ const uischema2: ControlElement = {
 
 describe('Material object renderer tester', () => {
   test('should fail', () => {
-    expect(materialObjectControlTester(undefined, undefined)).toBe(
+    expect(objectControlTester(undefined, undefined)).toBe(
       NOT_APPLICABLE
     );
-    expect(materialObjectControlTester(null, undefined)).toBe(NOT_APPLICABLE);
-    expect(materialObjectControlTester({ type: 'Foo' }, undefined)).toBe(
+    expect(objectControlTester(null, undefined)).toBe(NOT_APPLICABLE);
+    expect(objectControlTester({ type: 'Foo' }, undefined)).toBe(
       NOT_APPLICABLE
     );
-    expect(materialObjectControlTester({ type: 'Control' }, undefined)).toBe(
+    expect(objectControlTester({ type: 'Control' }, undefined)).toBe(
       NOT_APPLICABLE
     );
     expect(
-      materialObjectControlTester(uischema2, {
+      objectControlTester(uischema2, {
         type: 'object',
         properties: {
           foo: { type: 'string' }
@@ -87,7 +87,7 @@ describe('Material object renderer tester', () => {
       })
     ).toBe(NOT_APPLICABLE);
     expect(
-      materialObjectControlTester(uischema2, {
+      objectControlTester(uischema2, {
         type: 'object',
         properties: {
           foo: { type: 'string' },
@@ -99,7 +99,7 @@ describe('Material object renderer tester', () => {
 
   it('should succeed', () => {
     expect(
-      materialObjectControlTester(uischema2, {
+      objectControlTester(uischema2, {
         type: 'object',
         properties: {
           foo: schema.properties.foo
@@ -117,8 +117,8 @@ describe('Material object control', () => {
   it('should render all children', () => {
     const core = initCore(schema, uischema1, data);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialObjectRenderer schema={schema} uischema={uischema1} />
+      <JsonFormsStateProvider initState={{ renderers, core }}>
+        <ObjectRenderer schema={schema} uischema={uischema1} />
       </JsonFormsStateProvider>
     );
 
@@ -133,8 +133,8 @@ describe('Material object control', () => {
   it('should render only itself', () => {
     const core = initCore(schema, uischema1, data);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialObjectRenderer schema={schema} uischema={uischema2} />
+      <JsonFormsStateProvider initState={{ renderers, core }}>
+        <ObjectRenderer schema={schema} uischema={uischema2} />
       </JsonFormsStateProvider>
     );
 
@@ -147,8 +147,8 @@ describe('Material object control', () => {
   it('should be enabled by default', () => {
     const core = initCore(schema, uischema2, data);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialObjectRenderer schema={schema} uischema={uischema2} />
+      <JsonFormsStateProvider initState={{ renderers, core }}>
+        <ObjectRenderer schema={schema} uischema={uischema2} />
       </JsonFormsStateProvider>
     );
     const inputs = wrapper.find('input');
@@ -158,8 +158,8 @@ describe('Material object control', () => {
   it('can be invisible', () => {
     const core = initCore(schema, uischema2, data);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialObjectRenderer
+      <JsonFormsStateProvider initState={{ renderers, core }}>
+        <ObjectRenderer
           schema={schema}
           uischema={uischema2}
           visible={false}
@@ -173,8 +173,8 @@ describe('Material object control', () => {
   it('should be visible by default', () => {
     const core = initCore(schema, uischema2, data);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialObjectRenderer schema={schema} uischema={uischema2} />
+      <JsonFormsStateProvider initState={{ renderers, core }}>
+        <ObjectRenderer schema={schema} uischema={uischema2} />
       </JsonFormsStateProvider>
     );
     const inputs = wrapper.find('input');

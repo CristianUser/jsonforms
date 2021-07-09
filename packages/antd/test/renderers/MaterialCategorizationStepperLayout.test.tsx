@@ -38,7 +38,7 @@ import Enzyme, { mount } from 'enzyme';
 import MaterialCategorizationStepperLayoutRenderer, {
   materialCategorizationStepperTester
 } from '../../src/layouts/MaterialCategorizationStepperLayout';
-import { MaterialLayoutRenderer, materialRenderers } from '../../src';
+import { LayoutRenderer, renderers } from '../../src';
 import { Button, Step, StepButton, Stepper } from '@material-ui/core';
 import Adapter from 'enzyme-adapter-react-16';
 import { initCore } from './util';
@@ -216,7 +216,7 @@ describe('Material categorization stepper layout', () => {
 
     const core = initCore(fixture.schema, fixture.uischema, fixture.data);
     const wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <MaterialCategorizationStepperLayoutRenderer
           {...layoutDefaultProps}
           schema={fixture.schema}
@@ -271,7 +271,7 @@ describe('Material categorization stepper layout', () => {
     const core = initCore(fixture.schema, fixture.uischema, data);
 
     const wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <MaterialCategorizationStepperLayoutRenderer
           {...layoutDefaultProps}
           schema={fixture.schema}
@@ -295,7 +295,7 @@ describe('Material categorization stepper layout', () => {
     const core = initCore(fixture.schema, fixture.uischema, fixture.data);
 
     const wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <MaterialCategorizationStepperLayoutRenderer
           {...layoutDefaultProps}
           schema={fixture.schema}
@@ -312,7 +312,7 @@ describe('Material categorization stepper layout', () => {
   it('is shown by default', () => {
     const core = initCore(fixture.schema, fixture.uischema, fixture.data);
     const wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <MaterialCategorizationStepperLayoutRenderer
           {...layoutDefaultProps}
           schema={fixture.schema}
@@ -353,7 +353,7 @@ describe('Material categorization stepper layout', () => {
     };
     const core = initCore(fixture.schema, fixture.uischema, fixture.data);
     const wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <MaterialCategorizationStepperLayoutRenderer
           {...layoutDefaultProps}
           schema={fixture.schema}
@@ -370,7 +370,7 @@ describe('Material categorization stepper layout', () => {
     const core = initCore(fixture.schema, fixture.uischema, fixture.data);
     const renderers: any[] = [];
     const wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <MaterialCategorizationStepperLayoutRenderer
           {...layoutDefaultProps}
           schema={fixture.schema}
@@ -380,7 +380,7 @@ describe('Material categorization stepper layout', () => {
       </JsonFormsStateProvider>
     );
 
-    const materialArrayLayout = wrapper.find(MaterialLayoutRenderer);
+    const materialArrayLayout = wrapper.find(LayoutRenderer);
     expect(materialArrayLayout.props().renderers).toHaveLength(0);
   });
 
@@ -411,7 +411,7 @@ describe('Material categorization stepper layout', () => {
     const core = initCore(fixture.schema, uischema, fixture.data);
 
     const wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <MaterialCategorizationStepperLayoutRenderer
           {...layoutDefaultProps}
           schema={fixture.schema}
@@ -479,7 +479,7 @@ describe('Material categorization stepper layout', () => {
     const core = initCore(fixture.schema, uischema, fixture.data);
 
     const wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <MaterialCategorizationStepperLayoutRenderer
           {...layoutDefaultProps}
           schema={fixture.schema}
@@ -538,7 +538,7 @@ describe('Material categorization stepper layout', () => {
     const core = initCore(fixture.schema, uischema, data);
 
     const wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <MaterialCategorizationStepperLayoutRenderer
             {...layoutDefaultProps}
             schema={fixture.schema}
@@ -552,7 +552,7 @@ describe('Material categorization stepper layout', () => {
     expect(isNextButtonDisabledBeforeTextInput).toBe(false);
 
     core.data = { ...core.data, name: 'Barr' };
-    wrapper.setProps({ initState: { renderers: materialRenderers, core }} );
+    wrapper.setProps({ initState: { renderers, core }} );
     wrapper.update();
 
     const isNextButtonDisabledAfterTextInput = wrapper.find(Button).at(0).props().disabled;

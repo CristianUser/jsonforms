@@ -32,8 +32,8 @@ import {
   ControlElement
 } from '@jsonforms/core';
 import {
-  MaterialOneOfRenderer,
-  materialRenderers
+  OneOfRenderer,
+  renderers
 } from '../../src';
 import { JsonForms, JsonFormsDispatch, JsonFormsStateProvider } from '@jsonforms/react';
 import { Tab } from '@material-ui/core';
@@ -114,8 +114,8 @@ describe('Material oneOf renderer', () => {
     };
     const core = initCore(schema, uischema, { data: undefined });
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialOneOfRenderer schema={schema} uischema={uischema} />
+      <JsonFormsStateProvider initState={{ renderers, core }}>
+        <OneOfRenderer schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
 
@@ -153,10 +153,10 @@ describe('Material oneOf renderer', () => {
         data={data}
         schema={schema}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
-    expect(wrapper.find(MaterialOneOfRenderer).length).toBeTruthy();
+    expect(wrapper.find(OneOfRenderer).length).toBeTruthy();
 
     const secondTab = wrapper.find(Tab).at(1);
     expect(secondTab.props().selected).toBeTruthy();
@@ -200,10 +200,10 @@ describe('Material oneOf renderer', () => {
         data={data}
         schema={schema}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
-    expect(wrapper.find(MaterialOneOfRenderer).length).toBeTruthy();
+    expect(wrapper.find(OneOfRenderer).length).toBeTruthy();
 
     const secondTab = wrapper.find(Tab).at(1);
     expect(secondTab.props().selected).toBeTruthy();
@@ -247,10 +247,10 @@ describe('Material oneOf renderer', () => {
         data={data}
         schema={schema}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
-    expect(wrapper.find(MaterialOneOfRenderer).length).toBeTruthy();
+    expect(wrapper.find(OneOfRenderer).length).toBeTruthy();
 
     const secondTab = wrapper.find(Tab).at(1);
     expect(secondTab.props().selected).toBeTruthy();
@@ -287,13 +287,13 @@ describe('Material oneOf renderer', () => {
         data={undefined}
         schema={schema}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
         onChange={({ data }) => {
           onChangeData.data = data;
         }}
       />
     );
-    expect(wrapper.find(MaterialOneOfRenderer).length).toBeTruthy();
+    expect(wrapper.find(OneOfRenderer).length).toBeTruthy();
 
     const input = wrapper.find('input').first();
     input.simulate('change', { target: { value: 'test' } });
@@ -340,7 +340,7 @@ describe('Material oneOf renderer', () => {
     const core = initCore(schema, uischema, { data: {} });
 
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <JsonFormsDispatch schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
@@ -406,7 +406,7 @@ describe('Material oneOf renderer', () => {
     };
 
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <TestEmitter
           onChange={({ data }) => {
             onChangeData.data = data;
@@ -481,7 +481,7 @@ describe('Material oneOf renderer', () => {
     };
 
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <TestEmitter
             onChange={({ data }) => {
               onChangeData.data = data;
@@ -543,10 +543,10 @@ describe('Material oneOf renderer', () => {
         data={data}
         schema={schema}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
-    expect(wrapper.find(MaterialOneOfRenderer).length).toBeTruthy();
+    expect(wrapper.find(OneOfRenderer).length).toBeTruthy();
 
     await waitForAsync();
     wrapper.update();
@@ -578,8 +578,8 @@ describe('Material oneOf renderer', () => {
     };
     const core = initCore(schema, uischema, { data: undefined });
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
-        <MaterialOneOfRenderer
+      <JsonFormsStateProvider initState={{ renderers, core }}>
+        <OneOfRenderer
           schema={schema}
           uischema={uischema}
           visible={false}

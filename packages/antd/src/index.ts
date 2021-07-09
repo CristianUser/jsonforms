@@ -27,170 +27,170 @@ import {
   JsonFormsRendererRegistryEntry
 } from '@jsonforms/core';
 import {
-  materialAllOfControlTester,
-  MaterialAllOfRenderer,
-  materialAnyOfControlTester,
-  MaterialAnyOfRenderer,
-  MaterialArrayControlRenderer,
-  materialArrayControlTester,
-  materialObjectControlTester,
-  MaterialObjectRenderer,
-  materialOneOfControlTester,
-  MaterialOneOfRenderer,
-  MaterialEnumArrayRenderer,
-  materialEnumArrayRendererTester
+  allOfControlTester,
+  AllOfRenderer,
+  anyOfControlTester,
+  AnyOfRenderer,
+  ArrayControlRenderer,
+  arrayControlTester,
+  EnumArrayRenderer,
+  enumArrayRendererTester,
+  objectControlTester,
+  ObjectRenderer,
+  oneOfControlTester,
+  OneOfRenderer
 } from './complex';
 import {
-  MaterialLabelRenderer,
-  materialLabelRendererTester,
-  MaterialListWithDetailRenderer,
-  materialListWithDetailTester
+  LabelRenderer,
+  labelRendererTester,
+  ListWithDetailRenderer,
+  listWithDetailTester
 } from './additional';
 import {
-  MaterialAnyOfStringOrEnumControl,
-  materialAnyOfStringOrEnumControlTester,
-  MaterialBooleanControl,
-  materialBooleanControlTester,
-  MaterialBooleanToggleControl,
-  materialBooleanToggleControlTester,
+  AnyOfStringOrEnumControl,
+  anyOfStringOrEnumControlTester,
+  BooleanControl,
+  booleanControlTester,
+  BooleanToggleControl,
+  booleanToggleControlTester,
+  dateControlTester,
+  DateTimeControl,
+  dateTimeControlTester,
+  enumControlTester,
+  IntegerControl,
+  integerControlTester,
   MaterialDateControl,
-  materialDateControlTester,
-  MaterialDateTimeControl,
-  materialDateTimeControlTester,
   MaterialEnumControl,
-  materialEnumControlTester,
-  MaterialIntegerControl,
-  materialIntegerControlTester,
-  MaterialNativeControl,
-  materialNativeControlTester,
   MaterialNumberControl,
-  materialNumberControlTester,
-  MaterialOneOfEnumControl,
-  materialOneOfEnumControlTester,
-  MaterialRadioGroupControl,
-  materialRadioGroupControlTester,
-  MaterialSliderControl,
-  materialSliderControlTester,
-  MaterialTextControl,
-  materialTextControlTester,
-  MaterialOneOfRadioGroupControl,
-  materialOneOfRadioGroupControlTester
+  NativeControl,
+  nativeControlTester,
+  numberControlTester,
+  OneOfEnumControl,
+  oneOfEnumControlTester,
+  OneOfRadioGroupControl,
+  oneOfRadioGroupControlTester,
+  RadioGroupControl,
+  radioGroupControlTesterGroup,
+  SliderControl,
+  sliderControlTester,
+  TextControl,
+  textControlTester
 } from './controls';
 import {
+  antdGroupTester,
+  CategorizationLayout,
+  categorizationTester,
+  GroupLayout,
+  HorizontalLayout,
+  horizontalLayoutTester,
   MaterialArrayLayout,
-  materialArrayLayoutTester,
-  MaterialCategorizationLayout,
-  materialCategorizationTester,
-  MaterialGroupLayout,
-  materialGroupTester,
-  MaterialHorizontalLayout,
-  materialHorizontalLayoutTester,
-  MaterialVerticalLayout,
-  materialVerticalLayoutTester
+  arrayLayoutTester,
+  VerticalLayout,
+  verticalLayoutTester
 } from './layouts';
 import {
-  MaterialBooleanCell,
-  materialBooleanCellTester,
-  MaterialBooleanToggleCell,
-  materialBooleanToggleCellTester,
-  MaterialDateCell,
-  materialDateCellTester,
-  MaterialEnumCell,
-  materialEnumCellTester,
-  MaterialIntegerCell,
-  materialIntegerCellTester,
-  MaterialNumberCell,
-  materialNumberCellTester,
-  MaterialNumberFormatCell,
-  materialNumberFormatCellTester,
-  MaterialOneOfEnumCell,
-  materialOneOfEnumCellTester,
-  MaterialTextCell,
-  materialTextCellTester,
-  MaterialTimeCell,
-  materialTimeCellTester
+  BooleanCell,
+  BooleanCellTester,
+  BooleanToggleCell,
+  BooleanToggleCellTester,
+  DateCell,
+  DateCellTester,
+  EnumCell,
+  EnumCellTester,
+  IntegerCell,
+  IntegerCellTester,
+  NumberCell,
+  NumberCellTester,
+  NumberFormatCell,
+  numberFormatCellTester,
+  OneOfEnumCell,
+  oneOfEnumCellTester,
+  TextCell,
+  textCellTester,
+  TimeCell,
+  timeCellTester
 } from './cells';
 import MaterialCategorizationStepperLayout, {
-  materialCategorizationStepperTester
-} from './layouts/MaterialCategorizationStepperLayout';
+  categorizationStepperTester
+} from './layouts/CategorizationStepperLayout';
 
 export * from './complex';
 export * from './controls';
 export * from './layouts';
 export * from './cells';
-export * from './mui-controls';
+export * from './antd-controls';
 export * from './util';
 
-export const materialRenderers: JsonFormsRendererRegistryEntry[] = [
+export const renderers: JsonFormsRendererRegistryEntry[] = [
   // controls
   {
-    tester: materialArrayControlTester,
-    renderer: MaterialArrayControlRenderer
+    tester: arrayControlTester,
+    renderer: ArrayControlRenderer
   },
-  { tester: materialBooleanControlTester, renderer: MaterialBooleanControl },
-  { tester: materialBooleanToggleControlTester, renderer: MaterialBooleanToggleControl },
-  { tester: materialNativeControlTester, renderer: MaterialNativeControl },
-  { tester: materialEnumControlTester, renderer: MaterialEnumControl },
-  { tester: materialIntegerControlTester, renderer: MaterialIntegerControl },
-  { tester: materialNumberControlTester, renderer: MaterialNumberControl },
-  { tester: materialTextControlTester, renderer: MaterialTextControl },
-  { tester: materialDateTimeControlTester, renderer: MaterialDateTimeControl },
-  { tester: materialDateControlTester, renderer: MaterialDateControl },
-  { tester: materialSliderControlTester, renderer: MaterialSliderControl },
-  { tester: materialObjectControlTester, renderer: MaterialObjectRenderer },
-  { tester: materialAllOfControlTester, renderer: MaterialAllOfRenderer },
-  { tester: materialAnyOfControlTester, renderer: MaterialAnyOfRenderer },
-  { tester: materialOneOfControlTester, renderer: MaterialOneOfRenderer },
+  { tester: booleanControlTester, renderer: BooleanControl },
+  { tester: booleanToggleControlTester, renderer: BooleanToggleControl },
+  { tester: nativeControlTester, renderer: NativeControl },
+  { tester: enumControlTester, renderer: MaterialEnumControl },
+  { tester: integerControlTester, renderer: IntegerControl },
+  { tester: numberControlTester, renderer: MaterialNumberControl },
+  { tester: textControlTester, renderer: TextControl },
+  { tester: dateTimeControlTester, renderer: DateTimeControl },
+  { tester: dateControlTester, renderer: MaterialDateControl },
+  { tester: sliderControlTester, renderer: SliderControl },
+  { tester: objectControlTester, renderer: ObjectRenderer },
+  { tester: allOfControlTester, renderer: AllOfRenderer },
+  { tester: anyOfControlTester, renderer: AnyOfRenderer },
+  { tester: oneOfControlTester, renderer: OneOfRenderer },
   {
-    tester: materialRadioGroupControlTester,
-    renderer: MaterialRadioGroupControl
+    tester: radioGroupControlTesterGroup,
+    renderer: RadioGroupControl
   },
   {
-    tester: materialOneOfRadioGroupControlTester,
-    renderer: MaterialOneOfRadioGroupControl
+    tester: oneOfRadioGroupControlTester,
+    renderer: OneOfRadioGroupControl
   },
-  { tester: materialOneOfEnumControlTester, renderer: MaterialOneOfEnumControl },
+  { tester: oneOfEnumControlTester, renderer: OneOfEnumControl },
   // layouts
-  { tester: materialGroupTester, renderer: MaterialGroupLayout },
+  { tester: antdGroupTester, renderer: GroupLayout },
   {
-    tester: materialHorizontalLayoutTester,
-    renderer: MaterialHorizontalLayout
+    tester: horizontalLayoutTester,
+    renderer: HorizontalLayout
   },
-  { tester: materialVerticalLayoutTester, renderer: MaterialVerticalLayout },
+  { tester: verticalLayoutTester, renderer: VerticalLayout },
   {
-    tester: materialCategorizationTester,
-    renderer: MaterialCategorizationLayout
+    tester: categorizationTester,
+    renderer: CategorizationLayout
   },
   {
-    tester: materialCategorizationStepperTester,
+    tester: categorizationStepperTester,
     renderer: MaterialCategorizationStepperLayout
   },
-  { tester: materialArrayLayoutTester, renderer: MaterialArrayLayout },
+  { tester: arrayLayoutTester, renderer: MaterialArrayLayout },
   // additional
-  { tester: materialLabelRendererTester, renderer: MaterialLabelRenderer },
+  { tester: labelRendererTester, renderer: LabelRenderer },
   {
-    tester: materialListWithDetailTester,
-    renderer: MaterialListWithDetailRenderer
+    tester: listWithDetailTester,
+    renderer: ListWithDetailRenderer
   },
   {
-    tester: materialAnyOfStringOrEnumControlTester,
-    renderer: MaterialAnyOfStringOrEnumControl
+    tester: anyOfStringOrEnumControlTester,
+    renderer: AnyOfStringOrEnumControl
   },
   {
-    tester: materialEnumArrayRendererTester,
-    renderer: MaterialEnumArrayRenderer
+    tester: enumArrayRendererTester,
+    renderer: EnumArrayRenderer
   }
 ];
 
-export const materialCells: JsonFormsCellRendererRegistryEntry[] = [
-  { tester: materialBooleanCellTester, cell: MaterialBooleanCell },
-  { tester: materialBooleanToggleCellTester, cell: MaterialBooleanToggleCell },
-  { tester: materialDateCellTester, cell: MaterialDateCell },
-  { tester: materialEnumCellTester, cell: MaterialEnumCell },
-  { tester: materialIntegerCellTester, cell: MaterialIntegerCell },
-  { tester: materialNumberCellTester, cell: MaterialNumberCell },
-  { tester: materialNumberFormatCellTester, cell: MaterialNumberFormatCell },
-  { tester: materialOneOfEnumCellTester, cell: MaterialOneOfEnumCell },
-  { tester: materialTextCellTester, cell: MaterialTextCell },
-  { tester: materialTimeCellTester, cell: MaterialTimeCell }
+export const cells: JsonFormsCellRendererRegistryEntry[] = [
+  { tester: BooleanCellTester, cell: BooleanCell },
+  { tester: BooleanToggleCellTester, cell: BooleanToggleCell },
+  { tester: DateCellTester, cell: DateCell },
+  { tester: EnumCellTester, cell: EnumCell },
+  { tester: IntegerCellTester, cell: IntegerCell },
+  { tester: NumberCellTester, cell: NumberCell },
+  { tester: numberFormatCellTester, cell: NumberFormatCell },
+  { tester: oneOfEnumCellTester, cell: OneOfEnumCell },
+  { tester: textCellTester, cell: TextCell },
+  { tester: timeCellTester, cell: TimeCell }
 ];

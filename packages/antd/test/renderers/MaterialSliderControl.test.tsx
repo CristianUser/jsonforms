@@ -30,9 +30,9 @@ import {
   NOT_APPLICABLE
 } from '@jsonforms/core';
 import SliderControl, {
-  materialSliderControlTester
-} from '../../src/controls/MaterialSliderControl';
-import { materialRenderers } from '../../src';
+  sliderControlTester
+} from '../../src/controls/SliderControl';
+import { renderers } from '../../src';
 import { Slider } from '@material-ui/core';
 
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
@@ -64,21 +64,21 @@ const uischema: ControlElement = {
 
 describe('Material slider tester', () => {
   it('should fail', () => {
-    expect(materialSliderControlTester(undefined, undefined)).toBe(
+    expect(sliderControlTester(undefined, undefined)).toBe(
       NOT_APPLICABLE
     );
-    expect(materialSliderControlTester(null, undefined)).toBe(NOT_APPLICABLE);
-    expect(materialSliderControlTester({ type: 'Foo' }, undefined)).toBe(
+    expect(sliderControlTester(null, undefined)).toBe(NOT_APPLICABLE);
+    expect(sliderControlTester({ type: 'Foo' }, undefined)).toBe(
       NOT_APPLICABLE
     );
-    expect(materialSliderControlTester({ type: 'Control' }, undefined)).toBe(
+    expect(sliderControlTester({ type: 'Control' }, undefined)).toBe(
       NOT_APPLICABLE
     );
   });
 
   it('should fail with wrong schema type', () => {
     expect(
-      materialSliderControlTester(uischema, {
+      sliderControlTester(uischema, {
         type: 'object',
         properties: {
           foo: { type: 'string' }
@@ -89,7 +89,7 @@ describe('Material slider tester', () => {
 
   it('should fail if only sibling has correct prop type', () => {
     expect(
-      materialSliderControlTester(uischema, {
+      sliderControlTester(uischema, {
         type: 'object',
         properties: {
           foo: { type: 'string' },
@@ -101,7 +101,7 @@ describe('Material slider tester', () => {
 
   it('should fail if maximum and minimum are missing', () => {
     expect(
-      materialSliderControlTester(uischema, {
+      sliderControlTester(uischema, {
         type: 'object',
         properties: {
           foo: { type: 'number' }
@@ -112,7 +112,7 @@ describe('Material slider tester', () => {
 
   it('should fail if maximum is missing', () => {
     expect(
-      materialSliderControlTester(uischema, {
+      sliderControlTester(uischema, {
         type: 'object',
         properties: {
           foo: {
@@ -126,7 +126,7 @@ describe('Material slider tester', () => {
 
   it('should fail if minimum is missing', () => {
     expect(
-      materialSliderControlTester(uischema, {
+      sliderControlTester(uischema, {
         type: 'object',
         properties: {
           foo: {
@@ -140,7 +140,7 @@ describe('Material slider tester', () => {
 
   it('should fail is default is missing', () => {
     expect(
-      materialSliderControlTester(uischema, {
+      sliderControlTester(uischema, {
         type: 'object',
         properties: {
           foo: {
@@ -155,7 +155,7 @@ describe('Material slider tester', () => {
 
   it('should succeed with number type', () => {
     expect(
-      materialSliderControlTester(uischema, {
+      sliderControlTester(uischema, {
         type: 'object',
         properties: {
           foo: {
@@ -171,7 +171,7 @@ describe('Material slider tester', () => {
 
   it('should succeed with integer type', () => {
     expect(
-      materialSliderControlTester(uischema, {
+      sliderControlTester(uischema, {
         type: 'object',
         properties: {
           foo: {
@@ -205,7 +205,7 @@ describe('Material slider control', () => {
     };
     const core = initCore(jsonSchema, uischema, data);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <SliderControl
           schema={jsonSchema}
           uischema={uischema}
@@ -225,7 +225,7 @@ describe('Material slider control', () => {
         data={data}
         schema={schema}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
     expect(wrapper.find(SliderControl).length).toBeTruthy();
@@ -259,7 +259,7 @@ describe('Material slider control', () => {
         data={data}
         schema={schemaWithMultipleOf}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
     expect(wrapper.find(SliderControl).length).toBeTruthy();
@@ -273,7 +273,7 @@ describe('Material slider control', () => {
         data={data}
         schema={schema}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
     expect(wrapper.find(SliderControl).length).toBeTruthy();
@@ -290,7 +290,7 @@ describe('Material slider control', () => {
         data={data}
         schema={schema}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
     expect(wrapper.find(SliderControl).length).toBeTruthy();
@@ -307,7 +307,7 @@ describe('Material slider control', () => {
         data={data}
         schema={schema}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
     expect(wrapper.find(SliderControl).length).toBeTruthy();
@@ -324,7 +324,7 @@ describe('Material slider control', () => {
         data={data}
         schema={schema}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
     expect(wrapper.find(SliderControl).length).toBeTruthy();
@@ -341,7 +341,7 @@ describe('Material slider control', () => {
         data={data}
         schema={schema}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
     expect(wrapper.find(SliderControl).length).toBeTruthy();
@@ -355,7 +355,7 @@ describe('Material slider control', () => {
   it('can be disabled', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <SliderControl
           schema={schema}
           uischema={uischema}
@@ -373,7 +373,7 @@ describe('Material slider control', () => {
         data={data}
         schema={schema}
         uischema={uischema}
-        renderers={materialRenderers}
+        renderers={renderers}
       />
     );
     expect(wrapper.find(SliderControl).length).toBeTruthy();
@@ -384,7 +384,7 @@ describe('Material slider control', () => {
   it('should render id and input id', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <SliderControl
           schema={schema}
           uischema={uischema}
@@ -415,7 +415,7 @@ describe('Material slider control', () => {
     };
     const core = initCore(schema, uischema, { foo: 5 });
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
         <SliderControl
           schema={jsonSchema}
           uischema={uischema}

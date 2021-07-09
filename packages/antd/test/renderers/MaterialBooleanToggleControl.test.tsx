@@ -30,10 +30,10 @@ import {
   UISchemaElement
 } from '@jsonforms/core';
 import BooleanToggleControl, {
-  materialBooleanToggleControlTester
-} from '../../src/controls/MaterialBooleanToggleControl';
+  booleanToggleControlTester
+} from '../../src/controls/BooleanToggleControl';
 import * as ReactDOM from 'react-dom';
-import { materialRenderers } from '../../src';
+import { renderers } from '../../src';
 
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -69,26 +69,26 @@ describe('Material boolean toggle control tester', () => {
   };
 
   it('should fail', () => {
-    expect(materialBooleanToggleControlTester(undefined, undefined)).toBe(
+    expect(booleanToggleControlTester(undefined, undefined)).toBe(
       NOT_APPLICABLE
     );
-    expect(materialBooleanToggleControlTester(null, undefined)).toBe(
+    expect(booleanToggleControlTester(null, undefined)).toBe(
       NOT_APPLICABLE
     );
-    expect(materialBooleanToggleControlTester({ type: 'Foo' }, undefined)).toBe(
+    expect(booleanToggleControlTester({ type: 'Foo' }, undefined)).toBe(
       NOT_APPLICABLE
     );
     expect(
-      materialBooleanToggleControlTester({ type: 'Control' }, undefined)
+      booleanToggleControlTester({ type: 'Control' }, undefined)
     ).toBe(NOT_APPLICABLE);
     expect(
-      materialBooleanToggleControlTester(control, {
+      booleanToggleControlTester(control, {
         type: 'object',
         properties: { foo: { type: 'string' } }
       })
     ).toBe(NOT_APPLICABLE);
     expect(
-      materialBooleanToggleControlTester(control, {
+      booleanToggleControlTester(control, {
         type: 'object',
         properties: {
           foo: {
@@ -103,7 +103,7 @@ describe('Material boolean toggle control tester', () => {
 
     // Not applicable for boolean control if toggle option is false
     expect(
-      materialBooleanToggleControlTester(
+      booleanToggleControlTester(
         {
           type: 'Control',
           scope: '#/properties/foo',
@@ -124,7 +124,7 @@ describe('Material boolean toggle control tester', () => {
 
     // Not applicable for boolean control if toggle option is not given
     expect(
-      materialBooleanToggleControlTester(
+      booleanToggleControlTester(
         {
           type: 'Control',
           scope: '#/properties/foo',
@@ -143,7 +143,7 @@ describe('Material boolean toggle control tester', () => {
 
   it('should succeed', () => {
     expect(
-      materialBooleanToggleControlTester(control, {
+      booleanToggleControlTester(control, {
         type: 'object',
         properties: {
           foo: {
@@ -180,7 +180,7 @@ describe('Material boolean toggle control', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <BooleanToggleControl schema={schema} uischema={control} />
       </JsonFormsStateProvider>
@@ -201,7 +201,7 @@ describe('Material boolean toggle control', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <BooleanToggleControl schema={schema} uischema={control} />
       </JsonFormsStateProvider>
@@ -221,7 +221,7 @@ describe('Material boolean toggle control', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <BooleanToggleControl schema={schema} uischema={control} />
       </JsonFormsStateProvider>
@@ -234,14 +234,14 @@ describe('Material boolean toggle control', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <BooleanToggleControl schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
 
     // Make sure a toggle is rendered by checking for the thumb element
-    expect(wrapper.find('.MuiSwitch-thumb')).toHaveLength(1);
+    expect(wrapper.find('.AntdSwitch-thumb')).toHaveLength(1);
 
     const input = wrapper.find('input').first();    
     expect(input.props().type).toBe('checkbox');
@@ -255,7 +255,7 @@ describe('Material boolean toggle control', () => {
     };
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <TestEmitter
           onChange={({ data }) => {
@@ -278,7 +278,7 @@ describe('Material boolean toggle control', () => {
     };
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <TestEmitter
           onChange={({ data }) => {
@@ -289,7 +289,7 @@ describe('Material boolean toggle control', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, foo: false };
-    wrapper.setProps({ initState: { renderers: materialRenderers, core } });
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().checked).toBeFalsy();
@@ -303,7 +303,7 @@ describe('Material boolean toggle control', () => {
     };
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <TestEmitter
           onChange={({ data }) => {
@@ -314,7 +314,7 @@ describe('Material boolean toggle control', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, foo: undefined };
-    wrapper.setProps({ initState: { renderers: materialRenderers, core } });
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().checked).toBeFalsy();
@@ -327,7 +327,7 @@ describe('Material boolean toggle control', () => {
     };
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <TestEmitter
           onChange={({ data }) => {
@@ -338,7 +338,7 @@ describe('Material boolean toggle control', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, foo: null };
-    wrapper.setProps({ initState: { renderers: materialRenderers, core } });
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().checked).toBeFalsy();
@@ -351,7 +351,7 @@ describe('Material boolean toggle control', () => {
     };
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <TestEmitter
           onChange={({ data }) => {
@@ -362,7 +362,7 @@ describe('Material boolean toggle control', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, bar: 11 };
-    wrapper.setProps({ initState: { renderers: materialRenderers, core } });
+    wrapper.setProps({ initState: { renderers, core } });
     const input = wrapper.find('input').first();
     expect(input.props().checked).toBeTruthy();
   });
@@ -374,7 +374,7 @@ describe('Material boolean toggle control', () => {
     };
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <TestEmitter
           onChange={({ data }) => {
@@ -385,7 +385,7 @@ describe('Material boolean toggle control', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, null: false };
-    wrapper.setProps({ initState: { renderers: materialRenderers, core } });
+    wrapper.setProps({ initState: { renderers, core } });
     const input = wrapper.find('input').first();
     expect(input.props().checked).toBeTruthy();
   });
@@ -397,7 +397,7 @@ describe('Material boolean toggle control', () => {
     };
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <TestEmitter
           onChange={({ data }) => {
@@ -408,7 +408,7 @@ describe('Material boolean toggle control', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, undefined: false };
-    wrapper.setProps({ initState: { renderers: materialRenderers, core } });
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().checked).toBeTruthy();
@@ -418,7 +418,7 @@ describe('Material boolean toggle control', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <BooleanToggleControl
           schema={schema}
@@ -435,7 +435,7 @@ describe('Material boolean toggle control', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <BooleanToggleControl schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
@@ -448,7 +448,7 @@ describe('Material boolean toggle control', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider
-        initState={{ renderers: materialRenderers, core }}
+        initState={{ renderers, core }}
       >
         <BooleanToggleControl
           schema={schema}
