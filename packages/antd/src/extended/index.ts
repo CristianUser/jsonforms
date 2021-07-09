@@ -35,9 +35,6 @@ import AutocompleteOneOfEnumControl, {
 import { JsonFormsRendererRegistryEntry } from '@jsonforms/core';
 import { renderers } from '../index';
 
-/**
- * Includes all 'renderers' and adds additional renderers based on '@material-ui/lab'
- */
 export const extendedRenderers: JsonFormsRendererRegistryEntry[] = [
   {
     tester: autocompleteOneOfEnumControlTester,

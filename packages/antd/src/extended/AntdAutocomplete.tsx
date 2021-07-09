@@ -26,14 +26,13 @@ import React, { ReactNode } from 'react';
 import { EnumCellProps, EnumOption, WithClassname } from '@jsonforms/core';
 
 import { areEqual } from '@jsonforms/react';
-import { FilterOptionsState } from '@material-ui/lab/useAutocomplete';
 import { Select } from 'antd';
 import merge from 'lodash/merge';
 
 export interface WithOptionLabel {
     getOptionLabel?(option: EnumOption) : string;
     renderOption?(option: EnumOption): ReactNode;
-    filterOptions?(options: EnumOption[], state: FilterOptionsState<EnumOption>) : EnumOption[];
+    filterOptions?(options: EnumOption[], state: any) : EnumOption[];
 }
 
 export const AntdAutocomplete = React.memo((props: EnumCellProps & WithClassname & WithOptionLabel) => {

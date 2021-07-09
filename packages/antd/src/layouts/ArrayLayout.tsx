@@ -36,14 +36,14 @@ import { ArrayLayoutToolbar } from './ArrayToolbar';
 import ExpandPanelRenderer from './ExpandPanelRenderer';
 import merge from 'lodash/merge';
 
-interface MaterialArrayLayoutState {
+interface ArrayLayoutState {
   expanded: number;
 }
-export class MaterialArrayLayout extends React.PureComponent<
+export class ArrayLayout extends React.PureComponent<
   ArrayLayoutProps,
-  MaterialArrayLayoutState
+  ArrayLayoutState
 > {
-  state: MaterialArrayLayoutState = {
+  state: ArrayLayoutState = {
     expanded: NaN
   };
   innerCreateDefaultValue = () => createDefaultValue(this.props.schema);
