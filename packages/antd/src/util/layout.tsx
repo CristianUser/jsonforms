@@ -41,7 +41,7 @@ import { createUseStyles } from 'react-jss';
 const useStyles = createUseStyles({
   row: {
     width: '100%',
-    '& div:not([class]), & div.ant-row': {
+    '& > div:not([class]), & > div[class^="ant-"]': {
       width: '100%'
     }
   }
