@@ -22,9 +22,9 @@ import {
   Resolve,
   update
 } from '@jsonforms/core';
-import { Avatar, Button, Collapse } from 'antd';
-
-const iconStyle: any = { float: 'right' };
+import { Avatar, Button, Collapse, Space, Tooltip, Typography } from 'antd';
+import { ArrowDownOutlined, ArrowUpOutlined, DeleteFilled } from '@ant-design/icons';
+import Hidden from '../util/Hidden';
 
 interface OwnPropsOfExpandPanel {
   index: number;
@@ -110,51 +110,48 @@ const ExpandPanelRenderer = (props: ExpandPanelProps & any) => {
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
   const avatarStyle = isExpanded ? { backgroundColor: '#1890FF' } : {};
 
+  const getExtra = () => {
+    return (appliedUiSchemaOptions.showSortButtons ? (
+      [
+        <Tooltip title='Move up' key="1">
+          <Button shape='circle' icon={<ArrowUpOutlined />} onClick={moveUp(path, index)} disabled={!enableMoveUp} />
+        </Tooltip>,
+        <Tooltip key="2" title='Move down'>
+          <Button shape='circle' icon={<ArrowDownOutlined />} onClick={moveDown(path, index)} disabled={!enableMoveDown} />
+        </Tooltip>]
+    ) :
+      []
+    ).concat(
+      <Tooltip key="3" title="Delete">
+        <Button
+          shape="circle"
+          onClick={removeItems(path, [index])}
+          icon={<DeleteFilled />}
+        />
+      </Tooltip>
+    )
+  };
+
   return (
     <Collapse.Panel
       {...panelProps}
       key={key}
-      header={<Avatar style={avatarStyle}>{index + 1} {childLabel}</Avatar>}
-      extra={
-        (appliedUiSchemaOptions.showSortButtons ? (
-          [<Button
-            key="1"
-            onClick={moveUp(path, index)}
-            style={iconStyle}
-            disabled={!enableMoveUp}
-            aria-label={`Move up`}
-          >
-            Move up
-          </Button>,
-          <Button
-            key="2"
-            onClick={moveDown(path, index)}
-            style={iconStyle}
-            disabled={!enableMoveDown}
-            aria-label={`Move down`}
-          >
-            Move down
-          </Button>]
-        ) :
-          []
-        ).concat(<Button
-          key="3"
-          onClick={removeItems(path, [index])}
-          style={iconStyle}
-          aria-label={`Delete`}
-        >
-          Delete
-        </Button>)
-      }
+      header={<>
+        <Avatar style={avatarStyle}>{index + 1}</Avatar>
+        <Hidden hidden={!childLabel}>
+          <Typography.Text>{childLabel}</Typography.Text> 
+        </Hidden>
+      </>}
+      extra={<Space>{getExtra()}</Space>}
     >
-        <JsonFormsDispatch
-          schema={schema}
-          uischema={foundUISchema}
-          path={childPath}
-          key={childPath}
-          renderers={renderers}
-          cells={cells}
-        />
+      <JsonFormsDispatch
+        schema={schema}
+        uischema={foundUISchema}
+        path={childPath}
+        key={childPath}
+        renderers={renderers}
+        cells={cells}
+      />
     </Collapse.Panel>
   );
 };
@@ -209,7 +206,7 @@ export const ctxDispatchToExpandPanelProps: (
 export const withContextToExpandPanelProps = (
   Component: ComponentType<ExpandPanelProps>
 ): ComponentType<OwnPropsOfExpandPanel> => (
-  props:  ExpandPanelProps) => {
+  props: ExpandPanelProps) => {
     const ctx = useJsonForms()
     const dispatchProps = ctxDispatchToExpandPanelProps(ctx.dispatch);
     const { childLabelProp, schema, path, index, uischemas } = props;
@@ -233,6 +230,6 @@ export const withContextToExpandPanelProps = (
 export const withJsonFormsExpandPanelProps = (
   Component: ComponentType<ExpandPanelProps>
 ): ComponentType<OwnPropsOfExpandPanel> =>
-    withContextToExpandPanelProps(Component)
+  withContextToExpandPanelProps(Component)
 
 export default withJsonFormsExpandPanelProps(ExpandPanelRenderer);
