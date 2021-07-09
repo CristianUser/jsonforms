@@ -29,8 +29,8 @@ import Hidden from '../util/Hidden';
 interface OwnPropsOfExpandPanel {
   index: number;
   path: string;
-  disabled?: boolean
-  collapsible?: boolean
+  disabled?: boolean;
+  collapsible?: boolean;
   uischema: ControlElement;
   schema: JsonSchema;
   expanded?: boolean;
@@ -43,7 +43,7 @@ interface OwnPropsOfExpandPanel {
   config: any;
   childLabelProp?: string;
   isExpanded?: boolean;
-  handleChange?: (index: number) => void
+  handleChange?(index: number): void;
 }
 
 interface StatePropsOfExpandPanel extends OwnPropsOfExpandPanel {
@@ -113,23 +113,23 @@ const ExpandPanelRenderer = (props: ExpandPanelProps & any) => {
   const getExtra = () => {
     return (appliedUiSchemaOptions.showSortButtons ? (
       [
-        <Tooltip title='Move up' key="1">
+        <Tooltip key='1' title='Move up'>
           <Button shape='circle' icon={<ArrowUpOutlined />} onClick={moveUp(path, index)} disabled={!enableMoveUp} />
         </Tooltip>,
-        <Tooltip key="2" title='Move down'>
+        <Tooltip key='2' title='Move down'>
           <Button shape='circle' icon={<ArrowDownOutlined />} onClick={moveDown(path, index)} disabled={!enableMoveDown} />
         </Tooltip>]
     ) :
       []
     ).concat(
-      <Tooltip key="3" title="Delete">
+      <Tooltip key='3' title='Delete'>
         <Button
-          shape="circle"
+          shape='circle'
           onClick={removeItems(path, [index])}
           icon={<DeleteFilled />}
         />
       </Tooltip>
-    )
+    );
   };
 
   return (
@@ -139,7 +139,7 @@ const ExpandPanelRenderer = (props: ExpandPanelProps & any) => {
       header={<>
         <Avatar style={avatarStyle}>{index + 1}</Avatar>
         <Hidden hidden={!childLabel}>
-          <Typography.Text>{childLabel}</Typography.Text> 
+          <Typography.Text>{childLabel}</Typography.Text>
         </Hidden>
       </>}
       extra={<Space>{getExtra()}</Space>}
@@ -207,7 +207,7 @@ export const withContextToExpandPanelProps = (
   Component: ComponentType<ExpandPanelProps>
 ): ComponentType<OwnPropsOfExpandPanel> => (
   props: ExpandPanelProps) => {
-    const ctx = useJsonForms()
+    const ctx = useJsonForms();
     const dispatchProps = ctxDispatchToExpandPanelProps(ctx.dispatch);
     const { childLabelProp, schema, path, index, uischemas } = props;
     const childPath = composePaths(path, `${index}`);
@@ -230,6 +230,6 @@ export const withContextToExpandPanelProps = (
 export const withJsonFormsExpandPanelProps = (
   Component: ComponentType<ExpandPanelProps>
 ): ComponentType<OwnPropsOfExpandPanel> =>
-  withContextToExpandPanelProps(Component)
+  withContextToExpandPanelProps(Component);
 
 export default withJsonFormsExpandPanelProps(ExpandPanelRenderer);

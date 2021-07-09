@@ -78,13 +78,13 @@ import {
 } from './controls';
 import {
   antdGroupTester,
+  ArrayLayout,
+  arrayLayoutTester,
   CategorizationLayout,
   categorizationTester,
   GroupLayout,
   HorizontalLayout,
   horizontalLayoutTester,
-  ArrayLayout,
-  arrayLayoutTester,
   VerticalLayout,
   verticalLayoutTester
 } from './layouts';
