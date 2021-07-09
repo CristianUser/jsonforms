@@ -30,7 +30,7 @@ import * as React from 'react';
 
 import { renderers } from '../../src';
 import {
-  MaterialArrayLayout,
+  ArrayLayout,
   arrayLayoutTester
 } from '../../src/layouts';
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
@@ -173,7 +173,7 @@ describe('Material array layout', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <MaterialArrayLayout schema={schema} uischema={uischema} />
+        <ArrayLayout schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
 
@@ -186,7 +186,7 @@ describe('Material array layout', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <MaterialArrayLayout schema={schema} uischema={uischemaOptions.generate} />
+        <ArrayLayout schema={schema} uischema={uischemaOptions.generate} />
       </JsonFormsStateProvider>
     );
 
@@ -199,7 +199,7 @@ describe('Material array layout', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <MaterialArrayLayout schema={schema} uischema={uischemaOptions.inline} />
+        <ArrayLayout schema={schema} uischema={uischemaOptions.inline} />
       </JsonFormsStateProvider>
     );
 
@@ -212,7 +212,7 @@ describe('Material array layout', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <MaterialArrayLayout
+        <ArrayLayout
           schema={schema}
           uischema={uischema}
           visible={false}
@@ -229,7 +229,7 @@ describe('Material array layout', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <MaterialArrayLayout
+        <ArrayLayout
           schema={schema}
           uischema={uischema}
           renderers={[]}
@@ -237,7 +237,7 @@ describe('Material array layout', () => {
       </JsonFormsStateProvider>
     );
 
-    const materialArrayLayout = wrapper.find(MaterialArrayLayout);
+    const materialArrayLayout = wrapper.find(ArrayLayout);
     expect(materialArrayLayout.props().renderers).toHaveLength(0);
   });
 
@@ -255,7 +255,7 @@ describe('Material array layout', () => {
       />
     );
 
-    expect(wrapper.find(MaterialArrayLayout).length).toBeTruthy();
+    expect(wrapper.find(ArrayLayout).length).toBeTruthy();
 
     const listLabel = wrapper.find('h6').at(0);
     expect(listLabel.text()).toBe('My awesome label');
@@ -269,7 +269,7 @@ describe('Material array layout', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <MaterialArrayLayout schema={titleSchema} uischema={uischema} />
+        <ArrayLayout schema={titleSchema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
 
@@ -287,7 +287,7 @@ describe('Material array layout', () => {
       />
     );
 
-    expect(wrapper.find(MaterialArrayLayout).length).toBeTruthy();
+    expect(wrapper.find(ArrayLayout).length).toBeTruthy();
 
     // up button
     expect(
@@ -322,7 +322,7 @@ describe('Material array layout', () => {
       />
     );
 
-    expect(wrapper.find(MaterialArrayLayout).length).toBeTruthy();
+    expect(wrapper.find(ArrayLayout).length).toBeTruthy();
 
     // getting up button of second item in expension panel;
     const upButton = wrapper
@@ -359,7 +359,7 @@ describe('Material array layout', () => {
       />
     );
 
-    expect(wrapper.find(MaterialArrayLayout).length).toBeTruthy();
+    expect(wrapper.find(ArrayLayout).length).toBeTruthy();
 
     // getting up button of second item in expension panel;
     const upButton = wrapper
@@ -390,7 +390,7 @@ describe('Material array layout', () => {
       />
     );
 
-    expect(wrapper.find(MaterialArrayLayout).length).toBeTruthy();
+    expect(wrapper.find(ArrayLayout).length).toBeTruthy();
 
     // getting up button of second item in expension panel;
     const upButton = wrapper
@@ -410,7 +410,7 @@ describe('Material array layout', () => {
       />
     );
 
-    expect(wrapper.find(MaterialArrayLayout).length).toBeTruthy();
+    expect(wrapper.find(ArrayLayout).length).toBeTruthy();
 
     // getting up button of second item in expension panel;
     const downButton = wrapper
@@ -437,7 +437,7 @@ describe('Material array layout', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <MaterialArrayLayout schema={schema} uischema={uischemaWithSortOption} />
+        <ArrayLayout schema={schema} uischema={uischemaWithSortOption} />
       </JsonFormsStateProvider>
     );
 
@@ -455,7 +455,7 @@ describe('Material array layout', () => {
       />
     );
 
-    expect(wrapper.find(MaterialArrayLayout).length).toBeTruthy();
+    expect(wrapper.find(ArrayLayout).length).toBeTruthy();
 
     expect(getChildLabel(wrapper, 0)).toBe('El Barto was here 2');
     expect(getChildLabel(wrapper, 1)).toBe('Yolo 2');

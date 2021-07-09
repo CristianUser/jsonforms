@@ -1,12 +1,12 @@
 import merge from 'lodash/merge';
 import get from 'lodash/get';
-import React, { Dispatch, Fragment, ReducerAction, useMemo, useState } from 'react';
+import React, { Dispatch, ReducerAction, useMemo } from 'react';
 import { ComponentType } from 'enzyme';
 import {
-  areEqual,
+  // areEqual,
   JsonFormsDispatch,
-  JsonFormsStateContext,
-  withJsonFormsContext
+  // JsonFormsStateContext,
+  useJsonForms
 } from '@jsonforms/react';
 import {
   composePaths,
@@ -22,26 +22,18 @@ import {
   Resolve,
   update
 } from '@jsonforms/core';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import IconButton from '@material-ui/core/IconButton';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import { Grid } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Avatar from '@material-ui/core/Avatar';
-import DeleteIcon from '@material-ui/icons/Delete';
-import ArrowUpward from '@material-ui/icons/ArrowUpward';
-import ArrowDownward from '@material-ui/icons/ArrowDownward';
-import uuid from 'uuid/v1';
-
-const iconStyle: any = { float: 'right' };
+import { Avatar, Button, Collapse, Space, Tooltip, Typography } from 'antd';
+import { ArrowDownOutlined, ArrowUpOutlined, DeleteFilled } from '@ant-design/icons';
+import Hidden from '../util/Hidden';
 
 interface OwnPropsOfExpandPanel {
   index: number;
   path: string;
+  disabled?: boolean
+  collapsible?: boolean
   uischema: ControlElement;
   schema: JsonSchema;
-  expanded: boolean;
+  expanded?: boolean;
   renderers?: JsonFormsRendererRegistryEntry[];
   cells?: JsonFormsCellRendererRegistryEntry[];
   uischemas?: JsonFormsUISchemaRegistryEntry[];
@@ -50,10 +42,12 @@ interface OwnPropsOfExpandPanel {
   enableMoveDown: boolean;
   config: any;
   childLabelProp?: string;
-  handleExpansion(panel: string): (event: any, expanded: boolean) => void;
+  isExpanded?: boolean;
+  handleChange?: (index: number) => void
 }
 
 interface StatePropsOfExpandPanel extends OwnPropsOfExpandPanel {
+  key: React.Key;
   childLabel: string;
   childPath: string;
   enableMoveUp: boolean;
@@ -64,6 +58,8 @@ interface StatePropsOfExpandPanel extends OwnPropsOfExpandPanel {
  * Dispatch props of a table control
  */
 export interface DispatchPropsOfExpandPanel {
+  disabled?: boolean;
+  collapsible?: boolean;
   removeItems(path: string, toDelete: number[]): (event: any) => void;
   moveUp(path: string, toMove: number): (event: any) => void;
   moveDown(path: string, toMove: number): (event: any) => void;
@@ -71,21 +67,18 @@ export interface DispatchPropsOfExpandPanel {
 
 export interface ExpandPanelProps
   extends StatePropsOfExpandPanel,
-    DispatchPropsOfExpandPanel {}
+  DispatchPropsOfExpandPanel { }
 
-const ExpandPanelRenderer = (props: ExpandPanelProps) => {
-  const [labelHtmlId] = useState(`id${uuid()}`);
-
+const ExpandPanelRenderer = (props: ExpandPanelProps & any) => {
   const {
     childLabel,
     childPath,
     index,
-    expanded,
+    key,
     moveDown,
     moveUp,
     enableMoveDown,
     enableMoveUp,
-    handleExpansion,
     removeItems,
     path,
     rootSchema,
@@ -94,7 +87,10 @@ const ExpandPanelRenderer = (props: ExpandPanelProps) => {
     uischemas,
     renderers,
     cells,
-    config
+    config,
+    handleChange,
+    isExpanded,
+    ...panelProps
   } = props;
 
   const foundUISchema = useMemo(
@@ -112,86 +108,51 @@ const ExpandPanelRenderer = (props: ExpandPanelProps) => {
   );
 
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
+  const avatarStyle = isExpanded ? { backgroundColor: '#1890FF' } : {};
+
+  const getExtra = () => {
+    return (appliedUiSchemaOptions.showSortButtons ? (
+      [
+        <Tooltip title='Move up' key="1">
+          <Button shape='circle' icon={<ArrowUpOutlined />} onClick={moveUp(path, index)} disabled={!enableMoveUp} />
+        </Tooltip>,
+        <Tooltip key="2" title='Move down'>
+          <Button shape='circle' icon={<ArrowDownOutlined />} onClick={moveDown(path, index)} disabled={!enableMoveDown} />
+        </Tooltip>]
+    ) :
+      []
+    ).concat(
+      <Tooltip key="3" title="Delete">
+        <Button
+          shape="circle"
+          onClick={removeItems(path, [index])}
+          icon={<DeleteFilled />}
+        />
+      </Tooltip>
+    )
+  };
 
   return (
-    <ExpansionPanel
-      aria-labelledby={labelHtmlId}
-      expanded={expanded}
-      onChange={handleExpansion(childPath)}
+    <Collapse.Panel
+      {...panelProps}
+      key={key}
+      header={<>
+        <Avatar style={avatarStyle}>{index + 1}</Avatar>
+        <Hidden hidden={!childLabel}>
+          <Typography.Text>{childLabel}</Typography.Text> 
+        </Hidden>
+      </>}
+      extra={<Space>{getExtra()}</Space>}
     >
-      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-        <Grid container alignItems={'center'}>
-          <Grid item xs={7} md={9}>
-            <Grid container alignItems={'center'}>
-              <Grid item xs={2} md={1}>
-                <Avatar aria-label='Index'>{index + 1}</Avatar>
-              </Grid>
-              <Grid item xs={10} md={11}>
-                <span id={labelHtmlId}>{childLabel}</span>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={5} md={3}>
-            <Grid container justify={'flex-end'}>
-              <Grid item>
-                <Grid
-                  container
-                  direction='row'
-                  justify='center'
-                  alignItems='center'
-                >
-                  {appliedUiSchemaOptions.showSortButtons ? (
-                    <Fragment>
-                      <Grid item>
-                        <IconButton
-                          onClick={moveUp(path, index)}
-                          style={iconStyle}
-                          disabled={!enableMoveUp}
-                          aria-label={`Move up`}
-                        >
-                          <ArrowUpward />
-                        </IconButton>
-                      </Grid>
-                      <Grid item>
-                        <IconButton
-                          onClick={moveDown(path, index)}
-                          style={iconStyle}
-                          disabled={!enableMoveDown}
-                          aria-label={`Move down`}
-                        >
-                          <ArrowDownward />
-                        </IconButton>
-                      </Grid>
-                    </Fragment>
-                  ) : (
-                    ''
-                  )}
-                  <Grid item>
-                    <IconButton
-                      onClick={removeItems(path, [index])}
-                      style={iconStyle}
-                      aria-label={`Delete`}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-      </ExpansionPanelSummary>
-      <ExpansionPanelDetails>
-        <JsonFormsDispatch
-          schema={schema}
-          uischema={foundUISchema}
-          path={childPath}
-          key={childPath}
-          renderers={renderers}
-          cells={cells}
-        />
-      </ExpansionPanelDetails>
-    </ExpansionPanel>
+      <JsonFormsDispatch
+        schema={schema}
+        uischema={foundUISchema}
+        path={childPath}
+        key={childPath}
+        renderers={renderers}
+        cells={cells}
+      />
+    </Collapse.Panel>
   );
 };
 
@@ -244,40 +205,31 @@ export const ctxDispatchToExpandPanelProps: (
  */
 export const withContextToExpandPanelProps = (
   Component: ComponentType<ExpandPanelProps>
-): ComponentType<OwnPropsOfExpandPanel> => ({
-  ctx,
-  props
-}: JsonFormsStateContext & ExpandPanelProps) => {
-  const dispatchProps = ctxDispatchToExpandPanelProps(ctx.dispatch);
-  const { childLabelProp, schema, path, index, uischemas } = props;
-  const childPath = composePaths(path, `${index}`);
-  const childData = Resolve.data(ctx.core.data, childPath);
-  const childLabel = childLabelProp
-    ? get(childData, childLabelProp, '')
-    : get(childData, getFirstPrimitiveProp(schema), '');
+): ComponentType<OwnPropsOfExpandPanel> => (
+  props: ExpandPanelProps) => {
+    const ctx = useJsonForms()
+    const dispatchProps = ctxDispatchToExpandPanelProps(ctx.dispatch);
+    const { childLabelProp, schema, path, index, uischemas } = props;
+    const childPath = composePaths(path, `${index}`);
+    const childData = Resolve.data(ctx.core.data, childPath);
+    const childLabel = childLabelProp
+      ? get(childData, childLabelProp, '')
+      : get(childData, getFirstPrimitiveProp(schema), '');
 
-  return (
-    <Component
-      {...props}
-      {...dispatchProps}
-      childLabel={childLabel}
-      childPath={childPath}
-      uischemas={uischemas}
-    />
-  );
-};
+    return (
+      <Component
+        {...props}
+        {...dispatchProps}
+        childLabel={childLabel}
+        childPath={childPath}
+        uischemas={uischemas}
+      />
+    );
+  };
 
 export const withJsonFormsExpandPanelProps = (
   Component: ComponentType<ExpandPanelProps>
 ): ComponentType<OwnPropsOfExpandPanel> =>
-  withJsonFormsContext(
-    withContextToExpandPanelProps(
-      React.memo(
-        Component,
-        (prevProps: ExpandPanelProps, nextProps: ExpandPanelProps) =>
-          areEqual(prevProps, nextProps)
-      )
-    )
-  );
+  withContextToExpandPanelProps(Component)
 
 export default withJsonFormsExpandPanelProps(ExpandPanelRenderer);

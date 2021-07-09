@@ -83,7 +83,7 @@ import {
   GroupLayout,
   HorizontalLayout,
   horizontalLayoutTester,
-  MaterialArrayLayout,
+  ArrayLayout,
   arrayLayoutTester,
   VerticalLayout,
   verticalLayoutTester
@@ -165,7 +165,7 @@ export const renderers: JsonFormsRendererRegistryEntry[] = [
     tester: categorizationStepperTester,
     renderer: MaterialCategorizationStepperLayout
   },
-  { tester: arrayLayoutTester, renderer: MaterialArrayLayout },
+  { tester: arrayLayoutTester, renderer: ArrayLayout },
   // additional
   { tester: labelRendererTester, renderer: LabelRenderer },
   {

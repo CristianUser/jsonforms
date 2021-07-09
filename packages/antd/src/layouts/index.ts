@@ -34,13 +34,13 @@ import VerticalLayout, {
 import CategorizationLayout, {
   categorizationTester
 } from './CategorizationLayout';
-import MaterialArrayLayout, {
+import ArrayLayout, {
   arrayLayoutTester
 } from './ArrayLayoutRenderer';
 
 export {
   arrayLayoutTester,
-  MaterialArrayLayout,
+  ArrayLayout,
   CategorizationLayout,
   categorizationTester,
   GroupLayout,

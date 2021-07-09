@@ -30,7 +30,7 @@ import {
   RankedTester,
   rankWith
 } from '@jsonforms/core';
-import { MaterialArrayLayout } from './MaterialArrayLayout';
+import { ArrayLayout } from './ArrayLayout';
 import { withJsonFormsArrayLayoutProps } from '@jsonforms/react';
 import Hidden from '../util/Hidden';
 
@@ -55,7 +55,7 @@ export const ArrayLayoutRenderer = ({
   ]);
   return (
     <Hidden hidden={!visible}>
-      <MaterialArrayLayout
+      <ArrayLayout
         label={label}
         uischema={uischema}
         schema={schema}
