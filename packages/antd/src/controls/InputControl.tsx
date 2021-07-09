@@ -32,6 +32,7 @@ import {
 import { Control } from '@jsonforms/react';
 import { Form } from 'antd';
 import merge from 'lodash/merge';
+import Hidden from '../util/Hidden';
 
 export interface WithInput {
   input: any;
@@ -63,35 +64,39 @@ export abstract class InputControl extends Control<
       appliedUiSchemaOptions.showUnfocusedDescription
     );
 
-    const firstFormHelperText = showDescription
-      ? description
-      : !isValid
-        ? errors
-        : null;
-    const secondFormHelperText = showDescription && !isValid ? errors : null;
+    // const firstFormHelperText = showDescription
+    //   ? description
+    //   : !isValid
+    //     ? errors
+    //     : null;
+    // const secondFormHelperText = showDescription && !isValid ? errors : null;
+    const help = !isValid ? errors : showDescription
+    ? description : null;
     const InnerComponent = input;
     const style = !appliedUiSchemaOptions.trim ? { width: '100%' } : {};
 
     return (
-      <Form.Item
-        hidden={!visible}
-        required={required}
-        hasFeedback={!isValid}
-        validateStatus={isValid ? 'success' : 'error'}
-        label={isPlainLabel(label) ? label : label.default}
-        help={firstFormHelperText || secondFormHelperText}
-        style={style}
-        id={id}
-      >
-        <InnerComponent
-          {...this.props}
-          onFocus={this.onFocus}
-          onBlur={this.onBlur}
-          id={id + '-input'}
-          isValid={isValid}
-          visible={visible}
-        />
-      </Form.Item>
+      <Hidden hidden={!visible}>
+        <Form.Item
+          required={required}
+          hasFeedback={!isValid}
+          validateStatus={isValid ? 'success' : 'error'}
+          label={isPlainLabel(label) ? label : label.default}
+          help={help}
+          style={style}
+          htmlFor={id + '-input'}
+          id={id}
+          >
+          <InnerComponent
+            {...this.props}
+            onFocus={this.onFocus}
+            onBlur={this.onBlur}
+            id={id + '-input'}
+            isValid={isValid}
+            visible={visible}
+            />
+        </Form.Item>
+      </Hidden>
     );
   }
 }

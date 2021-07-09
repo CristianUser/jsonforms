@@ -43,18 +43,6 @@ export const AntdInputText = React.memo((props: CellProps & WithClassname) => {
   } = props;
   const maxLength = schema.maxLength;
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
-  let inputProps: any;
-  if (appliedUiSchemaOptions.restrict) {
-    inputProps = { maxLength: maxLength };
-  } else {
-    inputProps = {};
-  }
-
-  inputProps = merge(inputProps);
-
-  if (appliedUiSchemaOptions.trim && maxLength !== undefined) {
-    inputProps.size = maxLength;
-  }
   const onChange = (ev: any) => handleChange(path, ev.target.value);
 
   const InputComponent = appliedUiSchemaOptions.multi ? Input.TextArea : Input;

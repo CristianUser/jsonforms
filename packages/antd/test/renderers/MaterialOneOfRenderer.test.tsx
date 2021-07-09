@@ -33,7 +33,7 @@ import {
 } from '@jsonforms/core';
 import {
   OneOfRenderer,
-  materialRenderers
+  renderers
 } from '../../src';
 import { JsonForms, JsonFormsDispatch, JsonFormsStateProvider } from '@jsonforms/react';
 import { Tab } from '@material-ui/core';

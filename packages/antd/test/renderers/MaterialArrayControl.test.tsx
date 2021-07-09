@@ -31,7 +31,7 @@ import {
 import * as React from 'react';
 
 import ArrayControlRenderer from '../../src/complex/ArrayControlRenderer';
-import { materialCells, renderers } from '../../src';
+import { cells, renderers } from '../../src';
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { JsonFormsStateProvider, StatelessRenderer } from '@jsonforms/react';
@@ -281,7 +281,7 @@ describe('Material array control', () => {
       data: undefined
     };
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers, cells: materialCells, core }}>
+      <JsonFormsStateProvider initState={{ renderers, cells: cells, core }}>
         <TestEmitter
           onChange={({ data }) => {
             onChangeData.data = data;
@@ -574,7 +574,7 @@ describe('Material array control', () => {
   it('should have fields enabled', () => {
     const core = initCore(fixture2.schema, fixture2.uischema, fixture2.data);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers, cells: materialCells, core }}>
+      <JsonFormsStateProvider initState={{ renderers, cells: cells, core }}>
         <ArrayControlRenderer
           schema={fixture2.schema}
           uischema={fixture2.uischema}
@@ -594,7 +594,7 @@ describe('Material array control', () => {
   it('should have fields disabled', () => {
     const core = initCore(fixture2.schema, fixture2.uischema, fixture2.data);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers, cells: materialCells, core }}>
+      <JsonFormsStateProvider initState={{ renderers, cells: cells, core }}>
         <ArrayControlRenderer
           schema={fixture2.schema}
           uischema={fixture2.uischema}

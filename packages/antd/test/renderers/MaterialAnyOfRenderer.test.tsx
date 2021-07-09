@@ -32,8 +32,8 @@ import {
 } from '@jsonforms/core';
 import {
   AnyOfRenderer,
-  materialCells,
-  materialRenderers
+  cells,
+  renderers
 } from '../../src';
 import { JsonForms, JsonFormsStateProvider } from '@jsonforms/react';
 import { initCore, TestEmitter } from './util';
@@ -230,7 +230,7 @@ describe('Material anyOf renderer', () => {
     };
     const core = initCore(schema, uischema);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers, cells: materialCells, core }}>
+      <JsonFormsStateProvider initState={{ renderers, cells, core }}>
         <TestEmitter
           onChange={({ data }) => {
             onChangeData.data = data;

@@ -24,7 +24,7 @@
 */
 import './MatchMediaMock';
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
-import { renderers } from '../../src';
+import { InputControl, renderers } from '../../src';
 import Adapter from 'enzyme-adapter-react-16';
 import * as React from 'react';
 import {
@@ -38,9 +38,8 @@ import {
   rankWith,
 } from '@jsonforms/core';
 import { Control, JsonFormsStateProvider, withJsonFormsControlProps } from '@jsonforms/react';
-import { MaterialInputControl } from '../../src/controls/MaterialInputControl';
-import HorizontalLayoutRenderer from '../../src/layouts/MaterialHorizontalLayout';
-import { AntdInputText } from '../../src/mui-controls';
+import HorizontalLayoutRenderer from '../../src/layouts/HorizontalLayout';
+import { AntdInputText } from '../../src/antd-controls';
 import { initCore } from './util';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -60,7 +59,7 @@ const uischema: ControlElement = {
 };
 class TestControlInner extends Control<ControlProps, ControlState> {
   render() {
-    return <MaterialInputControl {...this.props} input={AntdInputText} />;
+    return <InputControl {...this.props} input={AntdInputText} />;
   }
 }
 export const testControlTester: RankedTester = rankWith(1, isControl);
@@ -85,17 +84,13 @@ describe('Material input control', () => {
     );
 
     const control = wrapper.find('div').first();
-    expect(control.children()).toHaveLength(4);
+    expect(control.children()).toHaveLength(1);
 
     const label = wrapper.find('label');
     expect(label.text()).toBe('Foo');
 
     const inputs = wrapper.find('input');
     expect(inputs).toHaveLength(1);
-
-    const validation = wrapper.find('p').first();
-    expect(validation.props().className).toContain('AntdFormHelperText-root');
-    expect(validation.children()).toHaveLength(0);
   });
 
   it('should render without label', () => {
@@ -112,17 +107,14 @@ describe('Material input control', () => {
     );
 
     const div = wrapper.find('div').first();
-    expect(div.children()).toHaveLength(4);
+    expect(div.children()).toHaveLength(1);
 
     const label = wrapper.find('label');
-    expect(label.text()).toBe('');
+    expect(label).toHaveLength(0);
+
 
     const inputs = wrapper.find('input');
     expect(inputs).toHaveLength(1);
-
-    const validation = wrapper.find('p').first();
-    expect(validation.props().className).toContain('AntdFormHelperText-root');
-    expect(validation.children()).toHaveLength(0);
   });
 
   it('can be hidden', () => {
@@ -158,7 +150,7 @@ describe('Material input control', () => {
     core.data = { ...core.data, foo: 2 };
     wrapper.setProps({ initState: { renderers, core }} );
     wrapper.update();
-    const validation = wrapper.find('p').first();
+    const validation = wrapper.find('div[role="alert"]').first();
     expect(validation.text()).toBe('should be string');
   });
 
@@ -172,7 +164,7 @@ describe('Material input control', () => {
     core.data = { ...core.data, foo: 3 };
     wrapper.setProps({ initState: { renderers, core }} );
     wrapper.update();
-    const validation = wrapper.find('p').first();
+    const validation = wrapper.find('div[role="alert"]').first();
     expect(validation.text()).toBe('should be string');
   });
 
@@ -183,8 +175,8 @@ describe('Material input control', () => {
         <TestControl schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
-    const validation = wrapper.find('p').first();
-    expect(validation.text()).toBe('');
+    const validation = wrapper.find('div[role="alert"]');
+    expect(validation).toHaveLength(0);
   });
 
   it('should handle validation updates', () => {
@@ -198,8 +190,8 @@ describe('Material input control', () => {
     core.data = { ...core.data, foo: 'bar' };
     wrapper.setProps({ initState: { renderers, core }} );
     wrapper.update();
-    const validation = wrapper.find('p').first();
-    expect(validation.text()).toBe('');
+    const validation = wrapper.find('div[role="alert"]');
+    expect(validation).toHaveLength(0);
   });
 
   it('should handle validation with nested schemas', () => {
@@ -253,11 +245,10 @@ describe('Material input control', () => {
         />
       </ JsonFormsStateProvider>
     );
-    const validation = wrapper.find('p');
-    expect(validation).toHaveLength(6);
-    expect(validation.at(0).text()).toBe('');
-    expect(validation.at(2).text()).toBe('is a required property');
-    expect(validation.at(4).text()).toBe('is a required property');
+    const validation = wrapper.find('div[role="alert"]');
+    expect(validation).toHaveLength(2);
+    expect(validation.at(0).text()).toBe('is a required property');
+    expect(validation.at(1).text()).toBe('is a required property');
   });
 
   it('should display a marker for a required prop', () => {
@@ -283,7 +274,9 @@ describe('Material input control', () => {
       </JsonFormsStateProvider>
     );
     const label = wrapper.find('label').first();
-    expect(label.text()).toBe('Date Cell*');
+    
+    expect(label.hasClass('ant-form-item-required')).toBeTruthy()
+    expect(label.text()).toBe('Date Cell');
   });
 
   it('should not display a marker for a non-required prop', () => {
@@ -359,8 +352,5 @@ describe('Material input control', () => {
 
     const label = wrapper.find('label').first();
     expect(label.props().htmlFor).toBe('#/properties/name-input');
-
-    const rootDiv = wrapper.find('div').first();
-    expect(rootDiv.props().id).toBe('#/properties/name');
   });
 });

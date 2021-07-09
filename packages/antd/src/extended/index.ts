@@ -36,7 +36,7 @@ import { JsonFormsRendererRegistryEntry } from '@jsonforms/core';
 import { renderers } from '../index';
 
 /**
- * Includes all 'materialRenderers' and adds additional renderers based on '@material-ui/lab'
+ * Includes all 'renderers' and adds additional renderers based on '@material-ui/lab'
  */
 export const extendedRenderers: JsonFormsRendererRegistryEntry[] = [
   {

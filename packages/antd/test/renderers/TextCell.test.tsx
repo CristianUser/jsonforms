@@ -42,7 +42,6 @@ import { initCore, TestEmitter } from './util';
 Enzyme.configure({ adapter: new Adapter() });
 
 const DEFAULT_MAX_LENGTH = 524288;
-const DEFAULT_SIZE = 20;
 
 const data = { name: 'Foo' };
 const minLengthSchema = {
@@ -346,30 +345,6 @@ describe('Material text cell', () => {
     const input = wrapper.find('input').first();
     expect(input.props().maxLength).toBe(5);
     expect(input.parent().props().width).not.toBe('100%');
-    expect(input.props().size).toBe(5);
-  });
-
-  it('should use maxLength for size attribute', () => {
-    const control: ControlElement = {
-      type: 'Control',
-      scope: '#/properties/name',
-      options: { trim: true }
-    };
-    const core = initCore(maxLengthSchema, control, data);
-    wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers, core }}>
-        <TextCell schema={maxLengthSchema} uischema={control} path='name' />
-      </JsonFormsStateProvider>
-    );
-    const input = wrapper
-      .find('input')
-      .first()
-      .getDOMNode() as HTMLInputElement;
-    expect(input.maxLength).toBe(DEFAULT_MAX_LENGTH);
-    expect(
-      getComputedStyle(input.parentElement, null).getPropertyValue('width')
-    ).not.toBe('100%');
-    expect(input.size).toBe(5);
   });
 
   it('should use maxLength for maxlength attribute', () => {
@@ -389,10 +364,6 @@ describe('Material text cell', () => {
       .first()
       .getDOMNode() as HTMLInputElement;
     expect(input.maxLength).toBe(5);
-    expect(
-      getComputedStyle(input.parentElement, null).getPropertyValue('width')
-    ).toBe('100%');
-    expect(input.size).toBe(DEFAULT_SIZE);
   });
 
   it('should not use maxLength by default', () => {
@@ -407,10 +378,6 @@ describe('Material text cell', () => {
       .first()
       .getDOMNode() as HTMLInputElement;
     expect(input.maxLength).toBe(DEFAULT_MAX_LENGTH);
-    expect(
-      getComputedStyle(input.parentElement, null).getPropertyValue('width')
-    ).toBe('100%');
-    expect(input.size).toBe(DEFAULT_SIZE);
   });
 
   it('should have default values for trim and restrict', () => {
@@ -433,10 +400,6 @@ describe('Material text cell', () => {
       .first()
       .getDOMNode() as HTMLInputElement;
     expect(input.maxLength).toBe(DEFAULT_MAX_LENGTH);
-    expect(
-      getComputedStyle(input.parentElement, null).getPropertyValue('width')
-    ).toBe('100%');
-    expect(input.size).toBe(DEFAULT_SIZE);
   });
 
   it('should have a default value for trim', () => {
@@ -457,10 +420,6 @@ describe('Material text cell', () => {
       .first()
       .getDOMNode() as HTMLInputElement;
     expect(input.maxLength).toBe(DEFAULT_MAX_LENGTH);
-    expect(
-      getComputedStyle(input.parentElement, null).getPropertyValue('width')
-    ).toBe('100%');
-    expect(input.size).toBe(DEFAULT_SIZE);
   });
 
   it('should have default values for restrict', () => {
@@ -481,10 +440,6 @@ describe('Material text cell', () => {
       .first()
       .getDOMNode() as HTMLInputElement;
     expect(input.maxLength).toBe(DEFAULT_MAX_LENGTH);
-    expect(
-      getComputedStyle(input.parentElement, null).getPropertyValue('width')
-    ).toBe('100%');
-    expect(input.size).toBe(DEFAULT_SIZE);
   });
 
   it('should have default values for attributes', () => {
@@ -499,10 +454,6 @@ describe('Material text cell', () => {
       .first()
       .getDOMNode() as HTMLInputElement;
     expect(input.maxLength).toBe(DEFAULT_MAX_LENGTH);
-    expect(
-      getComputedStyle(input.parentElement, null).getPropertyValue('width')
-    ).toBe('100%');
-    expect(input.size).toBe(DEFAULT_SIZE);
   });
 
   it('should be disabled', () => {

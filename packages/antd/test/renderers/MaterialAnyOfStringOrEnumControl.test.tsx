@@ -34,7 +34,7 @@ import {
 import {
   AnyOfStringOrEnumControl,
   anyOfStringOrEnumControlTester,
-  materialRenderers
+  renderers
 } from '../../src';
 import { JsonForms } from '@jsonforms/react';
 
