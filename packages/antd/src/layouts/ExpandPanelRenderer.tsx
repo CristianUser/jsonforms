@@ -22,7 +22,7 @@ import {
   Resolve,
   update
 } from '@jsonforms/core';
-import { Button, Collapse } from 'antd';
+import { Avatar, Button, Collapse } from 'antd';
 
 const iconStyle: any = { float: 'right' };
 
@@ -42,6 +42,7 @@ interface OwnPropsOfExpandPanel {
   enableMoveDown: boolean;
   config: any;
   childLabelProp?: string;
+  isExpanded?: boolean;
   handleChange?: (index: number) => void
 }
 
@@ -68,7 +69,7 @@ export interface ExpandPanelProps
   extends StatePropsOfExpandPanel,
   DispatchPropsOfExpandPanel { }
 
-const ExpandPanelRenderer = (props: ExpandPanelProps) => {
+const ExpandPanelRenderer = (props: ExpandPanelProps & any) => {
   const {
     childLabel,
     childPath,
@@ -87,7 +88,9 @@ const ExpandPanelRenderer = (props: ExpandPanelProps) => {
     renderers,
     cells,
     config,
-    handleChange
+    handleChange,
+    isExpanded,
+    ...panelProps
   } = props;
 
   const foundUISchema = useMemo(
@@ -105,16 +108,13 @@ const ExpandPanelRenderer = (props: ExpandPanelProps) => {
   );
 
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
+  const avatarStyle = isExpanded ? { backgroundColor: '#1890FF' } : {};
 
   return (
     <Collapse.Panel
+      {...panelProps}
       key={key}
-      header={<div onClick={() => {
-        console.log('klk', index)
-        handleChange(index)
-      }}>
-        `${index + 1} ${childLabel}`
-      </div>}
+      header={<Avatar style={avatarStyle}>{index + 1} {childLabel}</Avatar>}
       extra={
         (appliedUiSchemaOptions.showSortButtons ? (
           [<Button

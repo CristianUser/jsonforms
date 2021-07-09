@@ -30,8 +30,7 @@ import {
   createDefaultValue,
   isPlainLabel
 } from '@jsonforms/core';
-import { Collapse } from 'antd';
-// import { DownOutlined } from '@ant-design/icons'
+import { Collapse, Empty } from 'antd';
 import map from 'lodash/map';
 import { ArrayLayoutToolbar } from './ArrayToolbar';
 import ExpandPanelRenderer from './ExpandPanelRenderer';
@@ -45,7 +44,7 @@ export class MaterialArrayLayout extends React.PureComponent<
   MaterialArrayLayoutState
 > {
   state: MaterialArrayLayoutState = {
-    expanded: 0
+    expanded: NaN
   };
   innerCreateDefaultValue = () => createDefaultValue(this.props.schema);
   handleChange = (key: number) => {
@@ -90,25 +89,21 @@ export class MaterialArrayLayout extends React.PureComponent<
           addItem={addItem}
           createDefault={this.innerCreateDefaultValue}
         />
-        <Collapse
-          accordion
-          expandIconPosition="right"
-          // expandIcon={() => <DownOutlined />}
-          onChange={(key) => { console.log('key', key)}}
-        >
-              <Collapse.Panel header="This is panel header 1" key="1s">
-      <p>asdasda</p>
-    </Collapse.Panel>
-          {data > 0 ? (
-            map(range(data), index => {
+        {data > 0 ? (
+          <Collapse
+            accordion
+            onChange={(value: any) => this.handleChange(parseInt(value))}
+          >
+            {map(range(data), index => {
               return (
                 <ExpandPanelRenderer
                   index={index}
-                  // expanded={this.isExpanded(index)}
                   schema={schema}
                   path={path}
-                  uischema={uischema}
+                  isExpanded={this.isExpanded(index)}
                   renderers={renderers}
+                  uischema={uischema}
+                  uischemas={uischemas}
                   handleChange={this.handleChange}
                   cells={cells}
                   key={index}
@@ -117,14 +112,13 @@ export class MaterialArrayLayout extends React.PureComponent<
                   enableMoveDown={index < data - 1}
                   config={config}
                   childLabelProp={appliedUiSchemaOptions.elementLabelProp}
-                  uischemas={uischemas}
                 />
               );
-            })
-          ) : (
-            <p>No data</p>
-          )}
-        </Collapse>
+            })}
+          </Collapse>
+        ) : (
+          <Empty />
+        )}
       </div>
     );
   }
