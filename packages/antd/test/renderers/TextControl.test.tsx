@@ -26,11 +26,10 @@ import './MatchMediaMock';
 import React from 'react';
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
 import { TextControl } from '../../src/controls/TextControl';
-import { MaterialInputControl } from '../../src/controls/MaterialInputControl';
-import { AntdInputText } from '../../src/mui-controls/AntdInputText';
+import { InputControl } from '../../src/controls/InputControl';
+import { AntdInputText } from '../../src/antd-controls/AntdInputText';
 import Adapter from 'enzyme-adapter-react-16';
 import { ControlElement, ControlProps } from '@jsonforms/core';
-import { Input, InputAdornment } from '@material-ui/core';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -59,7 +58,7 @@ const defaultControlProps = (): ControlProps => {
     path: 'path',
     rootSchema: schema,
     schema: schema.properties.foo,
-    uischema: uischema,
+    uischema,
     label: 'Foo',
     id: 'foo-id',
     errors: '',
@@ -77,7 +76,7 @@ describe('Material text control', () => {
   it('render', () => {
     const props = defaultControlProps();
     wrapper = mount(createTextControl(props));
-    expect(wrapper.find(MaterialInputControl).props()).toEqual({
+    expect(wrapper.find(InputControl).props()).toEqual({
       ...props,
       input: AntdInputText
     });
@@ -85,27 +84,11 @@ describe('Material text control', () => {
     expect(wrapper.find('input').props().id).toEqual(`${props.id}-input`);
   });
 
-  it('allows adding of mui input props', () => {
-    const props = {
-      ...defaultControlProps(),
-      muiInputProps: { spellCheck: false }
-    };
-    wrapper = mount(createTextControl(props));
-    expect(wrapper.find('input').props().spellCheck).toEqual(false);
-  });
-
-  it('shows clear button when data exists', () => {
-    const props = defaultControlProps();
-    wrapper = mount(createTextControl(props));
-    wrapper.find(Input).simulate('pointerenter');
-    expect(wrapper.find(InputAdornment).props().style).not.toHaveProperty('display', 'none');
-  });
-
   it('hides clear button when data is undefined', () => {
     const props = defaultControlProps();
     delete props.data;
     wrapper = mount(createTextControl(props));
-    wrapper.find(Input).simulate('pointerenter');
-    expect(wrapper.find(InputAdornment).props().style).toHaveProperty('display', 'none');
+    const clearButton = wrapper.find('span.ant-input-suffix')
+    expect(clearButton).toHaveLength(0);
   });
 });

@@ -30,11 +30,11 @@ import {
   RankedTester,
   rankWith
 } from '@jsonforms/core';
-import { Hidden } from '@material-ui/core';
 import { MaterialArrayLayout } from './MaterialArrayLayout';
 import { withJsonFormsArrayLayoutProps } from '@jsonforms/react';
+import Hidden from '../util/Hidden';
 
-export const MaterialArrayLayoutRenderer = ({
+export const ArrayLayoutRenderer = ({
   visible,
   enabled,
   id,
@@ -54,7 +54,7 @@ export const MaterialArrayLayoutRenderer = ({
     addItem
   ]);
   return (
-    <Hidden xsUp={!visible}>
+    <Hidden hidden={!visible}>
       <MaterialArrayLayout
         label={label}
         uischema={uischema}
@@ -75,8 +75,8 @@ export const MaterialArrayLayoutRenderer = ({
   );
 };
 
-export const materialArrayLayoutTester: RankedTester = rankWith(
+export const arrayLayoutTester: RankedTester = rankWith(
   4,
   isObjectArrayWithNesting
 );
-export default withJsonFormsArrayLayoutProps(MaterialArrayLayoutRenderer);
+export default withJsonFormsArrayLayoutProps(ArrayLayoutRenderer);

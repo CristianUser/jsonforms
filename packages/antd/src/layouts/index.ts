@@ -35,11 +35,11 @@ import CategorizationLayout, {
   categorizationTester
 } from './CategorizationLayout';
 import MaterialArrayLayout, {
-  materialArrayLayoutTester
-} from './MaterialArrayLayoutRenderer';
+  arrayLayoutTester
+} from './ArrayLayoutRenderer';
 
 export {
-  materialArrayLayoutTester,
+  arrayLayoutTester,
   MaterialArrayLayout,
   CategorizationLayout,
   categorizationTester,

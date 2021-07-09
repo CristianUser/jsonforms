@@ -31,7 +31,7 @@ import * as React from 'react';
 import { renderers } from '../../src';
 import {
   MaterialArrayLayout,
-  materialArrayLayoutTester
+  arrayLayoutTester
 } from '../../src/layouts';
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -154,13 +154,13 @@ const uischemaOptions: {
 
 describe('Material array layout tester', () => {
   it('should only be applicable for intermediate array or when containing proper options', () => {
-    expect(materialArrayLayoutTester(uischema, schema)).toBe(-1);
-    expect(materialArrayLayoutTester(uischema, nestedSchema)).toBe(4);
-    expect(materialArrayLayoutTester(uischema, nestedSchema2)).toBe(4);
+    expect(arrayLayoutTester(uischema, schema)).toBe(-1);
+    expect(arrayLayoutTester(uischema, nestedSchema)).toBe(4);
+    expect(arrayLayoutTester(uischema, nestedSchema2)).toBe(4);
 
-    expect(materialArrayLayoutTester(uischemaOptions.default, schema)).toBe(-1);
-    expect(materialArrayLayoutTester(uischemaOptions.generate, schema)).toBe(4);
-    expect(materialArrayLayoutTester(uischemaOptions.inline, schema)).toBe(4);
+    expect(arrayLayoutTester(uischemaOptions.default, schema)).toBe(-1);
+    expect(arrayLayoutTester(uischemaOptions.generate, schema)).toBe(4);
+    expect(arrayLayoutTester(uischemaOptions.inline, schema)).toBe(4);
   });
 });
 
