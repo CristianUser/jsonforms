@@ -1,7 +1,7 @@
 import { Button, Col, PageHeader, Row, Tooltip, Typography } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { Labels } from '@jsonforms/core';
 import React from 'react';
-import { Labels } from '../../../core/lib';
 import ValidationIcon from '../complex/ValidationIcon';
 export interface ArrayLayoutToolbarProps {
   label: string;

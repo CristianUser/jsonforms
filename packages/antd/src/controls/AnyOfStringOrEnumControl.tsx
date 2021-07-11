@@ -37,8 +37,12 @@ import {
 import { Control, withJsonFormsControlProps } from '@jsonforms/react';
 import { AutoComplete } from 'antd';
 import merge from 'lodash/merge';
-import React from 'react';
+import React, { useState} from 'react';
 import { InputControl } from './InputControl';
+
+interface AutoCompleteOption {
+  value: string
+};
 
 const findEnumSchema = (schemas: JsonSchema[]) =>
   schemas.find(
@@ -64,10 +68,16 @@ const AntdAutocompleteInputText = (props: EnumCellProps & WithClassname) => {
   const stringSchema = findTextSchema(schema.anyOf);
   const maxLength = stringSchema.maxLength;
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
+  const options: AutoCompleteOption[] = enumSchema.enum?.map(value => ({ value }));
+  const [filteredOptions, setFilteredOptions] = useState<AutoCompleteOption[]>(options);
 
-  const onChange = (ev: any) => handleChange(path, ev.target.value);
+  const onChange = (value: any) => handleChange(path, value);
+  const onSearch = (searchText: string) => {
+    setFilteredOptions(
+      !searchText ? options : options.filter(option => option.value.toLowerCase().includes(searchText)),
+    );
+  };
   const inputStyle = !appliedUiSchemaOptions.trim || maxLength === undefined ? { width: '100%' } : {};
-
   return (
 
     <AutoComplete
@@ -77,8 +87,10 @@ const AntdAutocompleteInputText = (props: EnumCellProps & WithClassname) => {
       autoFocus={appliedUiSchemaOptions.focus}
       maxLength={maxLength}
       value={data || ''}
+      onSearch={onSearch}
       onChange={onChange}
-      options={enumSchema.enum}
+      onSelect={onChange}
+      options={filteredOptions}
       style={inputStyle}
     />
   );
