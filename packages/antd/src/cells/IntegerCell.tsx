@@ -37,7 +37,7 @@ export const IntegerCell = (props: CellProps & WithClassname) => (
   <AntdInputInteger {...props} />
 );
 export const IntegerCellTester: RankedTester = rankWith(
-  2,
+  3,
   isIntegerControl
 );
 

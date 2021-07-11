@@ -41,7 +41,7 @@ export const NumberCell = (props: CellProps & WithClassname) => (
  * @type {RankedTester}
  */
 export const NumberCellTester: RankedTester = rankWith(
-  2,
+  3,
   isNumberControl
 );
 export default withJsonFormsCellProps(NumberCell);

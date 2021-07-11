@@ -187,10 +187,10 @@ export const cells: JsonFormsCellRendererRegistryEntry[] = [
   { tester: BooleanToggleCellTester, cell: BooleanToggleCell },
   { tester: DateCellTester, cell: DateCell },
   { tester: EnumCellTester, cell: EnumCell },
+  { tester: oneOfEnumCellTester, cell: OneOfEnumCell },
   { tester: IntegerCellTester, cell: IntegerCell },
   { tester: NumberCellTester, cell: NumberCell },
   { tester: numberFormatCellTester, cell: NumberFormatCell },
-  { tester: oneOfEnumCellTester, cell: OneOfEnumCell },
   { tester: textCellTester, cell: TextCell },
   { tester: timeCellTester, cell: TimeCell }
 ];
