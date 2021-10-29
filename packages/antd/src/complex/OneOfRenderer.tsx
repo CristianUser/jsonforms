@@ -42,6 +42,7 @@ import {
 } from '@jsonforms/react';
 import CombinatorProperties from './CombinatorProperties';
 import { Modal, Tabs } from 'antd';
+import Hidden from '../util/Hidden';
 export interface OwnOneOfProps extends OwnPropsOfControl {
   indexOfFittingSchema?: number;
 }
@@ -90,7 +91,7 @@ const OneOfRenderer =
     }, [setSelectedIndex, data]);
 
     return (
-      <div hidden={!visible}>
+      <Hidden hidden={!visible}>
         <CombinatorProperties
           schema={_schema}
           combinatorKeyword={'oneOf'}
@@ -115,7 +116,7 @@ const OneOfRenderer =
             )
           ))
         }
-      </div>
+      </Hidden>
     );
   };
 

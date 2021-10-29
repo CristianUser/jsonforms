@@ -16,10 +16,10 @@ const { Title } = Typography;
 const renderTitle = (label: string | Labels, errors: string) =>
 (
   <Row>
-    <Col>
+    <Col key="col_1">
       <Title level={3} >{label}</Title>
     </Col>
-    <Col style={{ padding: '0 10px' }}>
+    <Col key="col_2" style={{ padding: '0 10px' }}>
       <ValidationIcon id='tooltip-validation' errorMessages={errors} />
     </Col>
   </Row>
@@ -37,11 +37,11 @@ export const ArrayLayoutToolbar = React.memo(
       <PageHeader
         ghost={false}
         title={renderTitle(label, errors)}
-        extra={[
+        extra={
           <Tooltip key='1' title={`Add to ${label}`}>
             <Button type='primary' onClick={addItem(path, createDefault())} shape='circle' icon={<PlusOutlined />} />
           </Tooltip>
-        ]}
+        }
       />
     );
   }

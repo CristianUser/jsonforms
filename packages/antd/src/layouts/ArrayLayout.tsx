@@ -106,7 +106,7 @@ export class ArrayLayout extends React.PureComponent<
                   uischemas={uischemas}
                   handleChange={this.handleChange}
                   cells={cells}
-                  key={index}
+                  key={`${path}_${index}`}
                   rootSchema={rootSchema}
                   enableMoveUp={index != 0}
                   enableMoveDown={index < data - 1}

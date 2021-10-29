@@ -26,13 +26,14 @@ import { StatePropsOfMasterItem } from '@jsonforms/core';
 import { withJsonFormsMasterListItemProps } from '@jsonforms/react';
 import { DeleteFilled } from '@ant-design/icons';
 import { Avatar, Button, List, Tooltip } from 'antd';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 const ListWithDetailMasterItem = ({ index, childLabel, selected, handleSelect, removeItem, path }: StatePropsOfMasterItem) => {
-    const avatarStyle = selected ? { backgroundColor: '#1890FF' } : {};
+    const avatarStyle = useMemo(() => selected ? { backgroundColor: '#1890FF' } : {}, [selected]);
 
     return (
         <List.Item
+            key={index}
             onClick={handleSelect(index)}
             actions={[
                 <Tooltip title='Delete' key='action_1'>

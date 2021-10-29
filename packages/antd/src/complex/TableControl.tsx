@@ -50,6 +50,7 @@ import { ErrorObject } from 'ajv';
 
 import { WithDeleteDialogSupport } from './DeleteDialog';
 import TableToolbar from './TableToolbar';
+import Hidden from '../util/Hidden';
 
 const RenderActionsCell = (props: ArrayLayoutProps & WithDeleteDialogSupport & any) => {
   const {
@@ -270,7 +271,7 @@ export class TableControl extends React.Component<
     const dataSource = range(data).map(index => ({ index, key: index }));
 
     return (
-      <div hidden={!visible}>
+      <Hidden hidden={!visible}>
         <TableToolbar
           errors={errors}
           label={label}
@@ -282,7 +283,7 @@ export class TableControl extends React.Component<
           enabled={enabled}
         />
         <Table columns={columns} dataSource={dataSource} />
-      </div>
+      </Hidden>
     );
   }
 }

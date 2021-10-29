@@ -18,6 +18,7 @@ import { withJsonFormsMultiEnumProps } from '@jsonforms/react';
 import { Form } from 'antd';
 import { isEmpty, startCase } from 'lodash';
 import { AntdCheckbox } from '../antd-controls';
+import Hidden from '../util/Hidden';
 
 export const EnumArrayRenderer = ({
   schema,
@@ -34,38 +35,39 @@ export const EnumArrayRenderer = ({
 
   // NOTE: probably will need to remove the marginBottom of Form.Item
   return (
-    <Form.Item
-      hidden={!visible}
-      hasFeedback={!isValid}
-      validateStatus={isValid ? '' : 'error'}
-      help={errors}
-    >
-      {options.map((option: any, index: number) => {
-        const optionPath = Paths.compose(path, `${index}`);
-        const checkboxValue = data?.includes(option.value)
-          ? option.value
-          : undefined;
-        return (
-          <AntdCheckbox
-            id={option.value}
-            key={option.value}
-            label={startCase(option.label)}
-            isValid={isEmpty(errors)}
-            path={optionPath}
-            handleChange={(_childPath, newValue) =>
-              newValue
-                ? addItem(path, option.value)
-                : removeItem(path, option.value)
-            }
-            data={checkboxValue}
-            errors={errors}
-            schema={schema}
-            visible={visible}
-            {...otherProps}
-          />
-        );
-      })}
-    </Form.Item>
+    <Hidden hidden={!visible}>
+      <Form.Item
+        hasFeedback={!isValid}
+        validateStatus={isValid ? '' : 'error'}
+        help={errors}
+      >
+        {options.map((option: any, index: number) => {
+          const optionPath = Paths.compose(path, `${index}`);
+          const checkboxValue = data?.includes(option.value)
+            ? option.value
+            : undefined;
+          return (
+            <AntdCheckbox
+              id={option.value}
+              key={option.value}
+              label={startCase(option.label)}
+              isValid={isEmpty(errors)}
+              path={optionPath}
+              handleChange={(_childPath, newValue) =>
+                newValue
+                  ? addItem(path, option.value)
+                  : removeItem(path, option.value)
+              }
+              data={checkboxValue}
+              errors={errors}
+              schema={schema}
+              visible={visible}
+              {...otherProps}
+            />
+          );
+        })}
+      </Form.Item>
+    </Hidden>
   );
 };
 

@@ -36,6 +36,7 @@ import {
 import { JsonFormsDispatch, withJsonFormsAnyOfProps } from '@jsonforms/react';
 import CombinatorProperties from './CombinatorProperties';
 import { Tabs } from 'antd';
+import Hidden from '../util/Hidden';
 
 const AnyOfRenderer = ({
   schema,
@@ -65,7 +66,7 @@ const AnyOfRenderer = ({
   );
 
   return (
-    <div hidden={!visible}>
+    <Hidden hidden={!visible}>
       <CombinatorProperties
         schema={_schema}
         combinatorKeyword={'anyOf'}
@@ -89,7 +90,7 @@ const AnyOfRenderer = ({
             />
           )
       )}
-    </div>
+    </Hidden>
   );
 };
 

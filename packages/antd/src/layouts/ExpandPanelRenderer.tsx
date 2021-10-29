@@ -3,9 +3,7 @@ import get from 'lodash/get';
 import React, { Dispatch, ReducerAction, useMemo } from 'react';
 import { ComponentType } from 'enzyme';
 import {
-  // areEqual,
   JsonFormsDispatch,
-  // JsonFormsStateContext,
   useJsonForms
 } from '@jsonforms/react';
 import {
@@ -108,28 +106,36 @@ const ExpandPanelRenderer = (props: ExpandPanelProps & any) => {
   );
 
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
-  const avatarStyle = isExpanded ? { backgroundColor: '#1890FF' } : {};
+  const avatarStyle = useMemo(() => {
+    const style: React.CSSProperties = { marginRight: '10px' };
+
+    if (isExpanded) {
+      style.backgroundColor = '#1890FF'
+    }
+    return style;
+  }, [isExpanded]);
 
   const getExtra = () => {
-    return (appliedUiSchemaOptions.showSortButtons ? (
-      [
+    return (
+      <>
         <Tooltip key='1' title='Move up'>
           <Button shape='circle' icon={<ArrowUpOutlined />} onClick={moveUp(path, index)} disabled={!enableMoveUp} />
-        </Tooltip>,
+        </Tooltip>
         <Tooltip key='2' title='Move down'>
           <Button shape='circle' icon={<ArrowDownOutlined />} onClick={moveDown(path, index)} disabled={!enableMoveDown} />
-        </Tooltip>]
-    ) :
-      []
-    ).concat(
-      <Tooltip key='3' title='Delete'>
-        <Button
-          shape='circle'
-          onClick={removeItems(path, [index])}
-          icon={<DeleteFilled />}
-        />
-      </Tooltip>
-    );
+        </Tooltip>
+        {
+          appliedUiSchemaOptions.showSortButtons ?
+            <Tooltip key='3' title='Delete'>
+              <Button
+                shape='circle'
+                onClick={removeItems(path, [index])}
+                icon={<DeleteFilled />}
+              />
+            </Tooltip> : null
+        }
+      </>
+    )
   };
 
   return (

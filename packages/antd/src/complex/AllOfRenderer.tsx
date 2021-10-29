@@ -35,6 +35,7 @@ import {
   StatePropsOfCombinator
 } from '@jsonforms/core';
 import { JsonFormsDispatch, withJsonFormsAllOfProps } from '@jsonforms/react';
+import Hidden from '../util/Hidden';
 
 const AllOfRenderer = ({
   schema,
@@ -54,7 +55,7 @@ const AllOfRenderer = ({
   );
   if (delegateUISchema) {
     return (
-      <div hidden={!visible}>
+      <Hidden hidden={!visible}>
         <JsonFormsDispatch
           schema={_schema}
           uischema={delegateUISchema}
@@ -62,7 +63,7 @@ const AllOfRenderer = ({
           renderers={renderers}
           cells={cells}
         />
-      </div>
+      </Hidden>
     );
   }
   const allOfRenderInfos = createCombinatorRenderInfos(
@@ -75,7 +76,7 @@ const AllOfRenderer = ({
   );
 
   return (
-    <div hidden={!visible}>
+    <Hidden hidden={!visible}>
       {allOfRenderInfos.map((allOfRenderInfo, allOfIndex) => (
         <JsonFormsDispatch
           key={allOfIndex}
@@ -86,7 +87,7 @@ const AllOfRenderer = ({
           cells={cells}
         />
       ))}
-    </div>
+    </Hidden>
   );
 };
 

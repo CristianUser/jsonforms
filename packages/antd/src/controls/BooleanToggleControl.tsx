@@ -35,6 +35,7 @@ import {
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import { AntdToggle } from '../antd-controls/AntdToggle';
 import { Form } from 'antd';
+import Hidden from '../util/Hidden';
 
 export const BooleanToggleControl = ({
   data,
@@ -53,6 +54,7 @@ export const BooleanToggleControl = ({
   const isValid = isEmpty(errors);
 
   return (
+    <Hidden hidden={!visible}>
       <Form.Item
         hidden={!visible}
         label={label}
@@ -76,6 +78,7 @@ export const BooleanToggleControl = ({
           config={config}
         />
       </Form.Item>
+    </Hidden>
   );
 };
 

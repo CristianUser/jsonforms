@@ -33,6 +33,7 @@ import {
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import { AntdCheckbox } from '../antd-controls/AntdCheckbox';
 import { Form } from 'antd';
+import Hidden from '../util/Hidden';
 
 export const BooleanControl = ({
   data,
@@ -51,28 +52,29 @@ export const BooleanControl = ({
   const isValid = isEmpty(errors);
 
   return (
-    <Form.Item
-      hidden={!visible}
-      id={id}
-      hasFeedback={!isValid}
-      help={!isValid ? errors : null}
-    >
-      <AntdCheckbox
-        id={`${id}-input`}
-        isValid={isEmpty(errors)}
-        data={data}
-        enabled={enabled}
-        visible={visible}
-        label={label}
-        path={path}
-        uischema={uischema}
-        schema={schema}
-        rootSchema={rootSchema}
-        handleChange={handleChange}
-        errors={errors}
-        config={config}
-      />
-    </Form.Item>
+    <Hidden hidden={!visible}>
+      <Form.Item
+        id={id}
+        hasFeedback={!isValid}
+        help={!isValid ? errors : null}
+      >
+        <AntdCheckbox
+          id={`${id}-input`}
+          isValid={isEmpty(errors)}
+          data={data}
+          enabled={enabled}
+          visible={visible}
+          label={label}
+          path={path}
+          uischema={uischema}
+          schema={schema}
+          rootSchema={rootSchema}
+          handleChange={handleChange}
+          errors={errors}
+          config={config}
+        />
+      </Form.Item>
+    </Hidden>
   );
 };
 

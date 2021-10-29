@@ -43,6 +43,7 @@ import {
   LayoutRendererProps as LayoutRendererProps,
   withAjvProps
 } from '../util/layout';
+import Hidden from '../util/Hidden';
 
 const { TabPane } = Tabs;
 
@@ -110,11 +111,12 @@ export class CategorizationLayoutRenderer extends RendererComponent<
       renderers,
       cells
     };
+
     const categories = categorization.elements.filter((category: Category) =>
       isVisible(category, data, undefined, ajv)
     );
     return (
-      <div hidden={!visible}>
+      <Hidden hidden={!visible}>
         <Tabs activeKey={value?.toString()} onTabClick={this.handleChange}>
           {categories.map((e: Category, idx: number) => (
             <TabPane key={idx} tab={e.label} />
@@ -123,7 +125,7 @@ export class CategorizationLayoutRenderer extends RendererComponent<
         <div style={{ marginTop: '0.5em' }}>
           <LayoutRenderer {...childProps} />
         </div>
-      </div>
+      </Hidden>
     );
   }
 

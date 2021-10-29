@@ -32,6 +32,7 @@ import {
 } from '@jsonforms/core';
 import { withJsonFormsLayoutProps } from '@jsonforms/react';
 import { Typography } from 'antd';
+import Hidden from '../util/Hidden';
 
 /**
  * Default tester for a label.
@@ -47,11 +48,11 @@ const { Title } = Typography;
 export const LabelRenderer = ({ uischema, visible }: OwnPropsOfRenderer) => {
   const labelElement: LabelElement = uischema as LabelElement;
   return (
-    <div hidden={!visible}>
+    <Hidden hidden={!visible}>
       <Title level={4}>
         {labelElement.text !== undefined && labelElement.text !== null && labelElement.text}
       </Title>
-    </div>
+    </Hidden>
   );
 };
 

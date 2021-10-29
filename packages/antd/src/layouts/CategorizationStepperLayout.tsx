@@ -44,6 +44,7 @@ import {
   withAjvProps
 } from '../util/layout';
 import { Button, Steps } from 'antd';
+import Hidden from '../util/Hidden';
 
 export const categorizationStepperTester: RankedTester = rankWith(
   2,
@@ -114,10 +115,10 @@ export class CategorizationStepperLayoutRenderer extends RendererComponent<
       isVisible(category, data, undefined, ajv)
     );
     return (
-      <div hidden={!visible}>
+      <Hidden hidden={!visible}>
         <Steps current={activeCategory} style={{ marginBottom: '10px' }}>
         {categories.map((item: Category, idx: number) => (
-          <Steps.Step key={item.label} title={item.label} onClick={() => this.handleStep(idx)}/>
+          <Steps.Step key={`${item.label}_${idx}`} title={item.label} onClick={() => this.handleStep(idx)}/>
         ))}
       </Steps>
         <div>
@@ -143,7 +144,7 @@ export class CategorizationStepperLayoutRenderer extends RendererComponent<
           </Button>
         </div>
         ) : (<></>)}
-      </div>
+      </Hidden>
     );
   }
 }

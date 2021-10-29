@@ -34,6 +34,7 @@ import {
 } from '@jsonforms/core';
 import { JsonFormsDispatch, withJsonFormsDetailProps } from '@jsonforms/react';
 import React, { useMemo } from 'react';
+import Hidden from '../util/Hidden';
 
 const ObjectRenderer = ({
   renderers,
@@ -66,7 +67,7 @@ const ObjectRenderer = ({
     (detailUiSchema as GroupLayout).label = isPlainLabel(label) ? label : label.default;
   }
   return (
-    <div hidden={!visible}>
+    <Hidden hidden={!visible}>
       <JsonFormsDispatch
         visible={visible}
         enabled={enabled}
@@ -76,7 +77,7 @@ const ObjectRenderer = ({
         renderers={renderers}
         cells={cells}
       />
-    </div>
+    </Hidden>
   );
 };
 

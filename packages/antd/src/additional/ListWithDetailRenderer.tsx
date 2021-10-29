@@ -44,6 +44,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 
 import { ArrayLayoutToolbar } from '../layouts/ArrayToolbar';
 import ListWithDetailMasterItem from './ListWithDetailMasterItem';
+import Hidden from '../util/Hidden';
 
 export const ListWithDetailRenderer = ({
   uischemas,
@@ -96,7 +97,7 @@ export const ListWithDetailRenderer = ({
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
 
   return (
-    <div hidden={!visible}>
+    <Hidden hidden={!visible}>
       <ArrayLayoutToolbar
         label={computeLabel(
           isPlainLabel(label) ? label : label.default,
@@ -140,7 +141,7 @@ export const ListWithDetailRenderer = ({
           )}
         </Col>
       </Row>
-    </div>
+    </Hidden>
   );
 };
 

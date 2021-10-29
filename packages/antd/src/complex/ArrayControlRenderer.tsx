@@ -27,6 +27,7 @@ import { ArrayLayoutProps } from '@jsonforms/core';
 import { withJsonFormsArrayLayoutProps } from '@jsonforms/react';
 import { TableControl } from './TableControl';
 import { DeleteDialog } from './DeleteDialog';
+import Hidden from '../util/Hidden';
 
 export const ArrayControlRenderer = (props: ArrayLayoutProps) => {
   const [open, setOpen] = useState(false);
@@ -48,7 +49,7 @@ export const ArrayControlRenderer = (props: ArrayLayoutProps) => {
   const deleteClose = useCallback(() => setOpen(false), [setOpen]);
 
   return (
-    <div hidden={!visible}>
+    <Hidden hidden={!visible}>
       <TableControl
         {...props}
         openDeleteDialog={openDeleteDialog}
@@ -59,7 +60,7 @@ export const ArrayControlRenderer = (props: ArrayLayoutProps) => {
         onConfirm={deleteConfirm}
         onClose={deleteClose}
       />
-    </div>
+    </Hidden>
   );
 };
 
