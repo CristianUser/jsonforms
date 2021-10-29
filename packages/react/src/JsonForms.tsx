@@ -24,7 +24,7 @@
 */
 import maxBy from 'lodash/maxBy';
 import React, { useMemo } from 'react';
-import AJV from 'ajv';
+import Ajv from 'ajv';
 import { UnknownRenderer } from './UnknownRenderer';
 import {
   createId,
@@ -32,6 +32,7 @@ import {
   isControl,
   JsonFormsCellRendererRegistryEntry,
   JsonFormsCore,
+  JsonFormsI18nState,
   JsonFormsProps,
   JsonFormsRendererRegistryEntry,
   JsonFormsUISchemaRegistryEntry,
@@ -176,11 +177,12 @@ export interface JsonFormsInitStateProps {
   uischema?: UISchemaElement;
   renderers: JsonFormsRendererRegistryEntry[];
   cells?: JsonFormsCellRendererRegistryEntry[];
-  ajv?: AJV.Ajv;
+  ajv?: Ajv;
   config?: any;
   uischemas?: JsonFormsUISchemaRegistryEntry[];
   readonly?: boolean;
   validationMode?: ValidationMode;
+  i18n?: JsonFormsI18nState;
 }
 
 export const JsonForms = (
@@ -197,7 +199,8 @@ export const JsonForms = (
     config,
     uischemas,
     readonly,
-    validationMode
+    validationMode,
+    i18n
   } = props;
   const schemaToUse = useMemo(
     () => (schema !== undefined ? schema : Generate.jsonSchema(data)),
@@ -224,6 +227,7 @@ export const JsonForms = (
         renderers,
         cells,
         readonly,
+        i18n
       }}
       onChange={onChange}
     >

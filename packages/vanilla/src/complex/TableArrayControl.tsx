@@ -35,11 +35,11 @@ import {
   ControlElement,
   createDefaultValue,
   Helpers,
-  isPlainLabel,
   Paths,
   RankedTester,
   Resolve,
-  Test
+  Test,
+  getControlPath
 } from '@jsonforms/core';
 import { DispatchCell, withJsonFormsArrayControlProps } from '@jsonforms/react';
 import { withVanillaControlProps } from '../util';
@@ -100,12 +100,11 @@ class TableArrayControl extends React.Component<ArrayControlProps & VanillaRende
     const divClassNames = [validationClass]
       .concat(isValid ? '' : getStyleAsClassName('array.table.validation.error'))
       .join(' ');
-    const labelText = isPlainLabel(label) ? label : label.default;
 
     return (
       <div className={controlClass} hidden={!visible}>
         <header>
-          <label className={labelClass}>{labelText}</label>
+          <label className={labelClass}>{label}</label>
           <button
             className={buttonClass}
             onClick={addItem(path, createDefaultValue(schema))}
@@ -144,9 +143,10 @@ class TableArrayControl extends React.Component<ArrayControlProps & VanillaRende
                     `${index}`
                   );
                   // TODO
-                  const errorsPerEntry: any[] = filter(childErrors, error =>
-                    error.dataPath.startsWith(childPath)
-                  );
+                  const errorsPerEntry: any[] = filter(childErrors, error => {
+                    const errorPath = getControlPath(error);
+                    return errorPath.startsWith(childPath);
+                  });
 
                   const validationClassName = getStyleAsClassName('array.validation');
                   const errorValidationClassName = getStyleAsClassName('array.validation.error');

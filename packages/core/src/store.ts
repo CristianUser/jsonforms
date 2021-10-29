@@ -22,12 +22,15 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
+
 import { Store } from './util';
-import { JsonFormsCore } from './reducers/core';
-import { JsonFormsCellRendererRegistryEntry } from './reducers/cells';
-import { JsonFormsRendererRegistryEntry } from './reducers/renderers';
-import { JsonFormsLocaleState } from './reducers/i18n';
-import { JsonFormsUISchemaRegistryEntry } from './reducers/uischemas';
+import {
+  JsonFormsCore,
+  JsonFormsCellRendererRegistryEntry,
+  JsonFormsRendererRegistryEntry,
+  JsonFormsUISchemaRegistryEntry
+} from './reducers';
+import { JsonFormsI18nState } from './i18n';
 
 /**
  * JSONForms store.
@@ -62,11 +65,11 @@ export interface JsonFormsSubStates {
    */
   cells?: JsonFormsCellRendererRegistryEntry[];
   /**
-   *
+   * I18n settings.
    */
-  i18n?: JsonFormsLocaleState;
+  i18n?: JsonFormsI18nState;
   /**
-   *
+   * The UI schema registry used in detail renderers.
    */
   uischemas?: JsonFormsUISchemaRegistryEntry[];
   /**

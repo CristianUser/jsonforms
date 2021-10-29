@@ -22,23 +22,40 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
+
 import isEmpty from 'lodash/isEmpty';
 import union from 'lodash/union';
-import { getConfig, getData, getErrorAt, getSchema, getAjv } from '../reducers';
+import {
+  getConfig,
+  getData,
+  getErrorAt,
+  getSchema,
+  getAjv,
+  JsonFormsCellRendererRegistryEntry,
+  getTranslator
+} from '../reducers';
+import { AnyAction, Dispatch } from './type';
+import {
+  formatErrorMessage,
+  Resolve,
+} from './util';
+import {
+  isInherentlyEnabled,
+  isVisible,
+} from './runtime';
 import {
   DispatchPropsOfControl,
   EnumOption,
   enumToEnumOptionMapper,
   mapDispatchToControlProps,
+  oneOfToEnumOptionMapper,
   OwnPropsOfControl,
   OwnPropsOfEnum,
-  StatePropsOfScopedRenderer
+  StatePropsOfScopedRenderer,
 } from './renderer';
 import { JsonFormsState } from '../store';
-import { JsonFormsCellRendererRegistryEntry } from '../reducers/cells';
-import { JsonSchema } from '../models/jsonSchema';
-import { isInherentlyEnabled, isVisible } from './runtime';
-import { AnyAction, Dispatch, formatErrorMessage, oneOfToEnumOptionMapper, Resolve } from '.';
+import { JsonSchema } from '../models';
+import { i18nJsonSchema } from '..';
 
 export { JsonFormsCellRendererRegistryEntry };
 
@@ -181,8 +198,20 @@ export const defaultMapStateToEnumCellProps = (
   const props: StatePropsOfCell = mapStateToCellProps(state, ownProps);
   const options: EnumOption[] =
     ownProps.options ||
-    props.schema.enum?.map(enumToEnumOptionMapper) ||
-    (props.schema.const && [enumToEnumOptionMapper(props.schema.const)]);
+    props.schema.enum?.map(e =>
+      enumToEnumOptionMapper(
+        e,
+        getTranslator()(state),
+        props.uischema?.options?.i18n ?? (props.schema as i18nJsonSchema).i18n
+      )
+    ) ||
+    (props.schema.const && [
+      enumToEnumOptionMapper(
+        props.schema.const,
+        getTranslator()(state),
+        props.uischema?.options?.i18n ?? (props.schema as i18nJsonSchema).i18n
+      )
+    ]);
   return {
     ...props,
     options
@@ -202,7 +231,13 @@ export const mapStateToOneOfEnumCellProps = (
   const props: StatePropsOfCell = mapStateToCellProps(state, ownProps);
   const options: EnumOption[] =
     ownProps.options ||
-    (props.schema.oneOf as JsonSchema[])?.map(oneOfToEnumOptionMapper);
+    (props.schema.oneOf as JsonSchema[])?.map(oneOfSubSchema =>
+      oneOfToEnumOptionMapper(
+        oneOfSubSchema,
+        getTranslator()(state),
+        props.uischema?.options?.i18n
+      )
+    );
   return {
     ...props,
     options

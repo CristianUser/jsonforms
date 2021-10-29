@@ -25,10 +25,14 @@
 import React from 'react';
 import { CellProps, WithClassname } from '@jsonforms/core';
 import Input from '@material-ui/core/Input';
-import { areEqual } from '@jsonforms/react';
 import merge from 'lodash/merge';
+import { useDebouncedChange } from '../util';
 
-export const MuiInputInteger = React.memo(
+const toNumber = (value: string) =>
+      value === '' ? undefined : parseInt(value, 10);
+const eventToValue = (ev:any) => toNumber(ev.target.value);
+
+export const MuiInputInteger = React.memo( 
   (props: CellProps & WithClassname) => {
     const {
       data,
@@ -41,15 +45,16 @@ export const MuiInputInteger = React.memo(
       config
     } = props;
     const inputProps = { step: '1' };
-    const toNumber = (value: string) =>
-      value === '' ? undefined : parseInt(value, 10);
+    
     const appliedUiSchemaOptions = merge({}, config, uischema.options);
+
+    const [inputValue, onChange] = useDebouncedChange(handleChange, '', data, path, eventToValue);
 
     return (
       <Input
         type='number'
-        value={data !== undefined && data !== null ? data : ''}
-        onChange={ev => handleChange(path, toNumber(ev.target.value))}
+        value={inputValue}
+        onChange={onChange}
         className={className}
         id={id}
         disabled={!enabled}
@@ -58,6 +63,4 @@ export const MuiInputInteger = React.memo(
         fullWidth={true}
       />
     );
-  },
-  areEqual
-);
+  });

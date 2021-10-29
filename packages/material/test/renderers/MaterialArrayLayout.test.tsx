@@ -36,7 +36,7 @@ import {
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { JsonForms, JsonFormsStateProvider } from '@jsonforms/react';
-import { ExpansionPanel } from '@material-ui/core';
+import { Accordion } from '@material-ui/core';
 import { initCore } from './util';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -292,7 +292,7 @@ describe('Material array layout', () => {
     // up button
     expect(
       wrapper
-        .find('ExpandPanelRenderer')
+        .find('Memo(ExpandPanelRendererComponent)')
         .at(0)
         .find('button')
         .find({ 'aria-label': 'Move up' }).length
@@ -300,7 +300,7 @@ describe('Material array layout', () => {
     // down button
     expect(
       wrapper
-        .find('ExpandPanelRenderer')
+        .find('Memo(ExpandPanelRendererComponent)')
         .at(0)
         .find('button')
         .find({ 'aria-label': 'Move down' }).length
@@ -326,7 +326,7 @@ describe('Material array layout', () => {
 
     // getting up button of second item in expension panel;
     const upButton = wrapper
-      .find('ExpandPanelRenderer')
+      .find('Memo(ExpandPanelRendererComponent)')
       .at(1)
       .find('button')
       .find({ 'aria-label': 'Move up' });
@@ -363,7 +363,7 @@ describe('Material array layout', () => {
 
     // getting up button of second item in expension panel;
     const upButton = wrapper
-      .find('ExpandPanelRenderer')
+      .find('Memo(ExpandPanelRendererComponent)')
       .at(0)
       .find('button')
       .find({ 'aria-label': 'Move down' });
@@ -394,7 +394,7 @@ describe('Material array layout', () => {
 
     // getting up button of second item in expension panel;
     const upButton = wrapper
-      .find('ExpandPanelRenderer')
+      .find('Memo(ExpandPanelRendererComponent)')
       .at(0)
       .find('button')
       .find({ 'aria-label': 'Move up' });
@@ -414,7 +414,7 @@ describe('Material array layout', () => {
 
     // getting up button of second item in expension panel;
     const downButton = wrapper
-      .find('ExpandPanelRenderer')
+      .find('Memo(ExpandPanelRendererComponent)')
       .at(1)
       .find('button')
       .find({ 'aria-label': 'Move down' });
@@ -426,7 +426,7 @@ describe('Material array layout', () => {
       .find(
         `#${
         wrapper
-          .find(ExpansionPanel)
+          .find(Accordion)
           .at(index)
           .props()['aria-labelledby']
         }`

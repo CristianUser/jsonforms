@@ -24,22 +24,20 @@
 */
 import React, { useState } from 'react';
 import { CellProps, WithClassname } from '@jsonforms/core';
-import { areEqual } from '@jsonforms/react';
 import Input, { InputProps } from '@material-ui/core/Input';
 import merge from 'lodash/merge';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Close from '@material-ui/icons/Close';
 import { useTheme } from '@material-ui/core/styles';
-import { JsonFormsTheme } from '../util';
+import { JsonFormsTheme, useDebouncedChange } from '../util';
 import { InputBaseComponentProps } from '@material-ui/core';
 
 interface MuiTextInputProps {
   muiInputProps?: InputProps['inputProps'];
   inputComponent?: InputProps['inputComponent'];
 }
-
-export const MuiInputText = React.memo((props: CellProps & WithClassname & MuiTextInputProps) => {
+export const MuiInputText = React.memo((props: CellProps & WithClassname & MuiTextInputProps) => { 
   const [showAdornment, setShowAdornment] = useState(false);
   const {
     data,
@@ -63,23 +61,27 @@ export const MuiInputText = React.memo((props: CellProps & WithClassname & MuiTe
   } else {
     inputProps = {};
   }
-
+  
   inputProps = merge(inputProps, muiInputProps);
-
+  
   if (appliedUiSchemaOptions.trim && maxLength !== undefined) {
     inputProps.size = maxLength;
-  }
-  const onChange = (ev: any) => handleChange(path, ev.target.value);
+  };
+  
+  const [inputText, onChange, onClear] = useDebouncedChange(handleChange, '', data, path);
+  const onPointerEnter = () => setShowAdornment(true);
+  const onPointerLeave = () => setShowAdornment(false);
 
   const theme: JsonFormsTheme = useTheme();
-  const inputDeleteBackgroundColor = theme.jsonforms?.input?.delete?.background || theme.palette.background.default;
+  
+  const closeStyle = {background: theme.jsonforms?.input?.delete?.background || theme.palette.background.default, borderRadius: '50%'};
 
   return (
     <Input
       type={
         appliedUiSchemaOptions.format === 'password' ? 'password' : 'text'
       }
-      value={data || ''}
+      value={inputText}
       onChange={onChange}
       className={className}
       id={id}
@@ -89,8 +91,8 @@ export const MuiInputText = React.memo((props: CellProps & WithClassname & MuiTe
       fullWidth={!appliedUiSchemaOptions.trim || maxLength === undefined}
       inputProps={inputProps}
       error={!isValid}
-      onPointerEnter={() => setShowAdornment(true) }
-      onPointerLeave={() => setShowAdornment(false) }
+      onPointerEnter={onPointerEnter}
+      onPointerLeave={onPointerLeave}
       endAdornment={
         <InputAdornment
           position='end'
@@ -103,13 +105,13 @@ export const MuiInputText = React.memo((props: CellProps & WithClassname & MuiTe
         >
           <IconButton
             aria-label='Clear input field'
-            onClick={() => handleChange(path, undefined)}   
+            onClick={onClear}   
           >
-            <Close style={{background: inputDeleteBackgroundColor, borderRadius: '50%'}}/>
+            <Close style={closeStyle}/>
           </IconButton>
         </InputAdornment>
       }
       inputComponent={inputComponent}
     />
   );
-}, areEqual);
+});

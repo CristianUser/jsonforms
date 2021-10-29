@@ -1,6 +1,6 @@
 {
   "name": "@jsonforms/core",
-  "version": "3.0.0-alpha.0",
+  "version": "3.0.0-alpha.2",
   "description": "Core module of JSON Forms",
   "repository": "https://github.com/eclipsesource/jsonforms",
   "bugs": "https://github.com/eclipsesource/jsonforms/issues",
@@ -62,7 +62,8 @@
   },
   "dependencies": {
     "@types/json-schema": "^7.0.3",
-    "ajv": "^6.10.2",
+    "ajv": "^8.6.1",
+    "ajv-formats": "^2.1.0",
     "lodash": "^4.17.15"
   },
   "devDependencies": {
@@ -80,7 +81,7 @@
     "ts-node": "^8.5.3",
     "tslint": "^5.20.1",
     "typedoc": "^0.19.2",
-    "typescript": "3.8.3",
+    "typescript": "4.2.3",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.2.1"
   }

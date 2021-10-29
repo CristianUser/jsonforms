@@ -27,7 +27,6 @@ import {
   findUISchema,
   GroupLayout,
   isObjectControl,
-  isPlainLabel,
   RankedTester,
   rankWith,
   StatePropsOfControlWithDetail
@@ -36,7 +35,7 @@ import { JsonFormsDispatch, withJsonFormsDetailProps } from '@jsonforms/react';
 import { Hidden } from '@material-ui/core';
 import React, { useMemo } from 'react';
 
-const MaterialObjectRenderer = ({
+export const MaterialObjectRenderer = ({
   renderers,
   cells,
   uischemas,
@@ -64,7 +63,7 @@ const MaterialObjectRenderer = ({
   if (isEmpty(path)) {
     detailUiSchema.type = 'VerticalLayout';
   } else {
-    (detailUiSchema as GroupLayout).label = isPlainLabel(label) ? label : label.default;
+    (detailUiSchema as GroupLayout).label = label;
   }
   return (
     <Hidden xsUp={!visible}>
@@ -85,4 +84,5 @@ export const materialObjectControlTester: RankedTester = rankWith(
   2,
   isObjectControl
 );
+
 export default withJsonFormsDetailProps(MaterialObjectRenderer);

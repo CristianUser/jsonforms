@@ -22,9 +22,9 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
+
 import get from 'lodash/get';
-import { ControlElement, UISchemaElement } from '../models/uischema';
-import union from 'lodash/union';
+import { ControlElement, JsonSchema, UISchemaElement } from '../models';
 import find from 'lodash/find';
 import {
   findUISchema,
@@ -33,46 +33,31 @@ import {
   getConfig,
   getData,
   getErrorAt,
+  getErrorTranslator,
   getRenderers,
   getSchema,
   getSubErrorsAt,
-  getUiSchema
+  getTranslator,
+  getUiSchema,
+  JsonFormsCellRendererRegistryEntry,
+  JsonFormsRendererRegistryEntry,
+  JsonFormsUISchemaRegistryEntry,
 } from '../reducers';
 import { RankedTester } from '../testers';
-import { JsonSchema } from '../models/jsonSchema';
-import {
-  AnyAction,
-  CombinatorKeyword,
-  composePaths,
-  composeWithUi,
-  createLabelDescriptionFrom,
-  Dispatch,
-  formatErrorMessage,
-  hasShowRule,
-  isInherentlyEnabled,
-  isVisible,
-  moveDown,
-  moveUp,
-  Resolve,
-  resolveSubSchemas
-} from '../util';
+import { isInherentlyEnabled, hasShowRule } from './runtime';
+import { createLabelDescriptionFrom } from './label';
+import { CombinatorKeyword, resolveSubSchemas } from './combinators';
+import { moveDown, moveUp } from './array';
+import { AnyAction, Dispatch } from './type';
+import { Resolve } from './util';
+import { composePaths, composeWithUi } from './path';
+import { isVisible } from './runtime';
 import { CoreActions, update } from '../actions';
 import { ErrorObject } from 'ajv';
 import { JsonFormsState } from '../store';
-import { JsonFormsRendererRegistryEntry } from '../reducers/renderers';
-import { JsonFormsCellRendererRegistryEntry } from '../reducers/cells';
-import { JsonFormsUISchemaRegistryEntry } from '../reducers/uischemas';
+import { getCombinedErrorMessage, getI18nKey, i18nJsonSchema, Translator } from '../i18n';
 
 export { JsonFormsRendererRegistryEntry, JsonFormsCellRendererRegistryEntry };
-
-export interface Labels {
-  default: string;
-  [additionalLabels: string]: string;
-}
-
-export const isPlainLabel = (label: string | Labels): label is string => {
-  return typeof label === 'string';
-};
 
 const isRequired = (
   schema: JsonSchema,
@@ -105,6 +90,7 @@ const isRequired = (
  *
  * @param {string} label the label string
  * @param {boolean} required whether the label belongs to a control which is required
+ * @param {boolean} hideRequiredAsterisk applied UI Schema option
  * @returns {string} the label string
  */
 export const computeLabel = (
@@ -113,6 +99,20 @@ export const computeLabel = (
   hideRequiredAsterisk: boolean
 ): string => {
   return required && !hideRequiredAsterisk ? label + '*' : label;
+};
+
+/**
+ * Indicates whether to mark a field as required.
+ *
+ * @param {boolean} required whether the label belongs to a control which is required
+ * @param {boolean} hideRequiredAsterisk applied UI Schema option
+ * @returns {boolean} should the field be marked as required
+ */
+ export const showAsRequired = (
+  required: boolean,
+  hideRequiredAsterisk: boolean
+): boolean => {
+  return required && !hideRequiredAsterisk;
 };
 
 /**
@@ -176,16 +176,45 @@ export interface EnumOption {
   value: any;
 }
 
-export const enumToEnumOptionMapper = (e: any): EnumOption => {
-  const stringifiedEnum = typeof e === 'string' ? e : JSON.stringify(e);
-  return { label: stringifiedEnum, value: e };
+export const enumToEnumOptionMapper = (
+  e: any,
+  t?: Translator,
+  i18nKey?: string
+): EnumOption => {
+  let label = typeof e === 'string' ? e : JSON.stringify(e);
+  if (t) {
+    if (i18nKey) {
+      label = t(`${i18nKey}.${label}`, label);
+    } else {
+      label = t(label, label);
+    }
+  }
+  return { label, value: e };
 };
 
-export const oneOfToEnumOptionMapper = (e: any): EnumOption => ({
-  value: e.const,
-  label:
-    e.title ?? (typeof e.const === 'string' ? e.const : JSON.stringify(e.const))
-});
+export const oneOfToEnumOptionMapper = (
+  e: any,
+  t?: Translator,
+  uiSchemaI18nKey?: string
+): EnumOption => {
+  let label =
+    e.title ??
+    (typeof e.const === 'string' ? e.const : JSON.stringify(e.const));
+  if (t) {
+    // prefer schema keys as they can be more specialized
+    if (e.i18n) {
+      label = t(e.i18n, label);
+    } else if (uiSchemaI18nKey) {
+      label = t(`${uiSchemaI18nKey}.${label}`, label);
+    } else {
+      label = t(label, label);
+    }
+  }
+  return {
+    label,
+    value: e.const,
+  };
+};
 
 export interface OwnPropsOfRenderer {
   /**
@@ -325,7 +354,7 @@ export interface StatePropsOfControl extends StatePropsOfScopedRenderer {
   /**
    * The label for the rendered element.
    */
-  label: string | Labels;
+  label: string;
 
   /**
    * Description of input cell
@@ -415,9 +444,8 @@ export const mapStateToControlProps = (
     controlElement.scope,
     rootSchema
   );
-  const errors = formatErrorMessage(
-    union(getErrorAt(path, resolvedSchema)(state).map(error => error.message))
-  );
+  const errors = getErrorAt(path, resolvedSchema)(state);
+  
   const description =
     resolvedSchema !== undefined ? resolvedSchema.description : '';
   const data = Resolve.data(rootData, path);
@@ -432,18 +460,26 @@ export const mapStateToControlProps = (
     rootData,
     config
   );
+
+  const schema = resolvedSchema ?? rootSchema;
+  const t = getTranslator()(state);
+  const te = getErrorTranslator()(state);
+  const i18nLabel = t(getI18nKey(schema, uischema, 'label') ?? label, label);
+  const i18nDescription = t(getI18nKey(schema, uischema, 'description') ?? description, description);
+  const i18nErrorMessage = getCombinedErrorMessage(errors, te, t, schema, uischema);
+
   return {
     data,
-    description,
-    errors,
-    label,
+    description: i18nDescription,
+    errors: i18nErrorMessage,
+    label: i18nLabel,
     visible,
     enabled,
     id,
     path,
     required,
-    uischema: ownProps.uischema,
-    schema: resolvedSchema || rootSchema,
+    uischema,
+    schema,
     config: getConfig(state),
     cells: ownProps.cells || state.jsonforms.cells,
     rootSchema
@@ -478,8 +514,20 @@ export const mapStateToEnumControlProps = (
   const props: StatePropsOfControl = mapStateToControlProps(state, ownProps);
   const options: EnumOption[] =
     ownProps.options ||
-    props.schema.enum?.map(enumToEnumOptionMapper) ||
-    (props.schema.const && [enumToEnumOptionMapper(props.schema.const)]);
+    props.schema.enum?.map(e =>
+      enumToEnumOptionMapper(
+        e,
+        getTranslator()(state),
+        props.uischema?.options?.i18n ?? (props.schema as i18nJsonSchema).i18n
+      )
+    ) ||
+    (props.schema.const && [
+      enumToEnumOptionMapper(
+        props.schema.const,
+        getTranslator()(state),
+        props.uischema?.options?.i18n ?? (props.schema as i18nJsonSchema).i18n
+      )
+    ]);
   return {
     ...props,
     options
@@ -499,7 +547,13 @@ export const mapStateToOneOfEnumControlProps = (
   const props: StatePropsOfControl = mapStateToControlProps(state, ownProps);
   const options: EnumOption[] =
     ownProps.options ||
-    (props.schema.oneOf as JsonSchema[])?.map(oneOfToEnumOptionMapper);
+    (props.schema.oneOf as JsonSchema[])?.map(oneOfSubSchema =>
+      oneOfToEnumOptionMapper(
+        oneOfSubSchema,
+        getTranslator()(state),
+        props.uischema?.options?.i18n
+      )
+    );
   return {
     ...props,
     options
@@ -521,8 +575,20 @@ export const mapStateToMultiEnumControlProps = (
   const options: EnumOption[] =
     ownProps.options ||
     (items?.oneOf &&
-      (items.oneOf as JsonSchema[]).map(oneOfToEnumOptionMapper)) ||
-    items?.enum?.map(enumToEnumOptionMapper);
+      (items.oneOf as JsonSchema[]).map(oneOfSubSchema =>
+        oneOfToEnumOptionMapper(
+          oneOfSubSchema,
+          state.jsonforms.i18n?.translate,
+          props.uischema?.options?.i18n
+        )
+      )) ||
+    items?.enum?.map(e =>
+      enumToEnumOptionMapper(
+        e,
+        state.jsonforms.i18n?.translate,
+        props.uischema?.options?.i18n ?? (props.schema as i18nJsonSchema).i18n
+      )
+    );
   return {
     ...props,
     options
@@ -885,7 +951,8 @@ const mapStateToCombinatorRendererProps = (
     'required',
     'additionalProperties',
     'type',
-    'enum'
+    'enum',
+    'const'
   ];
   const dataIsValid = (errors: ErrorObject[]): boolean => {
     return (
@@ -977,9 +1044,17 @@ export const mapStateToArrayLayoutProps = (
   } = mapStateToControlWithDetailProps(state, ownProps);
 
   const resolvedSchema = Resolve.schema(schema, 'items', props.rootSchema);
-  const childErrors = formatErrorMessage(
-    getSubErrorsAt(path, resolvedSchema)(state).map(error => error.message)
+
+  // TODO Does not consider a specialized '.custom' error message overriding all other error messages
+  // TODO Does not consider 'i18n' keys which are specified in the ui schemas of the sub errors
+  const childErrors = getCombinedErrorMessage(
+    getSubErrorsAt(path, resolvedSchema)(state),
+    getErrorTranslator()(state),
+    getTranslator()(state),
+    undefined,
+    undefined
   );
+
   const allErrors =
     errors +
     (errors.length > 0 && childErrors.length > 0 ? '\n' : '') +
@@ -994,8 +1069,6 @@ export const mapStateToArrayLayoutProps = (
     minItems: schema.minItems
   };
 };
-
-export type CombinatorProps = StatePropsOfCombinator & DispatchPropsOfControl;
 
 /**
  * Props of an array control.

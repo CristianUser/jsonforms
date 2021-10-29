@@ -101,6 +101,19 @@ describe('Material date control tester', () => {
         }
       })
     ).toBe(4);
+    expect(
+      materialDateControlTester(
+        { ...uischema, options: { format: 'date' } },
+        {
+          type: 'object',
+          properties: {
+            foo: {
+              type: 'string'
+            }
+          }
+        }
+      )
+    ).toBe(4);
   });
 });
 
@@ -332,5 +345,34 @@ describe('Material date control', () => {
     );
     const inputs = wrapper.find('input');
     expect(inputs.length).toBe(0);
+  });
+
+  it('should support format customizations', () => {
+    const core = initCore(schema, uischema, {foo: '06---1980'});
+    const onChangeData: any = {
+      data: undefined
+    };
+    wrapper = mount(
+      <JsonFormsStateProvider initState={{ renderers: materialRenderers, core }}>
+        <TestEmitter
+          onChange={({ data }) => {
+            onChangeData.data = data;
+          }}
+        />
+        <MaterialDateControl
+          schema={schema}
+          uischema={{...uischema, options: {
+            dateFormat: 'YYYY/MM',
+            dateSaveFormat: 'MM---YYYY'
+          }}}
+        />
+      </JsonFormsStateProvider>
+    );
+
+    const input = wrapper.find('input').first();
+    expect(input.props().value).toBe('1980/06');
+
+    input.simulate('change', { target: { value: '1961/04' } });
+    expect(onChangeData.data.foo).toBe('04---1961');
   });
 });

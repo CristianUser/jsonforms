@@ -22,20 +22,17 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import React from 'react';
+import React, { useMemo } from 'react';
 import merge from 'lodash/merge';
 import {
-  computeLabel,
   ControlProps,
-  ControlState,
   isDateTimeControl,
-  isPlainLabel,
+  isDescriptionHidden,
   RankedTester,
   rankWith
 } from '@jsonforms/core';
-import { Control, withJsonFormsControlProps } from '@jsonforms/react';
-import moment from 'moment';
-import { Hidden } from '@material-ui/core';
+import { withJsonFormsControlProps } from '@jsonforms/react';
+import { FormHelperText, Hidden } from '@material-ui/core';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import DateRangeIcon from '@material-ui/icons/DateRange';
@@ -45,72 +42,93 @@ import {
   KeyboardDateTimePicker,
   MuiPickersUtilsProvider
 } from '@material-ui/pickers';
-import MomentUtils from '@date-io/moment';
+import DayjsUtils from '@date-io/dayjs';
+import { createOnChangeHandler, getData, useFocus } from '../util';
 
-// Workaround typing problems in @material-ui/pickers@3.2.3
-const AnyPropsKeyboardDateTimepicker: React.FunctionComponent<
-  any
-> = KeyboardDateTimePicker;
+export const MaterialDateTimeControl = (props: ControlProps) => {
+  const [focused, onFocus, onBlur] = useFocus();
+  const {
+    id,
+    description,
+    errors,
+    label,
+    uischema,
+    visible,
+    enabled,
+    required,
+    path,
+    handleChange,
+    data,
+    config
+  } = props;
+  const appliedUiSchemaOptions = merge({}, config, uischema.options);
+  const isValid = errors.length === 0;
 
-export class MaterialDateTimeControl extends Control<
-  ControlProps,
-  ControlState
-> {
-  render() {
-    const {
-      id,
-      description,
-      errors,
-      label,
-      uischema,
-      visible,
-      enabled,
-      required,
-      path,
-      handleChange,
-      data,
-      config
-    } = this.props;
-    const appliedUiSchemaOptions = merge({}, config, uischema.options);
-    const isValid = errors.length === 0;
-    const inputProps = {};
+  const showDescription = !isDescriptionHidden(
+    visible,
+    description,
+    focused,
+    appliedUiSchemaOptions.showUnfocusedDescription
+  );
 
-    return (
-      <Hidden xsUp={!visible}>
-        <MuiPickersUtilsProvider utils={MomentUtils}>
-          <AnyPropsKeyboardDateTimepicker
-            id={id + '-input'}
-            label={computeLabel(
-              isPlainLabel(label) ? label : label.default,
-              required,
-              appliedUiSchemaOptions.hideRequiredAsterisk
-            )}
-            error={!isValid}
-            fullWidth={!appliedUiSchemaOptions.trim}
-            onFocus={this.onFocus}
-            onBlur={this.onBlur}
-            helperText={!isValid ? errors : description}
-            InputLabelProps={{ shrink: true }}
-            value={data || null}
-            onChange={(datetime: any) =>
-              handleChange(path, datetime ? moment(datetime).format() : '')
-            }
-            format='MM/DD/YYYY h:mm a'
-            clearable={true}
-            disabled={!enabled}
-            autoFocus={appliedUiSchemaOptions.focus}
-            leftArrowIcon={<KeyboardArrowLeftIcon />}
-            rightArrowIcon={<KeyboardArrowRightIcon />}
-            dateRangeIcon={<DateRangeIcon />}
-            keyboardIcon={<EventIcon />}
-            timeIcon={<AccessTimeIcon />}
-            InputProps={inputProps}
-          />
-        </MuiPickersUtilsProvider>
-      </Hidden>
-    );
-  }
-}
+  const format = appliedUiSchemaOptions.dateTimeFormat ?? 'YYYY-MM-DD HH:mm';
+  const saveFormat = appliedUiSchemaOptions.dateTimeSaveFormat ?? undefined;
+
+  const firstFormHelperText = showDescription
+    ? description
+    : !isValid
+    ? errors
+    : null;
+  const secondFormHelperText = showDescription && !isValid ? errors : null;
+
+  const onChange = useMemo(() => createOnChangeHandler(
+    path,
+    handleChange,
+    saveFormat
+  ),[path, handleChange, saveFormat]);
+
+  return (
+    <Hidden xsUp={!visible}>
+      <MuiPickersUtilsProvider utils={DayjsUtils}>
+        <KeyboardDateTimePicker
+          id={id + '-input'}
+          required={required && !appliedUiSchemaOptions.hideRequiredAsterisk}
+          label={label}
+          error={!isValid}
+          fullWidth={!appliedUiSchemaOptions.trim}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          InputLabelProps={data ? { shrink: true } : undefined}
+          value={getData(data, saveFormat)}
+          clearable
+          onChange={onChange}
+          format={format}
+          ampm={!!appliedUiSchemaOptions.ampm}
+          views={appliedUiSchemaOptions.views}
+          disabled={!enabled}
+          autoFocus={appliedUiSchemaOptions.focus}
+          cancelLabel={appliedUiSchemaOptions.cancelLabel}
+          clearLabel={appliedUiSchemaOptions.clearLabel}
+          okLabel={appliedUiSchemaOptions.okLabel}
+          leftArrowIcon={<KeyboardArrowLeftIcon />}
+          rightArrowIcon={<KeyboardArrowRightIcon />}
+          dateRangeIcon={<DateRangeIcon />}
+          keyboardIcon={<EventIcon />}
+          timeIcon={<AccessTimeIcon />}
+          invalidDateMessage={null}
+          maxDateMessage={null}
+          minDateMessage={null}
+        />
+        <FormHelperText error={!isValid && !showDescription}>
+          {firstFormHelperText}
+        </FormHelperText>
+        <FormHelperText error={!isValid}>
+          {secondFormHelperText}
+        </FormHelperText>
+      </MuiPickersUtilsProvider>
+    </Hidden>
+  );
+};
 
 export const materialDateTimeControlTester: RankedTester = rankWith(
   2,

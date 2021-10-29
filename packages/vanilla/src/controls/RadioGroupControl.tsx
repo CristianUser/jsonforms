@@ -1,7 +1,7 @@
 /*
   The MIT License
 
-  Copyright (c) 2017-2019 EclipseSource Munich
+  Copyright (c) 2017-2021 EclipseSource Munich
   https://github.com/eclipsesource/jsonforms
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,92 +24,21 @@
 */
 import React from 'react';
 import {
-  computeLabel,
+  and,
   ControlProps,
-  ControlState,
-  isDescriptionHidden,
-  isPlainLabel
+  isEnumControl,
+  optionIs, RankedTester, rankWith
 } from '@jsonforms/core';
-import { Control, withJsonFormsControlProps } from '@jsonforms/react';
+import { withJsonFormsEnumProps } from '@jsonforms/react';
+import { RadioGroup } from './RadioGroup';
 import { withVanillaControlProps } from '../util';
 import { VanillaRendererProps } from '../index';
-import merge from 'lodash/merge';
+export const RadioGroupControl = (props: ControlProps & VanillaRendererProps) => {
+  return <RadioGroup {...props} />;
+};
 
-export class RadioGroupControl extends Control<
-  ControlProps & VanillaRendererProps,
-  ControlState
-> {
-  render() {
-    const {
-      classNames,
-      id,
-      label,
-      required,
-      description,
-      errors,
-      data,
-      schema,
-      uischema,
-      visible,
-      config
-    } = this.props;
-    const isValid = errors.length === 0;
-    const divClassNames = `validation  ${
-      isValid ? classNames.description : 'validation_error'
-    }`;
-    const groupStyle: { [x: string]: any } = {
-      display: 'flex',
-      flexDirection: 'row'
-    };
-
-    const appliedUiSchemaOptions = merge({}, config, uischema.options);
-    const showDescription = !isDescriptionHidden(
-      visible,
-      description,
-      this.state.isFocused,
-      appliedUiSchemaOptions.showUnfocusedDescription
-    );
-
-    const options = schema.enum;
-
-    return (
-      <div
-        className={classNames.wrapper}
-        hidden={!visible}
-        onFocus={this.onFocus}
-        onBlur={this.onBlur}
-      >
-        <label htmlFor={id} className={classNames.label}>
-          {computeLabel(
-            isPlainLabel(label) ? label : label.default,
-            required,
-            appliedUiSchemaOptions.hideRequiredAsterisk
-          )}
-        </label>
-
-        <div style={groupStyle}>
-          {options.map(optionValue => (
-            <div key={optionValue}>
-              <input
-                type='radio'
-                value={optionValue}
-                id={optionValue}
-                name={id}
-                checked={data === optionValue}
-                onChange={ev => this.handleChange(ev.currentTarget.value)}
-              />
-              <label htmlFor={optionValue}>{optionValue}</label>
-            </div>
-          ))}
-        </div>
-        <div className={divClassNames}>
-          {!isValid ? errors : showDescription ? description : null}
-        </div>
-      </div>
-    );
-  }
-}
-
-export default withVanillaControlProps(
-  withJsonFormsControlProps(RadioGroupControl)
+export const radioGroupControlTester: RankedTester = rankWith(
+  3,
+  and(isEnumControl, optionIs('format', 'radio'))
 );
+export default withVanillaControlProps(withJsonFormsEnumProps(RadioGroupControl));

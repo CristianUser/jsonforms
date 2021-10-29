@@ -25,7 +25,7 @@
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 import { ComponentType } from 'react';
-import { Ajv } from 'ajv';
+import Ajv from 'ajv';
 import {
   getAjv,
   JsonFormsCellRendererRegistryEntry,
@@ -34,7 +34,7 @@ import {
   OwnPropsOfRenderer,
   UISchemaElement
 } from '@jsonforms/core';
-import { areEqual, JsonFormsDispatch, useJsonForms } from '@jsonforms/react';
+import { JsonFormsDispatch, useJsonForms } from '@jsonforms/react';
 import { Grid, Hidden } from '@material-ui/core';
 
 export const renderLayoutElements = (
@@ -63,7 +63,7 @@ export interface MaterialLayoutRendererProps extends OwnPropsOfRenderer {
   elements: UISchemaElement[];
   direction: 'row' | 'column';
 }
-export const MaterialLayoutRenderer = React.memo(
+const MaterialLayoutRendererComponent =
   ({
     visible,
     elements,
@@ -96,9 +96,8 @@ export const MaterialLayoutRenderer = React.memo(
         </Hidden>
       );
     }
-  },
-  areEqual
-);
+  };
+export const MaterialLayoutRenderer = React.memo(MaterialLayoutRendererComponent);
 
 export interface AjvProps {
   ajv: Ajv;
