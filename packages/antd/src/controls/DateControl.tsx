@@ -29,7 +29,6 @@ import {
   DispatchPropsOfControl,
   isDateControl,
   isDescriptionHidden,
-  isPlainLabel,
   RankedTester,
   rankWith,
   StatePropsOfControl
@@ -63,7 +62,6 @@ export class DateControl extends Control<
       momentLocale,
       config
     } = this.props;
-    const defaultLabel = label as string;
     const isValid = errors.length === 0;
     const appliedUiSchemaOptions = merge({}, config, uischema.options);
     const showDescription = !isDescriptionHidden(
@@ -76,14 +74,6 @@ export class DateControl extends Control<
       ? `${momentLocale.localeData().longDateFormat('L')}`
       : 'YYYY-MM-DD';
 
-    let labelText;
-
-    if (isPlainLabel(label)) {
-      labelText = label;
-    } else {
-      labelText = defaultLabel;
-    }
-
     const pickerStyle = !appliedUiSchemaOptions.trim ? { width: '100%' } : {};
 
     return (
@@ -93,7 +83,7 @@ export class DateControl extends Control<
         hasFeedback={!isValid}
         status={isValid ? 'success' : 'error'}
         help={!isValid ? errors : showDescription ? description : ' '}
-        label={labelText}>
+        label={label}>
         <DatePicker
           id={id + '-input'}
           style={pickerStyle}

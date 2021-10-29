@@ -24,38 +24,34 @@
 */
 import React from 'react';
 import { CellProps, WithClassname } from '@jsonforms/core';
-import { areEqual } from '@jsonforms/react';
 import merge from 'lodash/merge';
 import { InputNumber } from 'antd';
 
-export const AntdInputInteger = React.memo(
-  (props: CellProps & WithClassname) => {
-    const {
-      data,
-      className,
-      id,
-      enabled,
-      uischema,
-      path,
-      handleChange,
-      config
-    } = props;
-    const toNumber = (value: string) =>
-      value === '' ? undefined : parseInt(value, 10);
-    const appliedUiSchemaOptions = merge({}, config, uischema.options);
-    const inputStyle = !appliedUiSchemaOptions.trim ? { width: '100%' } : {};
+export const AntdInputInteger = (props: CellProps & WithClassname) => {
+  const {
+    data,
+    className,
+    id,
+    enabled,
+    uischema,
+    path,
+    handleChange,
+    config
+  } = props;
+  const toNumber = (value: string) =>
+    value === '' ? undefined : parseInt(value, 10);
+  const appliedUiSchemaOptions = merge({}, config, uischema.options);
+  const inputStyle = !appliedUiSchemaOptions.trim ? { width: '100%' } : {};
 
-    return (
-      <InputNumber
-        value={data !== undefined && data !== null ? data : ''}
-        onChange={value => handleChange(path, toNumber(value))}
-        className={className}
-        id={id}
-        disabled={!enabled}
-        autoFocus={appliedUiSchemaOptions.focus}
-        style={inputStyle}
-      />
-    );
-  },
-  areEqual
-);
+  return (
+    <InputNumber
+      value={data !== undefined && data !== null ? data : ''}
+      onChange={value => handleChange(path, toNumber(value))}
+      className={className}
+      id={id}
+      disabled={!enabled}
+      autoFocus={appliedUiSchemaOptions.focus}
+      style={inputStyle}
+    />
+  );
+};

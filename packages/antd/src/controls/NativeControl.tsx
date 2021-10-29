@@ -28,7 +28,6 @@ import {
   ControlState,
   isDateControl,
   isDescriptionHidden,
-  isPlainLabel,
   isTimeControl,
   or,
   RankedTester,
@@ -75,7 +74,7 @@ export class NativeControl extends Control<ControlProps, ControlState> {
       <Form.Item
         hidden={!visible}
         required={required}
-        label={isPlainLabel(label) ? label : label.default}
+        label={label}
         hasFeedback={!isValid}
         status={isValid ? 'success' : 'error'}
         help={!isValid ? errors : showDescription ? description : null}

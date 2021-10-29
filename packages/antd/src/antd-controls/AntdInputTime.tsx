@@ -24,11 +24,10 @@
 */
 import React from 'react';
 import { CellProps, WithClassname } from '@jsonforms/core';
-import { areEqual } from '@jsonforms/react';
 import { TimePicker } from 'antd';
 import merge from 'lodash/merge';
 
-export const AntdInputTime = React.memo((props: CellProps & WithClassname) => {
+export const AntdInputTime = (props: CellProps & WithClassname) => {
   const {
     data,
     className,
@@ -53,4 +52,4 @@ export const AntdInputTime = React.memo((props: CellProps & WithClassname) => {
       style={inputStyle}
     />
   );
-}, areEqual);
+};

@@ -26,8 +26,7 @@ import React from 'react';
 import {
   ControlElement,
   createDefaultValue,
-  JsonSchema,
-  Labels
+  JsonSchema
 } from '@jsonforms/core';
 import { Button, Col, PageHeader, Row, Tooltip, Typography } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
@@ -36,7 +35,7 @@ import ValidationIcon from './ValidationIcon';
 const { Title } = Typography;
 export interface MaterialTableToolbarProps {
   errors: string;
-  label: string | Labels;
+  label: string;
   path: string;
   uischema: ControlElement;
   schema: JsonSchema;
@@ -45,7 +44,7 @@ export interface MaterialTableToolbarProps {
   addItem(path: string, value: any): () => void;
 }
 
-const renderTitle = (label: string | Labels, errors: string) =>
+const renderTitle = (label: string, errors: string) =>
 (<Row>
   <Col>
     <Title level={3} >{label}</Title>

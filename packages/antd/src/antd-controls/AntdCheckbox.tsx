@@ -23,15 +23,14 @@
   THE SOFTWARE.
 */
 import React from 'react';
-import { CellProps, Labels, WithClassname } from '@jsonforms/core';
+import { CellProps, WithClassname } from '@jsonforms/core';
 import { Checkbox } from 'antd';
-import { areEqual } from '@jsonforms/react';
 import merge from 'lodash/merge';
 
 type Props = {
-  label?: string | Labels;
+  label?: string;
 };
-export const AntdCheckbox = React.memo((props: CellProps & WithClassname & Props) => {
+export const AntdCheckbox = (props: CellProps & WithClassname & Props) => {
   const {
     data,
     className,
@@ -57,4 +56,4 @@ export const AntdCheckbox = React.memo((props: CellProps & WithClassname & Props
       autoFocus={!!appliedUiSchemaOptions.focus}
     >{label}</Checkbox>
   );
-}, areEqual);
+};

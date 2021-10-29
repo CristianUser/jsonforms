@@ -26,7 +26,7 @@ import React, { useCallback, useState } from 'react';
 import isEmpty from 'lodash/isEmpty';
 
 import {
-  CombinatorProps,
+  CombinatorRendererProps,
   createCombinatorRenderInfos,
   createDefaultValue,
   isOneOfControl,
@@ -49,7 +49,7 @@ export interface OwnOneOfProps extends OwnPropsOfControl {
 
 const oneOf = 'oneOf';
 const OneOfRenderer =
-  ({ handleChange, schema, path, renderers, cells, rootSchema, visible, indexOfFittingSchema, uischema, uischemas, data }: CombinatorProps) => {
+  ({ handleChange, schema, path, renderers, cells, rootSchema, visible, indexOfFittingSchema, uischema, uischemas, data }: CombinatorRendererProps) => {
     const [selectedIndex, setSelectedIndex] = useState(indexOfFittingSchema || 0);
     const [newSelectedIndex, setNewSelectedIndex] = useState(0);
     const _schema = resolveSubSchemas(schema, rootSchema, oneOf);

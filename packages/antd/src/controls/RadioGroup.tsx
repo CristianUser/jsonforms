@@ -28,7 +28,6 @@ import {
   ControlProps,
   ControlState,
   isDescriptionHidden,
-  isPlainLabel,
   OwnPropsOfEnum
 } from '@jsonforms/core';
 import { Control } from '@jsonforms/react';
@@ -72,7 +71,7 @@ export class RadioGroup extends Control<
         hasFeedback={!isValid}
         status={isValid ? 'success' : 'error'}
         help={!isValid ? errors : showDescription ? description : null}
-        label={isPlainLabel(label) ? label : label.default}
+        label={label}
       >
         <Radio.Group
           value={this.state.value}

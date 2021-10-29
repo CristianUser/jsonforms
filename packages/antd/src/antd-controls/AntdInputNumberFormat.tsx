@@ -24,45 +24,46 @@
 */
 import React from 'react';
 import { CellProps, Formatted, WithClassname } from '@jsonforms/core';
-import { areEqual } from '@jsonforms/react';
 import merge from 'lodash/merge';
 import { Input } from 'antd';
 
-export const AntdInputNumberFormat = React.memo(
-  (props: CellProps & WithClassname & Formatted<number>) => {
-    const {
-      className,
-      id,
-      enabled,
-      uischema,
-      path,
-      handleChange,
-      schema,
-      config
-    } = props;
-    const maxLength = schema.maxLength;
-    const appliedUiSchemaOptions = merge({}, config, uischema.options);
-    const formattedNumber = props.toFormatted(props.data);
+export const AntdInputNumberFormat = (
+  props: CellProps & WithClassname & Formatted<number>
+) => {
+  const {
+    className,
+    id,
+    enabled,
+    uischema,
+    path,
+    handleChange,
+    schema,
+    config
+  } = props;
+  const maxLength = schema.maxLength;
+  const appliedUiSchemaOptions = merge({}, config, uischema.options);
+  const formattedNumber = props.toFormatted(props.data);
 
-    const onChange = (ev: any) => {
-      const validStringNumber = props.fromFormatted(ev.currentTarget.value);
-      handleChange(path, validStringNumber);
-    };
-    const InputComponent = appliedUiSchemaOptions.multi ? Input.TextArea : Input;
-    const inputStyle = !appliedUiSchemaOptions.trim || maxLength === undefined ? { width: '100%' } : {};
+  const onChange = (ev: any) => {
+    const validStringNumber = props.fromFormatted(ev.currentTarget.value);
+    handleChange(path, validStringNumber);
+  };
+  const InputComponent = appliedUiSchemaOptions.multi ? Input.TextArea : Input;
+  const inputStyle =
+    !appliedUiSchemaOptions.trim || maxLength === undefined
+      ? { width: '100%' }
+      : {};
 
-    return (
-      <InputComponent
-        value={formattedNumber}
-        onChange={onChange}
-        className={className}
-        id={id}
-        disabled={!enabled}
-        autoFocus={appliedUiSchemaOptions.focus}
-        maxLength={maxLength}
-        style={inputStyle}
-      />
-    );
-  },
-  areEqual
-);
+  return (
+    <InputComponent
+      value={formattedNumber}
+      onChange={onChange}
+      className={className}
+      id={id}
+      disabled={!enabled}
+      autoFocus={appliedUiSchemaOptions.focus}
+      maxLength={maxLength}
+      style={inputStyle}
+    />
+  );
+};

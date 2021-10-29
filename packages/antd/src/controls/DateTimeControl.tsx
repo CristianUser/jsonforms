@@ -28,7 +28,6 @@ import {
   ControlProps,
   ControlState,
   isDateTimeControl,
-  isPlainLabel,
   RankedTester,
   rankWith
 } from '@jsonforms/core';
@@ -66,7 +65,7 @@ export class DateTimeControl extends Control<
         hasFeedback={!isValid}
         status={isValid ? 'success' : 'error'}
         help={!isValid ? errors : description}
-        label={isPlainLabel(label) ? label : label.default}>
+        label={label}>
         <DatePicker
           id={id + '-input'}
           style={pickerStyle}

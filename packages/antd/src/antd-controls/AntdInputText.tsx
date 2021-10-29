@@ -24,11 +24,10 @@
 */
 import React, { useState } from 'react';
 import { CellProps, WithClassname } from '@jsonforms/core';
-import { areEqual } from '@jsonforms/react';
 import merge from 'lodash/merge';
 import { Input } from 'antd';
 
-export const AntdInputText = React.memo((props: CellProps & WithClassname) => {
+export const AntdInputText = (props: CellProps & WithClassname) => {
   const [clearable, setClearable] = useState(false);
   const {
     data,
@@ -46,13 +45,14 @@ export const AntdInputText = React.memo((props: CellProps & WithClassname) => {
   const onChange = (ev: any) => handleChange(path, ev.target.value);
 
   const InputComponent = appliedUiSchemaOptions.multi ? Input.TextArea : Input;
-  const inputStyle = !appliedUiSchemaOptions.trim || maxLength === undefined ? { width: '100%' } : {};
+  const inputStyle =
+    !appliedUiSchemaOptions.trim || maxLength === undefined
+      ? { width: '100%' }
+      : {};
 
   return (
     <InputComponent
-      type={
-        appliedUiSchemaOptions.format === 'password' ? 'password' : 'text'
-      }
+      type={appliedUiSchemaOptions.format === 'password' ? 'password' : 'text'}
       value={data || ''}
       onChange={onChange}
       className={className}
@@ -67,4 +67,4 @@ export const AntdInputText = React.memo((props: CellProps & WithClassname) => {
       {...(appliedUiSchemaOptions.multi ? { autoSize: true } : {})}
     />
   );
-}, areEqual);
+};

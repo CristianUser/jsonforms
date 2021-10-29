@@ -1,6 +1,5 @@
 import { Button, Col, PageHeader, Row, Tooltip, Typography } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { Labels } from '@jsonforms/core';
 import React from 'react';
 import ValidationIcon from '../complex/ValidationIcon';
 export interface ArrayLayoutToolbarProps {
@@ -13,7 +12,7 @@ export interface ArrayLayoutToolbarProps {
 
 const { Title } = Typography;
 
-const renderTitle = (label: string | Labels, errors: string) =>
+const renderTitle = (label: string , errors: string) =>
 (
   <Row>
     <Col key="col_1">

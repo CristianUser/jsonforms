@@ -25,7 +25,7 @@
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 import { ComponentType } from 'react';
-import { Ajv } from 'ajv';
+import Ajv from 'ajv';
 import {
   getAjv,
   JsonFormsCellRendererRegistryEntry,
@@ -34,7 +34,7 @@ import {
   OwnPropsOfRenderer,
   UISchemaElement
 } from '@jsonforms/core';
-import { areEqual, JsonFormsDispatch, useJsonForms } from '@jsonforms/react';
+import { JsonFormsDispatch, useJsonForms } from '@jsonforms/react';
 import { Col, Row } from 'antd';
 import { createUseStyles } from 'react-jss';
 
@@ -54,7 +54,7 @@ export const renderLayoutElements = (
   enabled: boolean,
   direction: 'row' | 'column',
   renderers?: JsonFormsRendererRegistryEntry[],
-  cells?: JsonFormsCellRendererRegistryEntry[],
+  cells?: JsonFormsCellRendererRegistryEntry[]
 ) => {
   const GridChild = direction === 'row' ? Col : Row;
   const containerProps: any = {};
@@ -84,56 +84,52 @@ export interface LayoutRendererProps extends OwnPropsOfRenderer {
   elements: UISchemaElement[];
   direction: 'row' | 'column';
 }
-export const LayoutRenderer = React.memo(
-  ({
-    // visible,
-    elements,
-    schema,
-    path,
-    enabled,
-    direction,
-    renderers,
-    cells
-  }: LayoutRendererProps) => {
-    const GridContainer = direction === 'row' ? Row : Col;
-    const containerProps: any = {};
+export const LayoutRenderer = ({
+  // visible,
+  elements,
+  schema,
+  path,
+  enabled,
+  direction,
+  renderers,
+  cells
+}: LayoutRendererProps) => {
+  const GridContainer = direction === 'row' ? Row : Col;
+  const containerProps: any = {};
 
-    if (direction === 'row') {
-      containerProps.gutter = 2;
-      containerProps.style = { width: '100%' };
-    }
+  if (direction === 'row') {
+    containerProps.gutter = 2;
+    containerProps.style = { width: '100%' };
+  }
 
-    if (isEmpty(elements)) {
-      return null;
-    } else {
-      return (
-        <GridContainer
-          {...containerProps}
-        >
-          {renderLayoutElements(
-            elements,
-            schema,
-            path,
-            enabled,
-            direction,
-            renderers,
-            cells,
-          )}
-        </GridContainer>
-      );
-    }
-  },
-  areEqual
-);
+  if (isEmpty(elements)) {
+    return null;
+  } else {
+    return (
+      <GridContainer {...containerProps}>
+        {renderLayoutElements(
+          elements,
+          schema,
+          path,
+          enabled,
+          direction,
+          renderers,
+          cells
+        )}
+      </GridContainer>
+    );
+  }
+};
 
 export interface AjvProps {
   ajv: Ajv;
 }
 
-export const withAjvProps = <P extends {}>(Component: ComponentType<AjvProps & P>) =>
-  (props: P) => {
-    const ctx = useJsonForms();
-    const ajv = getAjv({ jsonforms: { ...ctx } });
+export const withAjvProps = <P extends {}>(
+  Component: ComponentType<AjvProps & P>
+) => (props: P) => {
+  const ctx = useJsonForms();
+  const ajv = getAjv({ jsonforms: { ...ctx } });
 
-    return (<Component {...props} ajv={ajv} />);
-  };
+  return <Component {...props} ajv={ajv} />;
+};

@@ -26,8 +26,7 @@ import React from 'react';
 import {
   ControlProps,
   ControlState,
-  isDescriptionHidden,
-  isPlainLabel
+  isDescriptionHidden
 } from '@jsonforms/core';
 import { Control } from '@jsonforms/react';
 import { Form } from 'antd';
@@ -81,7 +80,7 @@ export abstract class InputControl extends Control<
           required={required}
           hasFeedback={!isValid}
           validateStatus={isValid ? 'success' : 'error'}
-          label={isPlainLabel(label) ? label : label.default}
+          label={label}
           help={help}
           style={style}
           htmlFor={id + '-input'}

@@ -25,17 +25,18 @@
 import React, { ReactNode } from 'react';
 import { EnumCellProps, EnumOption, WithClassname } from '@jsonforms/core';
 
-import { areEqual } from '@jsonforms/react';
 import { Select } from 'antd';
 import merge from 'lodash/merge';
 
 export interface WithOptionLabel {
-    getOptionLabel?(option: EnumOption) : string;
-    renderOption?(option: EnumOption): ReactNode;
-    filterOptions?(options: EnumOption[], state: any) : EnumOption[];
+  getOptionLabel?(option: EnumOption): string;
+  renderOption?(option: EnumOption): ReactNode;
+  filterOptions?(options: EnumOption[], state: any): EnumOption[];
 }
 
-export const AntdAutocomplete = React.memo((props: EnumCellProps & WithClassname & WithOptionLabel) => {
+export const AntdAutocomplete = (
+  props: EnumCellProps & WithClassname & WithOptionLabel
+) => {
   const {
     data,
     className,
@@ -45,7 +46,7 @@ export const AntdAutocomplete = React.memo((props: EnumCellProps & WithClassname
     path,
     handleChange,
     options,
-    config,
+    config
     // getOptionLabel,
     // filterOptions
   } = props;
@@ -67,4 +68,4 @@ export const AntdAutocomplete = React.memo((props: EnumCellProps & WithClassname
       style={selectStyle}
     />
   );
-}, areEqual);
+};

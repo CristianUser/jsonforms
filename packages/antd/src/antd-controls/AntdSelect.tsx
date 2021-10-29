@@ -26,11 +26,10 @@ import React from 'react';
 import { EnumCellProps, WithClassname } from '@jsonforms/core';
 
 import { Select } from 'antd';
-import { areEqual } from '@jsonforms/react';
 import merge from 'lodash/merge';
 
 const { Option } = Select;
-export const AntdSelect = React.memo((props: EnumCellProps & WithClassname) => {
+export const AntdSelect = (props: EnumCellProps & WithClassname) => {
   const {
     data,
     className,
@@ -55,13 +54,11 @@ export const AntdSelect = React.memo((props: EnumCellProps & WithClassname) => {
       onChange={value => handleChange(path, value)}
       style={selectStyle}
     >
-      {
-        [{ label: '', value: '' }].concat(options).map(optionValue => (
-          <Option value={optionValue.value} key={optionValue.value}>
-            {optionValue.label}
-          </Option>
-        ))
-      }
+      {[{ label: '', value: '' }].concat(options).map(optionValue => (
+        <Option value={optionValue.value} key={optionValue.value}>
+          {optionValue.label}
+        </Option>
+      ))}
     </Select>
   );
-}, areEqual);
+};

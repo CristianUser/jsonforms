@@ -24,7 +24,6 @@
 */
 import React from 'react';
 import { CellProps, WithClassname } from '@jsonforms/core';
-import { areEqual } from '@jsonforms/react';
 import { DatePicker } from 'antd';
 import merge from 'lodash/merge';
 import moment from 'moment';
@@ -33,7 +32,7 @@ type AntdInputDateProps = {
   format?: string;
 };
 
-export const AntdInputDate = React.memo((props: CellProps & WithClassname & AntdInputDateProps) => {
+export const AntdInputDate = (props: CellProps & WithClassname & AntdInputDateProps) => {
   const {
     data,
     className,
@@ -66,4 +65,4 @@ export const AntdInputDate = React.memo((props: CellProps & WithClassname & Antd
       style={inputStyle}
     />
   );
-}, areEqual);
+};

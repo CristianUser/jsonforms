@@ -28,7 +28,6 @@ import {
   computeLabel,
   createDefaultValue,
   findUISchema,
-  isPlainLabel,
   RankedTester,
   rankWith,
   uiTypeIs
@@ -100,7 +99,7 @@ export const ListWithDetailRenderer = ({
     <Hidden hidden={!visible}>
       <ArrayLayoutToolbar
         label={computeLabel(
-          isPlainLabel(label) ? label : label.default,
+          label,
           required,
           appliedUiSchemaOptions.hideRequiredAsterisk
         )}

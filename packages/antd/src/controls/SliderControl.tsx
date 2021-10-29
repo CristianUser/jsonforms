@@ -27,7 +27,6 @@ import {
   ControlProps,
   ControlState,
   isDescriptionHidden,
-  isPlainLabel,
   isRangeControl,
   RankedTester,
   rankWith
@@ -84,7 +83,7 @@ export class SliderControl extends Control<ControlProps, ControlState> {
         status={isValid ? 'success' : 'error'}
         help={!isValid ? errors : showDescription ? description : null}
         style={controlStyle}
-        label={isPlainLabel(label) ? label : label.default}
+        label={label}
       >
         <Slider
           id={id}

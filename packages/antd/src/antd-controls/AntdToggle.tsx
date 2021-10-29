@@ -25,7 +25,6 @@
 import React from 'react';
 import { CellProps, WithClassname } from '@jsonforms/core';
 import { Switch } from 'antd';
-import { areEqual } from '@jsonforms/react';
 import merge from 'lodash/merge';
 
 export const AntdToggle = React.memo((props: CellProps & WithClassname) => {
@@ -50,4 +49,4 @@ export const AntdToggle = React.memo((props: CellProps & WithClassname) => {
       autoFocus={!!appliedUiSchemaOptions.focus}
     />
   );
-}, areEqual);
+});

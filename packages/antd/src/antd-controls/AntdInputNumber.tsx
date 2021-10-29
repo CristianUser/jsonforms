@@ -24,11 +24,10 @@
 */
 import React from 'react';
 import { CellProps, WithClassname } from '@jsonforms/core';
-import { areEqual } from '@jsonforms/react';
 import merge from 'lodash/merge';
 import { InputNumber } from 'antd';
 
-export const AntdInputNumber = React.memo((props: CellProps & WithClassname) => {
+export const AntdInputNumber = (props: CellProps & WithClassname) => {
   const {
     data,
     className,
@@ -57,4 +56,4 @@ export const AntdInputNumber = React.memo((props: CellProps & WithClassname) => 
       style={inputStyle}
     />
   );
-}, areEqual);
+};
