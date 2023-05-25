@@ -25,10 +25,10 @@
 import './MatchMediaMock';
 import React from 'react';
 import { ControlElement, NOT_APPLICABLE } from '@jsonforms/core';
+import dayjs from 'dayjs';
 import DateTimeControl, {
   dateTimeControlTester,
 } from '../../src/controls/DateTimeControl';
-import moment from 'moment';
 import { renderers } from '../../src';
 
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
@@ -38,7 +38,7 @@ import { initCore, TestEmitter } from './util';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-const data = { foo: moment('1980-04-04 13:37').format() };
+const data = { foo: dayjs('1980-04-04 13:37').format() };
 const schema = {
   type: 'object',
   properties: {

@@ -26,7 +26,7 @@ import React from 'react';
 import { CellProps, WithClassname } from '@jsonforms/core';
 import { DatePicker } from 'antd';
 import merge from 'lodash/merge';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 type AntdInputDateProps = {
   format?: string;
@@ -51,7 +51,7 @@ export const AntdInputDate = (
 
   return (
     <DatePicker
-      value={data ? moment(data) : null}
+      value={(data ? dayjs(data) : null) as any}
       onChange={(datetime: any) =>
         handleChange(path, datetime ? datetime.format('YYYY-MM-DD') : '')
       }

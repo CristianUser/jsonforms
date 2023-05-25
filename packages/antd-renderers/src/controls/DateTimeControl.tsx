@@ -33,7 +33,7 @@ import {
 } from '@jsonforms/core';
 import { Control, withJsonFormsControlProps } from '@jsonforms/react';
 import { DatePicker, Form } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 export class DateTimeControl extends Control<ControlProps, ControlState> {
   render() {
@@ -68,8 +68,8 @@ export class DateTimeControl extends Control<ControlProps, ControlState> {
           id={id + '-input'}
           style={pickerStyle}
           showTime={true}
-          value={data ? moment(data) : null}
-          onChange={(datetime: any) =>
+          value={(data ? dayjs(data) : null) as any}
+          onChange={(datetime) =>
             handleChange(path, datetime ? datetime.format() : '')
           }
           format={'MM/DD/YYYY h:mm a'}

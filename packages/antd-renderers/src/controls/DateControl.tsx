@@ -34,12 +34,12 @@ import {
   StatePropsOfControl,
 } from '@jsonforms/core';
 import { Control, withJsonFormsControlProps } from '@jsonforms/react';
-import moment, { Moment } from 'moment';
+import dayjs from 'dayjs';
 
 import { DatePicker, Form } from 'antd';
 
 export interface DateControl {
-  momentLocale?: Moment;
+  dateLocale?: dayjs.Dayjs;
 }
 
 export class DateControl extends Control<
@@ -59,7 +59,7 @@ export class DateControl extends Control<
       path,
       handleChange,
       data,
-      momentLocale,
+      dateLocale,
       config,
     } = this.props;
     const isValid = errors.length === 0;
@@ -70,9 +70,7 @@ export class DateControl extends Control<
       this.state.isFocused,
       appliedUiSchemaOptions.showUnfocusedDescription
     );
-    const localeDateTimeFormat = momentLocale
-      ? `${momentLocale.localeData().longDateFormat('L')}`
-      : 'YYYY-MM-DD';
+    const localeDateTimeFormat = dateLocale ? 'L' : 'YYYY-MM-DD';
 
     const pickerStyle = !appliedUiSchemaOptions.trim ? { width: '100%' } : {};
 
@@ -88,7 +86,7 @@ export class DateControl extends Control<
         <DatePicker
           id={id + '-input'}
           style={pickerStyle}
-          value={data ? moment(data) : null}
+          value={(data ? dayjs(data) : null) as any}
           onChange={(datetime: any) =>
             handleChange(path, datetime ? datetime.format('YYYY-MM-DD') : '')
           }

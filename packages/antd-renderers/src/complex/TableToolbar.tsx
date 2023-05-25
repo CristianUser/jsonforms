@@ -29,7 +29,8 @@ import {
   createDefaultValue,
   JsonSchema,
 } from '@jsonforms/core';
-import { Button, Col, PageHeader, Row, Tooltip, Typography } from 'antd';
+import { PageHeader } from '@ant-design/pro-components';
+import { Button, Col, Row, Tooltip, Typography } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import ValidationIcon from './ValidationIcon';
 
