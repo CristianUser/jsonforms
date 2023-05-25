@@ -67,6 +67,7 @@ export class ArrayLayout extends React.PureComponent<
       rootSchema,
       config,
       uischemas,
+      translations,
     } = this.props;
     const appliedUiSchemaOptions = merge(
       {},
@@ -77,6 +78,7 @@ export class ArrayLayout extends React.PureComponent<
     return (
       <div>
         <ArrayLayoutToolbar
+          translations={translations}
           label={computeLabel(
             label,
             required,

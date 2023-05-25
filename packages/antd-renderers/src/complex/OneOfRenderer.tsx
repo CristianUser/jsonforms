@@ -34,7 +34,6 @@ import {
   OwnPropsOfControl,
   RankedTester,
   rankWith,
-  resolveSubSchemas,
 } from '@jsonforms/core';
 import { JsonFormsDispatch, withJsonFormsOneOfProps } from '@jsonforms/react';
 import CombinatorProperties from './CombinatorProperties';
@@ -60,9 +59,8 @@ const OneOfRenderer = ({
 }: CombinatorRendererProps) => {
   const [selectedIndex, setSelectedIndex] = useState(indexOfFittingSchema || 0);
   const [newSelectedIndex, setNewSelectedIndex] = useState(0);
-  const _schema = resolveSubSchemas(schema, rootSchema, oneOf);
   const oneOfRenderInfos = createCombinatorRenderInfos(
-    (_schema as JsonSchema).oneOf,
+    (schema as JsonSchema).oneOf,
     rootSchema,
     oneOf,
     uischema,
@@ -102,7 +100,7 @@ const OneOfRenderer = ({
   return (
     <Hidden hidden={!visible}>
       <CombinatorProperties
-        schema={_schema}
+        schema={schema}
         combinatorKeyword={'oneOf'}
         path={path}
       />
