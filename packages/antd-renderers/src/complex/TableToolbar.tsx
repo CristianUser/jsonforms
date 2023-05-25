@@ -25,6 +25,7 @@
 */
 import React from 'react';
 import {
+  ArrayTranslations,
   ControlElement,
   createDefaultValue,
   JsonSchema,
@@ -43,6 +44,7 @@ export interface MaterialTableToolbarProps {
   rootSchema: JsonSchema;
   enabled: boolean;
   addItem(path: string, value: any): () => void;
+  translations: ArrayTranslations;
 }
 
 const renderTitle = (label: string, errors: string) => (
@@ -64,6 +66,7 @@ const TableToolbar = React.memo(
     addItem,
     schema,
     enabled,
+    translations,
   }: MaterialTableToolbarProps) => (
     <PageHeader
       ghost={false}
@@ -71,8 +74,9 @@ const TableToolbar = React.memo(
       extra={
         enabled
           ? [
-              <Tooltip key='1' title={`Add to ${label}`}>
+              <Tooltip key='1' title={translations.addTooltip}>
                 <Button
+                  aria-label={translations.addAriaLabel}
                   type='primary'
                   onClick={addItem(path, createDefaultValue(schema))}
                   shape='circle'

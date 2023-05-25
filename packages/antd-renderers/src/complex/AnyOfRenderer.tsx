@@ -70,11 +70,17 @@ const AnyOfRenderer = ({
         combinatorKeyword={'anyOf'}
         path={path}
       />
-      <Tabs activeKey={selectedAnyOf?.toString()} onTabClick={handleChange}>
-        {anyOfRenderInfos.map((anyOfRenderInfo, idx) => (
-          <Tabs.TabPane key={idx} tab={anyOfRenderInfo.label} />
-        ))}
-      </Tabs>
+      <Tabs
+        activeKey={selectedAnyOf?.toString()}
+        items={anyOfRenderInfos.map(
+          (anyOfRenderInfo, idx) =>
+            ({
+              label: anyOfRenderInfo.label,
+              key: idx,
+            } as any)
+        )}
+        onTabClick={handleChange}
+      />
       {anyOfRenderInfos.map(
         (anyOfRenderInfo, anyOfIndex) =>
           selectedAnyOf === anyOfIndex && (

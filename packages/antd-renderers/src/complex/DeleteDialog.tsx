@@ -25,12 +25,14 @@
 */
 import React from 'react';
 import { Modal } from 'antd';
+import { ArrayTranslations } from '@jsonforms/core';
 
 export interface DeleteDialogProps {
   open: boolean;
   onClose(): void;
   onConfirm(): void;
   onCancel(): void;
+  translations: ArrayTranslations;
 }
 
 export interface WithDeleteDialogSupport {
@@ -38,18 +40,18 @@ export interface WithDeleteDialogSupport {
 }
 
 export const DeleteDialog = React.memo(
-  ({ open, onClose, onConfirm, onCancel }: DeleteDialogProps) => {
+  ({ open, onClose, onConfirm, onCancel, translations }: DeleteDialogProps) => {
     return (
       <Modal
-        title='Confirm Deletion'
-        visible={open}
+        title={translations.deleteDialogTitle}
+        open={open}
         afterClose={onClose}
         onOk={onConfirm}
         onCancel={onCancel}
-        okText='Yes'
-        cancelText='No'
+        okText={translations.deleteDialogAccept}
+        cancelText={translations.deleteDialogDecline}
       >
-        <p> Are you sure you want to delete the selected entry?</p>
+        <p>{translations.deleteDialogMessage}</p>
       </Modal>
     );
   }

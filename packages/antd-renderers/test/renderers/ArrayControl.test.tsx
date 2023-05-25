@@ -111,8 +111,8 @@ describe('Material array control', () => {
     );
 
     const rows = wrapper.find('tr');
-    // 2 header rows + 2 data entries
-    expect(rows.length).toBe(4);
+    // 1 header rows + 2 data entries
+    expect(rows.length).toBe(3);
   });
 
   it('should render empty', () => {
@@ -127,11 +127,11 @@ describe('Material array control', () => {
     );
 
     const rows = wrapper.find('tr');
-    // two header rows + no data row
-    expect(rows.length).toBe(3);
+    // 1 header row + no data row
+    expect(rows.length).toBe(2);
     const headerColumns = rows.at(1).children();
-    // 3 columns: message & done properties + column for delete button
-    expect(headerColumns).toHaveLength(3);
+    // 1 column: message & done properties + column for delete button wrapped
+    expect(headerColumns).toHaveLength(1);
   });
 
   it('should render even without properties', () => {
@@ -160,10 +160,10 @@ describe('Material array control', () => {
 
     const rows = wrapper.find('tr');
     // two header rows + no data row
-    expect(rows.length).toBe(3);
+    expect(rows.length).toBe(2);
     const headerColumns = rows.at(1).children();
-    // 2 columns: content + buttons
-    expect(headerColumns).toHaveLength(2);
+    // 1 column: content + buttons wrapped
+    expect(headerColumns).toHaveLength(1);
   });
 
   it('should use title as a header if it exists', () => {
@@ -202,7 +202,7 @@ describe('Material array control', () => {
     );
 
     // column headings are in the second row of the table, wrapped in <th>
-    const headers = wrapper.find('tr').at(1).find('th');
+    const headers = wrapper.find('tr').at(0).find('th');
 
     // the first property has a title, so we expect it to be rendered as the first column heading
     expect(headers.at(0).text()).toEqual('first test');
@@ -291,25 +291,28 @@ describe('Material array control', () => {
     );
 
     const buttons = wrapper.find('button');
-    // 7 buttons
+    // 5 buttons
     // add row
-    // clear string
     // delete row
     // clear string
     // delete row
-    // two dialog buttons (no + yes)
+    // clear string
     const nrOfRowsBeforeDelete = wrapper.find('tr').length;
 
-    const deleteButton = buttons.at(2);
+    const deleteButton = buttons.at(1);
     deleteButton.simulate('click');
 
-    const confirmButton = buttons.at(6);
+    wrapper.update();
+
+    const deleteDialog = wrapper.find('Modal');
+    const deleteDialogButtons = deleteDialog.find('button');
+    const confirmButton = deleteDialogButtons.at(2);
     confirmButton.simulate('click');
 
     const nrOfRowsAfterDelete = wrapper.find('tr').length;
 
-    expect(nrOfRowsBeforeDelete).toBe(4);
-    expect(nrOfRowsAfterDelete).toBe(3);
+    expect(nrOfRowsBeforeDelete).toBe(3);
+    expect(nrOfRowsAfterDelete).toBe(2);
     expect(onChangeData.data.length).toBe(1);
   });
 
@@ -412,21 +415,21 @@ describe('Material array control', () => {
     );
 
     const buttons = wrapper.find('button');
-    // 3 buttons
+    // 1 buttons
     // add row
-    // two dialog buttons (no + yes)
     const nrOfRowsBeforeAdd = wrapper.find('tr').length;
 
     const addButton = buttons.at(0);
     addButton.simulate('click');
     addButton.simulate('click');
+    addButton.simulate('click');
     wrapper.update();
     const nrOfRowsAfterAdd = wrapper.find('tr').length;
 
-    // 2 header rows + 'no data' row
-    expect(nrOfRowsBeforeAdd).toBe(3);
+    // 1 header rows + 'no data' row
+    expect(nrOfRowsBeforeAdd).toBe(2);
     expect(nrOfRowsAfterAdd).toBe(4);
-    expect(onChangeData.data).toEqual({ things: [{}, {}] });
+    expect(onChangeData.data).toEqual({ things: [{}, {}, {}] });
   });
 
   it('should be hideable', () => {
@@ -482,13 +485,14 @@ describe('Material array control', () => {
         />
       </JsonFormsStateProvider>
     );
+
     // up button
     expect(
-      wrapper.find('button').find({ 'aria-label': 'Move up' }).length
+      wrapper.find('button').find({ 'aria-label': 'Move item up' }).length
     ).toBe(1);
     // down button
     expect(
-      wrapper.find('button').find({ 'aria-label': 'Move down' }).length
+      wrapper.find('button').find({ 'aria-label': 'Move item down' }).length
     ).toBe(1);
   });
   it('should be able to move item down if down button is clicked', () => {
@@ -514,7 +518,8 @@ describe('Material array control', () => {
       .find('tr')
       .at(1)
       .find('button')
-      .find({ 'aria-label': 'Move down' });
+      .find({ 'aria-label': 'Move item down' });
+
     downButton.simulate('click');
     expect(onChangeData.data).toEqual({
       test: ['baz', 'foo', 'bar'],
@@ -543,8 +548,9 @@ describe('Material array control', () => {
       .find('tr')
       .at(3)
       .find('button')
-      .find({ 'aria-label': 'Move up' });
+      .find({ 'aria-label': 'Move item up' });
     upButton.simulate('click');
+
     expect(onChangeData.data).toEqual({
       test: ['foo', 'bar', 'baz'],
     });
@@ -564,7 +570,7 @@ describe('Material array control', () => {
       .find('tr')
       .at(1)
       .find('button')
-      .find({ 'aria-label': 'Move up' });
+      .find({ 'aria-label': 'Move item up' });
     expect(upButton.is('[disabled]')).toBe(true);
   });
 
@@ -581,7 +587,7 @@ describe('Material array control', () => {
     );
     // first row is header in table
     const input = wrapper.find('tr').at(1).find('input').first();
-    expect(input.props().disabled).toBe(false);
+    expect(input.props().disabled).toBeFalsy();
   });
 
   it('should have fields disabled', () => {
@@ -616,7 +622,7 @@ describe('Material array control', () => {
       .find('tr')
       .at(3)
       .find('button')
-      .find({ 'aria-label': 'Move down' });
+      .find({ 'aria-label': 'Move item down' });
     expect(downButton.is('[disabled]')).toBe(true);
   });
 });

@@ -48,8 +48,10 @@ const uischema: ControlElement = {
 
 describe('Material simple any of control tester', () => {
   it('should only be applicable for simple any of cases', () => {
-    expect(anyOfStringOrEnumControlTester({ type: 'Foo' }, schema)).toBe(-1);
-    expect(anyOfStringOrEnumControlTester(uischema, schema)).toBe(5);
+    expect(
+      anyOfStringOrEnumControlTester({ type: 'Foo' }, schema, undefined)
+    ).toBe(-1);
+    expect(anyOfStringOrEnumControlTester(uischema, schema, undefined)).toBe(5);
 
     const nestedSchema: JsonSchema = {
       properties: {
@@ -60,9 +62,9 @@ describe('Material simple any of control tester', () => {
       type: 'Control',
       scope: '#/properties/foo',
     };
-    expect(anyOfStringOrEnumControlTester(nestedUischema, nestedSchema)).toBe(
-      5
-    );
+    expect(
+      anyOfStringOrEnumControlTester(nestedUischema, nestedSchema, undefined)
+    ).toBe(5);
     const schemaNoEnum: JsonSchema = {
       anyOf: [{ type: 'string' }],
     };
@@ -75,25 +77,29 @@ describe('Material simple any of control tester', () => {
     const schemaNoString: JsonSchema = {
       anyOf: [{ type: 'integer' }, { enum: [1, 2] }],
     };
-    expect(anyOfStringOrEnumControlTester(uischema, schemaNoEnum)).toBe(-1);
-    expect(anyOfStringOrEnumControlTester(uischema, schemaConflictTypes)).toBe(
-      -1
-    );
     expect(
-      anyOfStringOrEnumControlTester(uischema, schemaAdditionalProps)
+      anyOfStringOrEnumControlTester(uischema, schemaNoEnum, undefined)
+    ).toBe(-1);
+    expect(
+      anyOfStringOrEnumControlTester(uischema, schemaConflictTypes, undefined)
+    ).toBe(-1);
+    expect(
+      anyOfStringOrEnumControlTester(uischema, schemaAdditionalProps, undefined)
     ).toBe(5);
-    expect(anyOfStringOrEnumControlTester(uischema, schemaNoString)).toBe(-1);
+    expect(
+      anyOfStringOrEnumControlTester(uischema, schemaNoString, undefined)
+    ).toBe(-1);
   });
 });
 
-describe('Material any of string or enum control', () => {
+describe('AntDesign any of string or enum control', () => {
   let wrapper: ReactWrapper;
 
   afterEach(() => {
     wrapper.unmount();
   });
 
-  it('render', () => {
+  it('render', async () => {
     wrapper = mount(
       <JsonForms
         data={'foo'}
@@ -102,16 +108,16 @@ describe('Material any of string or enum control', () => {
         renderers={renderers}
       />
     );
+    await waitForAsync();
+
     expect(wrapper.find(AnyOfStringOrEnumControl).length).toBeTruthy();
     const inputs = wrapper.find('input');
     expect(inputs).toHaveLength(1);
 
-    const datalist = wrapper.find('datalist');
-    expect(datalist).toHaveLength(1);
-    expect(datalist.children()).toHaveLength(2);
-
-    const validation = wrapper.find('p').first();
-    expect(validation.props().className).toContain('AntdFormHelperText-root');
-    expect(validation.children()).toHaveLength(0);
+    const label = wrapper.find('.ant-form-item-row').first();
+    expect(label.children()).toHaveLength(1);
   });
 });
+function waitForAsync() {
+  return new Promise((resolve) => setTimeout(resolve));
+}

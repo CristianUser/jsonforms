@@ -98,6 +98,7 @@ export class ArrayLayout extends React.PureComponent<
               return (
                 <ExpandPanelRenderer
                   index={index}
+                  translations={translations}
                   schema={schema}
                   path={path}
                   isExpanded={this.isExpanded(index)}
