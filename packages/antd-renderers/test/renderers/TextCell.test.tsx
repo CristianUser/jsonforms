@@ -55,10 +55,16 @@ const uischema: ControlElement = {
 
 describe('Material text cell tester', () => {
   it('should fail', () => {
-    expect(textCellTester(undefined, undefined)).toBe(NOT_APPLICABLE);
-    expect(textCellTester(null, undefined)).toBe(NOT_APPLICABLE);
-    expect(textCellTester({ type: 'Foo' }, undefined)).toBe(NOT_APPLICABLE);
-    expect(textCellTester({ type: 'Control' }, undefined)).toBe(NOT_APPLICABLE);
+    expect(textCellTester(undefined, undefined, undefined)).toBe(
+      NOT_APPLICABLE
+    );
+    expect(textCellTester(null, undefined, undefined)).toBe(NOT_APPLICABLE);
+    expect(textCellTester({ type: 'Foo' }, undefined, undefined)).toBe(
+      NOT_APPLICABLE
+    );
+    expect(textCellTester({ type: 'Control' }, undefined, undefined)).toBe(
+      NOT_APPLICABLE
+    );
   });
   it('should fail with wrong schema type', () => {
     const control: ControlElement = {
@@ -66,14 +72,18 @@ describe('Material text cell tester', () => {
       scope: '#/properties/foo',
     };
     expect(
-      textCellTester(control, {
-        type: 'object',
-        properties: {
-          foo: {
-            type: 'number',
+      textCellTester(
+        control,
+        {
+          type: 'object',
+          properties: {
+            foo: {
+              type: 'number',
+            },
           },
         },
-      })
+        undefined
+      )
     ).toBe(NOT_APPLICABLE);
   });
 
@@ -83,17 +93,21 @@ describe('Material text cell tester', () => {
       scope: '#/properties/foo',
     };
     expect(
-      textCellTester(control, {
-        type: 'object',
-        properties: {
-          foo: {
-            type: 'number',
-          },
-          bar: {
-            type: 'string',
+      textCellTester(
+        control,
+        {
+          type: 'object',
+          properties: {
+            foo: {
+              type: 'number',
+            },
+            bar: {
+              type: 'string',
+            },
           },
         },
-      })
+        undefined
+      )
     ).toBe(NOT_APPLICABLE);
   });
 
@@ -103,14 +117,18 @@ describe('Material text cell tester', () => {
       scope: '#/properties/foo',
     };
     expect(
-      textCellTester(control, {
-        type: 'object',
-        properties: {
-          foo: {
-            type: 'string',
+      textCellTester(
+        control,
+        {
+          type: 'object',
+          properties: {
+            foo: {
+              type: 'string',
+            },
           },
         },
-      })
+        undefined
+      )
     ).toBe(1);
   });
 });

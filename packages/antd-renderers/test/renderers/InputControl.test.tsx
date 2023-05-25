@@ -151,7 +151,7 @@ describe('Material input control', () => {
     wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const validation = wrapper.find('div[role="alert"]').first();
-    expect(validation.text()).toBe('should be string');
+    expect(validation.text()).toBe('must be string');
   });
 
   it('should display multiple errors', () => {
@@ -165,7 +165,7 @@ describe('Material input control', () => {
     wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const validation = wrapper.find('div[role="alert"]').first();
-    expect(validation.text()).toBe('should be string');
+    expect(validation.text()).toBe('must be string');
   });
 
   it('should not show any errors', () => {
@@ -243,7 +243,14 @@ describe('Material input control', () => {
     const core = initCore(jsonSchema, layout, newData);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <HorizontalLayoutRenderer schema={jsonSchema} uischema={layout} />
+        <HorizontalLayoutRenderer
+          schema={jsonSchema}
+          uischema={layout}
+          direction={'row'}
+          enabled={true}
+          visible={true}
+          path={''}
+        />
       </JsonFormsStateProvider>
     );
     const validation = wrapper.find('div[role="alert"]');

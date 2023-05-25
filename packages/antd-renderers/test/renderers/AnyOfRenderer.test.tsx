@@ -40,7 +40,6 @@ const waitForMs = (ms: number) =>
 
 const clickAddButton = (wrapper: ReactWrapper, times: number) => {
   const buttons = wrapper.find('button');
-  // console.log('buttons', buttons.debug());
   const addButton = buttons.at(1);
   for (let i = 0; i < times; i++) {
     addButton.simulate('click');
@@ -90,7 +89,6 @@ describe('Material anyOf renderer', () => {
         uischema={uischema}
         renderers={renderers}
         onChange={({ data }) => {
-          console.log('data', data);
           onChangeData = { data };
         }}
       />
