@@ -30,7 +30,7 @@ import {
   optionIs,
   RankedTester,
   rankWith,
-  WithClassname
+  WithClassname,
 } from '@jsonforms/core';
 import { withJsonFormsCellProps } from '@jsonforms/react';
 import { AntdToggle } from '../antd-controls/AntdToggle';

@@ -31,10 +31,7 @@ import {
   uiTypeIs,
 } from '@jsonforms/core';
 import { withJsonFormsLayoutProps } from '@jsonforms/react';
-import {
-  LayoutRenderer,
-  LayoutRendererProps
-} from '../util/layout';
+import { LayoutRenderer, LayoutRendererProps } from '../util/layout';
 
 /**
  * Default tester for a horizontal layout.
@@ -45,7 +42,15 @@ export const horizontalLayoutTester: RankedTester = rankWith(
   uiTypeIs('HorizontalLayout')
 );
 
-export const HorizontalLayoutRenderer = ({ uischema, renderers, cells, schema, path, enabled, visible }: LayoutProps) => {
+export const HorizontalLayoutRenderer = ({
+  uischema,
+  renderers,
+  cells,
+  schema,
+  path,
+  enabled,
+  visible,
+}: LayoutProps) => {
   const layout = uischema as HorizontalLayout;
   const childProps: LayoutRendererProps = {
     elements: layout.elements,
@@ -53,7 +58,7 @@ export const HorizontalLayoutRenderer = ({ uischema, renderers, cells, schema, p
     path,
     enabled,
     direction: 'row',
-    visible
+    visible,
   };
 
   return <LayoutRenderer {...childProps} renderers={renderers} cells={cells} />;

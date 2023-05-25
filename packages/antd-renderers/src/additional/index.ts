@@ -22,11 +22,9 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import LabelRenderer, {
-  labelRendererTester
-} from './LabelRenderer';
+import LabelRenderer, { labelRendererTester } from './LabelRenderer';
 export { LabelRenderer, labelRendererTester };
 import ListWithDetailRenderer, {
-  listWithDetailTester
+  listWithDetailTester,
 } from './ListWithDetailRenderer';
 export { ListWithDetailRenderer, listWithDetailTester };

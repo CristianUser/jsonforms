@@ -28,7 +28,7 @@ import {
   isEnumControl,
   RankedTester,
   rankWith,
-  WithClassname
+  WithClassname,
 } from '@jsonforms/core';
 import { withJsonFormsEnumCellProps } from '@jsonforms/react';
 import { AntdSelect } from '../antd-controls/AntdSelect';

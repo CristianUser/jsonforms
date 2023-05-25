@@ -24,19 +24,15 @@
 */
 import './MatchMediaMock';
 import * as React from 'react';
-import {
-  ControlElement,
-  JsonSchema,
-  NOT_APPLICABLE
-} from '@jsonforms/core';
+import { ControlElement, JsonSchema, NOT_APPLICABLE } from '@jsonforms/core';
 import SliderControl, {
-  sliderControlTester
+  sliderControlTester,
 } from '../../src/controls/SliderControl';
 import { renderers } from '../../src';
 import { Slider } from '@material-ui/core';
 
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { JsonForms, JsonFormsStateProvider } from '@jsonforms/react';
 import { initCore } from './util';
 
@@ -50,23 +46,21 @@ const schema = {
       type: 'number',
       maximum: 10,
       minimum: 2,
-      default: 6
-    }
-  }
+      default: 6,
+    },
+  },
 };
 const uischema: ControlElement = {
   type: 'Control',
   scope: '#/properties/foo',
   options: {
-    slider: true
-  }
+    slider: true,
+  },
 };
 
 describe('Material slider tester', () => {
   it('should fail', () => {
-    expect(sliderControlTester(undefined, undefined)).toBe(
-      NOT_APPLICABLE
-    );
+    expect(sliderControlTester(undefined, undefined)).toBe(NOT_APPLICABLE);
     expect(sliderControlTester(null, undefined)).toBe(NOT_APPLICABLE);
     expect(sliderControlTester({ type: 'Foo' }, undefined)).toBe(
       NOT_APPLICABLE
@@ -81,8 +75,8 @@ describe('Material slider tester', () => {
       sliderControlTester(uischema, {
         type: 'object',
         properties: {
-          foo: { type: 'string' }
-        }
+          foo: { type: 'string' },
+        },
       })
     ).toBe(NOT_APPLICABLE);
   });
@@ -93,8 +87,8 @@ describe('Material slider tester', () => {
         type: 'object',
         properties: {
           foo: { type: 'string' },
-          bar: { type: 'number' }
-        }
+          bar: { type: 'number' },
+        },
       })
     ).toBe(NOT_APPLICABLE);
   });
@@ -104,8 +98,8 @@ describe('Material slider tester', () => {
       sliderControlTester(uischema, {
         type: 'object',
         properties: {
-          foo: { type: 'number' }
-        }
+          foo: { type: 'number' },
+        },
       })
     ).toBe(NOT_APPLICABLE);
   });
@@ -117,9 +111,9 @@ describe('Material slider tester', () => {
         properties: {
           foo: {
             type: 'number',
-            minimum: 2
-          }
-        }
+            minimum: 2,
+          },
+        },
       })
     ).toBe(NOT_APPLICABLE);
   });
@@ -131,9 +125,9 @@ describe('Material slider tester', () => {
         properties: {
           foo: {
             type: 'number',
-            maximum: 10
-          }
-        }
+            maximum: 10,
+          },
+        },
       })
     ).toBe(NOT_APPLICABLE);
   });
@@ -146,9 +140,9 @@ describe('Material slider tester', () => {
           foo: {
             type: 'number',
             maximum: 10,
-            minimum: 2
-          }
-        }
+            minimum: 2,
+          },
+        },
       })
     ).toBe(NOT_APPLICABLE);
   });
@@ -162,9 +156,9 @@ describe('Material slider tester', () => {
             type: 'number',
             maximum: 10,
             minimum: 2,
-            default: 6
-          }
-        }
+            default: 6,
+          },
+        },
       })
     ).toBe(4);
   });
@@ -178,9 +172,9 @@ describe('Material slider tester', () => {
             type: 'integer',
             maximum: 10,
             minimum: 2,
-            default: 6
-          }
-        }
+            default: 6,
+          },
+        },
       })
     ).toBe(4);
   });
@@ -199,17 +193,14 @@ describe('Material slider control', () => {
           type: 'number',
           maximum: 10,
           minimum: 2,
-          default: 6
-        }
-      }
+          default: 6,
+        },
+      },
     };
     const core = initCore(jsonSchema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <SliderControl
-          schema={jsonSchema}
-          uischema={uischema}
-        />
+        <SliderControl schema={jsonSchema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
     const input = wrapper.find(Slider).first();
@@ -218,7 +209,7 @@ describe('Material slider control', () => {
 
   it('should update via action', () => {
     let data = {
-      foo: 3
+      foo: 3,
     };
     wrapper = mount(
       <JsonForms
@@ -247,12 +238,12 @@ describe('Material slider control', () => {
           maximum: 10,
           minimum: 2,
           default: 6,
-          multipleOf: 2
-        }
-      }
+          multipleOf: 2,
+        },
+      },
     };
     const data = {
-      foo: 6
+      foo: 6,
     };
     wrapper = mount(
       <JsonForms
@@ -356,11 +347,7 @@ describe('Material slider control', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <SliderControl
-          schema={schema}
-          uischema={uischema}
-          enabled={false}
-        />
+        <SliderControl schema={schema} uischema={uischema} enabled={false} />
       </JsonFormsStateProvider>
     );
     const input = wrapper.find(Slider).first();
@@ -409,9 +396,9 @@ describe('Material slider control', () => {
           type: 'number',
           maximum: 10,
           minimum: 2,
-          default: 6
-        }
-      }
+          default: 6,
+        },
+      },
     };
     const core = initCore(schema, uischema, { foo: 5 });
     wrapper = mount(

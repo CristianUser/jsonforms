@@ -50,7 +50,9 @@ export const LabelRenderer = ({ uischema, visible }: OwnPropsOfRenderer) => {
   return (
     <Hidden hidden={!visible}>
       <Title level={4}>
-        {labelElement.text !== undefined && labelElement.text !== null && labelElement.text}
+        {labelElement.text !== undefined &&
+          labelElement.text !== null &&
+          labelElement.text}
       </Title>
     </Hidden>
   );

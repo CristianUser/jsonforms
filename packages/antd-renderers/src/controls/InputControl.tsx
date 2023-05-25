@@ -26,7 +26,7 @@ import React from 'react';
 import {
   ControlProps,
   ControlState,
-  isDescriptionHidden
+  isDescriptionHidden,
 } from '@jsonforms/core';
 import { Control } from '@jsonforms/react';
 import { Form } from 'antd';
@@ -51,7 +51,7 @@ export abstract class InputControl extends Control<
       visible,
       required,
       config,
-      input
+      input,
     } = this.props;
     const isValid = errors.length === 0;
     const appliedUiSchemaOptions = merge({}, config, uischema.options);
@@ -69,8 +69,7 @@ export abstract class InputControl extends Control<
     //     ? errors
     //     : null;
     // const secondFormHelperText = showDescription && !isValid ? errors : null;
-    const help = !isValid ? errors : showDescription
-    ? description : null;
+    const help = !isValid ? errors : showDescription ? description : null;
     const InnerComponent = input;
     const style = !appliedUiSchemaOptions.trim ? { width: '100%' } : {};
 
@@ -85,7 +84,7 @@ export abstract class InputControl extends Control<
           style={style}
           htmlFor={id + '-input'}
           id={id}
-          >
+        >
           <InnerComponent
             {...this.props}
             onFocus={this.onFocus}
@@ -93,7 +92,7 @@ export abstract class InputControl extends Control<
             id={id + '-input'}
             isValid={isValid}
             visible={visible}
-            />
+          />
         </Form.Item>
       </Hidden>
     );

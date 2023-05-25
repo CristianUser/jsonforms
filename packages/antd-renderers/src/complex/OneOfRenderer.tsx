@@ -34,12 +34,9 @@ import {
   OwnPropsOfControl,
   RankedTester,
   rankWith,
-  resolveSubSchemas
+  resolveSubSchemas,
 } from '@jsonforms/core';
-import {
-  JsonFormsDispatch,
-  withJsonFormsOneOfProps
-} from '@jsonforms/react';
+import { JsonFormsDispatch, withJsonFormsOneOfProps } from '@jsonforms/react';
 import CombinatorProperties from './CombinatorProperties';
 import { Modal, Tabs } from 'antd';
 import Hidden from '../util/Hidden';
@@ -48,32 +45,41 @@ export interface OwnOneOfProps extends OwnPropsOfControl {
 }
 
 const oneOf = 'oneOf';
-const OneOfRenderer =
-  ({ handleChange, schema, path, renderers, cells, rootSchema, visible, indexOfFittingSchema, uischema, uischemas, data }: CombinatorRendererProps) => {
-    const [selectedIndex, setSelectedIndex] = useState(indexOfFittingSchema || 0);
-    const [newSelectedIndex, setNewSelectedIndex] = useState(0);
-    const _schema = resolveSubSchemas(schema, rootSchema, oneOf);
-    const oneOfRenderInfos = createCombinatorRenderInfos(
-      (_schema as JsonSchema).oneOf,
-      rootSchema,
-      oneOf,
-      uischema,
-      path,
-      uischemas
-    );
+const OneOfRenderer = ({
+  handleChange,
+  schema,
+  path,
+  renderers,
+  cells,
+  rootSchema,
+  visible,
+  indexOfFittingSchema,
+  uischema,
+  uischemas,
+  data,
+}: CombinatorRendererProps) => {
+  const [selectedIndex, setSelectedIndex] = useState(indexOfFittingSchema || 0);
+  const [newSelectedIndex, setNewSelectedIndex] = useState(0);
+  const _schema = resolveSubSchemas(schema, rootSchema, oneOf);
+  const oneOfRenderInfos = createCombinatorRenderInfos(
+    (_schema as JsonSchema).oneOf,
+    rootSchema,
+    oneOf,
+    uischema,
+    path,
+    uischemas
+  );
 
-    const openNewTab = (newIndex: number) => {
-      handleChange(
-        path,
-        createDefaultValue(schema.oneOf[newIndex])
-      );
-      setSelectedIndex(newIndex);
-    };
+  const openNewTab = (newIndex: number) => {
+    handleChange(path, createDefaultValue(schema.oneOf[newIndex]));
+    setSelectedIndex(newIndex);
+  };
 
-    const confirm = useCallback(() => {
-      openNewTab(newSelectedIndex);
-    }, [handleChange, createDefaultValue, newSelectedIndex]);
-    const handleTabChange = useCallback((value: string, _event: any) => {
+  const confirm = useCallback(() => {
+    openNewTab(newSelectedIndex);
+  }, [handleChange, createDefaultValue, newSelectedIndex]);
+  const handleTabChange = useCallback(
+    (value: string, _event: any) => {
       const newOneOfIndex = parseInt(value, 10);
 
       setNewSelectedIndex(newOneOfIndex);
@@ -85,40 +91,42 @@ const OneOfRenderer =
           cancelText: 'No',
           onOk: confirm,
           title: 'Clear form?',
-          content: 'Your data will be cleared if you navigate away from this tab. \nDo you want to proceed?'
+          content:
+            'Your data will be cleared if you navigate away from this tab. \nDo you want to proceed?',
         });
       }
-    }, [setSelectedIndex, data]);
+    },
+    [setSelectedIndex, data]
+  );
 
-    return (
-      <Hidden hidden={!visible}>
-        <CombinatorProperties
-          schema={_schema}
-          combinatorKeyword={'oneOf'}
-          path={path}
-        />
-        <Tabs activeKey={selectedIndex?.toString()} onTabClick={handleTabChange}>
-          {oneOfRenderInfos.map((oneOfRenderInfo, idx) => (
-            <Tabs.TabPane key={idx} tab={oneOfRenderInfo.label} />
-          ))}
-        </Tabs>
-        {
-          oneOfRenderInfos.map((oneOfRenderInfo, oneOfIndex) => (
-            selectedIndex === oneOfIndex && (
-              <JsonFormsDispatch
-                key={oneOfIndex}
-                schema={oneOfRenderInfo.schema}
-                uischema={oneOfRenderInfo.uischema}
-                path={path}
-                renderers={renderers}
-                cells={cells}
-              />
-            )
-          ))
-        }
-      </Hidden>
-    );
-  };
+  return (
+    <Hidden hidden={!visible}>
+      <CombinatorProperties
+        schema={_schema}
+        combinatorKeyword={'oneOf'}
+        path={path}
+      />
+      <Tabs activeKey={selectedIndex?.toString()} onTabClick={handleTabChange}>
+        {oneOfRenderInfos.map((oneOfRenderInfo, idx) => (
+          <Tabs.TabPane key={idx} tab={oneOfRenderInfo.label} />
+        ))}
+      </Tabs>
+      {oneOfRenderInfos.map(
+        (oneOfRenderInfo, oneOfIndex) =>
+          selectedIndex === oneOfIndex && (
+            <JsonFormsDispatch
+              key={oneOfIndex}
+              schema={oneOfRenderInfo.schema}
+              uischema={oneOfRenderInfo.uischema}
+              path={path}
+              renderers={renderers}
+              cells={cells}
+            />
+          )
+      )}
+    </Hidden>
+  );
+};
 
 export const oneOfControlTester: RankedTester = rankWith(3, isOneOfControl);
 export default withJsonFormsOneOfProps(OneOfRenderer);

@@ -23,19 +23,17 @@
   THE SOFTWARE.
 */
 import './MatchMediaMock';
-import {
-  ControlElement
-} from '@jsonforms/core';
+import { ControlElement } from '@jsonforms/core';
 import * as React from 'react';
 
 import { renderers } from '../../src';
 import ListWithDetailRenderer, {
-  listWithDetailTester
+  listWithDetailTester,
 } from '../../src/additional/ListWithDetailRenderer';
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { JsonFormsStateProvider } from '@jsonforms/react';
-import { ListItem } from '@material-ui/core'
+import { ListItem } from '@material-ui/core';
 import { initCore } from './util';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -43,11 +41,11 @@ Enzyme.configure({ adapter: new Adapter() });
 const data = [
   {
     message: 'El Barto was here',
-    done: true
+    done: true,
   },
   {
-    message: 'Yolo'
-  }
+    message: 'Yolo',
+  },
 ];
 const schema = {
   type: 'array',
@@ -57,25 +55,25 @@ const schema = {
       message: {
         type: 'string',
         maxLength: 3,
-        title: 'Schema Title'
+        title: 'Schema Title',
       },
       done: {
-        type: 'boolean'
-      }
-    }
-  }
+        type: 'boolean',
+      },
+    },
+  },
 };
 
 const uischema: ControlElement = {
   type: 'Control',
-  scope: '#'
+  scope: '#',
 };
 
 const nestedSchema = {
   type: 'array',
   items: {
-    ...schema
-  }
+    ...schema,
+  },
 };
 
 const nestedSchema2 = {
@@ -89,36 +87,32 @@ const nestedSchema2 = {
           choices: {
             type: 'array',
             items: {
-              type: 'string'
-            }
-          }
-        }
-      }
-    }
-  }
+              type: 'string',
+            },
+          },
+        },
+      },
+    },
+  },
 };
 
 describe('Material list with detail tester', () => {
   it('should only be applicable for intermediate array or when containing proper options', () => {
     const correctUISchema = {
       type: 'ListWithDetail',
-      scope: '#'
+      scope: '#',
     };
     const wrongSchema = {
       type: 'array',
       items: {
-        type: 'string'
-      }
+        type: 'string',
+      },
     };
     expect(listWithDetailTester(uischema, schema)).toBe(-1);
     expect(listWithDetailTester(correctUISchema, wrongSchema)).toBe(-1);
     expect(listWithDetailTester(correctUISchema, schema)).toBe(4);
-    expect(listWithDetailTester(correctUISchema, nestedSchema)).toBe(
-      -1
-    );
-    expect(listWithDetailTester(correctUISchema, nestedSchema2)).toBe(
-      4
-    );
+    expect(listWithDetailTester(correctUISchema, nestedSchema)).toBe(-1);
+    expect(listWithDetailTester(correctUISchema, nestedSchema2)).toBe(4);
   });
 });
 describe('Material list with detail renderer', () => {
@@ -189,15 +183,12 @@ describe('Material list with detail renderer', () => {
   it('ui schema label for list', () => {
     const uischemaWithLabel = {
       ...uischema,
-      label: 'My awesome label'
+      label: 'My awesome label',
     };
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <ListWithDetailRenderer
-          schema={schema}
-          uischema={uischemaWithLabel}
-        />
+        <ListWithDetailRenderer schema={schema} uischema={uischemaWithLabel} />
       </JsonFormsStateProvider>
     );
 
@@ -208,15 +199,12 @@ describe('Material list with detail renderer', () => {
   it('schema title for list', () => {
     const titleSchema = {
       ...schema,
-      title: 'My awesome title'
+      title: 'My awesome title',
     };
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <ListWithDetailRenderer
-          schema={titleSchema}
-          uischema={uischema}
-        />
+        <ListWithDetailRenderer schema={titleSchema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
 

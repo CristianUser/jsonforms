@@ -36,11 +36,11 @@ import { JsonFormsStateProvider } from '@jsonforms/react';
 import Enzyme, { mount } from 'enzyme';
 
 import MaterialCategorizationStepperLayoutRenderer, {
-  materialCategorizationStepperTester
+  materialCategorizationStepperTester,
 } from '../../src/layouts/MaterialCategorizationStepperLayout';
 import { LayoutRenderer, renderers } from '../../src';
 import { Button, Step, StepButton, Stepper } from '@material-ui/core';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { initCore } from './util';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -51,19 +51,19 @@ const fixture = {
     type: 'object',
     properties: {
       name: {
-        type: 'string'
-      }
-    }
+        type: 'string',
+      },
+    },
   },
   uischema: {
     type: 'Categorization',
     elements: [
       {
         type: 'Category',
-        label: 'B'
-      }
-    ]
-  }
+        label: 'B',
+      },
+    ],
+  },
 };
 
 describe('Material categorization stepper layout tester', () => {
@@ -81,7 +81,7 @@ describe('Material categorization stepper layout tester', () => {
   it('should not fail with null elements and no schema', () => {
     const uischema: Layout = {
       type: 'Categorization',
-      elements: null
+      elements: null,
     };
     expect(materialCategorizationStepperTester(uischema, undefined)).toBe(-1);
   });
@@ -89,7 +89,7 @@ describe('Material categorization stepper layout tester', () => {
   it('should not fail with empty elements and no schema', () => {
     const uischema: Layout = {
       type: 'Categorization',
-      elements: []
+      elements: [],
     };
     expect(materialCategorizationStepperTester(uischema, undefined)).toBe(-1);
   });
@@ -99,9 +99,9 @@ describe('Material categorization stepper layout tester', () => {
       type: 'Categorization',
       elements: [
         {
-          type: 'Foo'
-        }
-      ]
+          type: 'Foo',
+        },
+      ],
     };
     expect(materialCategorizationStepperTester(uischema, undefined)).toBe(-1);
   });
@@ -111,9 +111,9 @@ describe('Material categorization stepper layout tester', () => {
       type: 'Categorization',
       elements: [
         {
-          type: 'Category'
-        }
-      ]
+          type: 'Category',
+        },
+      ],
     };
     expect(materialCategorizationStepperTester(categorization, undefined)).toBe(
       -1
@@ -125,13 +125,13 @@ describe('Material categorization stepper layout tester', () => {
       type: 'Categorization',
       elements: [
         {
-          type: 'Category'
-        }
-      ]
+          type: 'Category',
+        },
+      ],
     };
     const categorization: Layout = {
       type: 'Categorization',
-      elements: [nestedCategorization]
+      elements: [nestedCategorization],
     };
     expect(materialCategorizationStepperTester(categorization, undefined)).toBe(
       -1
@@ -143,9 +143,9 @@ describe('Material categorization stepper layout tester', () => {
       type: 'Categorization',
       elements: [
         {
-          type: 'Categorization'
-        }
-      ]
+          type: 'Categorization',
+        },
+      ],
     };
     expect(materialCategorizationStepperTester(categorization, undefined)).toBe(
       -1
@@ -159,9 +159,9 @@ describe('Material categorization stepper layout tester', () => {
         {
           type: 'Categorization',
           label: 'Test',
-          elements: null
-        }
-      ]
+          elements: null,
+        },
+      ],
     };
 
     expect(materialCategorizationStepperTester(categorization, undefined)).toBe(
@@ -175,9 +175,9 @@ describe('Material categorization stepper layout tester', () => {
       elements: [
         {
           type: 'Categorization',
-          elements: []
-        }
-      ]
+          elements: [],
+        },
+      ],
     };
     expect(materialCategorizationStepperTester(categorization, undefined)).toBe(
       -1
@@ -189,7 +189,7 @@ describe('Material categorization stepper layout', () => {
   it('should render', () => {
     const nameControl = {
       type: 'Control',
-      scope: '#/properties/name'
+      scope: '#/properties/name',
     };
     const uischema: Categorization = {
       type: 'Categorization',
@@ -202,16 +202,16 @@ describe('Material categorization stepper layout', () => {
             {
               type: 'Category',
               label: 'A',
-              elements: [nameControl]
-            }
-          ]
+              elements: [nameControl],
+            },
+          ],
         },
         {
           type: 'Category',
           label: 'B',
-          elements: [nameControl]
-        }
-      ]
+          elements: [nameControl],
+        },
+      ],
     };
 
     const core = initCore(fixture.schema, fixture.uischema, fixture.data);
@@ -233,7 +233,7 @@ describe('Material categorization stepper layout', () => {
     const data = { name: 'Foo' };
     const nameControl: ControlElement = {
       type: 'Control',
-      scope: '#/properties/name'
+      scope: '#/properties/name',
     };
     const innerCategorization: Categorization = {
       type: 'Categorization',
@@ -242,9 +242,9 @@ describe('Material categorization stepper layout', () => {
         {
           type: 'Category',
           label: 'A',
-          elements: [nameControl]
-        }
-      ]
+          elements: [nameControl],
+        },
+      ],
     };
     const uischema: Categorization = {
       type: 'Categorization',
@@ -254,19 +254,19 @@ describe('Material categorization stepper layout', () => {
         {
           type: 'Category',
           label: 'B',
-          elements: [nameControl, nameControl]
+          elements: [nameControl, nameControl],
         },
         {
           type: 'Category',
           label: 'C',
-          elements: undefined
+          elements: undefined,
         },
         {
           type: 'Category',
           label: 'D',
-          elements: null
-        }
-      ]
+          elements: null,
+        },
+      ],
     };
     const core = initCore(fixture.schema, fixture.uischema, data);
 
@@ -280,10 +280,7 @@ describe('Material categorization stepper layout', () => {
       </JsonFormsStateProvider>
     );
     const beforeClick = wrapper.find(Stepper).props().activeStep;
-    wrapper
-      .find(StepButton)
-      .at(1)
-      .simulate('click');
+    wrapper.find(StepButton).at(1).simulate('click');
     const afterClick = wrapper.find(Stepper).props().activeStep;
 
     expect(beforeClick).toBe(0);
@@ -328,7 +325,7 @@ describe('Material categorization stepper layout', () => {
   it('allows categories to be hidden', () => {
     const condition: SchemaBasedCondition = {
       scope: '#/properties/name',
-      schema: { minLength: 3 }
+      schema: { minLength: 3 },
     };
 
     const uischema: Categorization = {
@@ -338,7 +335,7 @@ describe('Material categorization stepper layout', () => {
         {
           type: 'Category',
           label: 'A',
-          elements: []
+          elements: [],
         },
         {
           type: 'Category',
@@ -346,10 +343,10 @@ describe('Material categorization stepper layout', () => {
           elements: [],
           rule: {
             effect: RuleEffect.HIDE,
-            condition
-          }
-        }
-      ]
+            condition,
+          },
+        },
+      ],
     };
     const core = initCore(fixture.schema, fixture.uischema, fixture.data);
     const wrapper = mount(
@@ -387,26 +384,26 @@ describe('Material categorization stepper layout', () => {
   it('should render nav buttons if showNavButtons is set', () => {
     const nameControl: ControlElement = {
       type: 'Control',
-      scope: '#/properties/name'
+      scope: '#/properties/name',
     };
     const uischema: Categorization = {
       type: 'Categorization',
       label: 'Root',
       options: {
-        showNavButtons: true
+        showNavButtons: true,
       },
       elements: [
         {
           type: 'Category',
           label: 'B',
-          elements: [nameControl, nameControl]
+          elements: [nameControl, nameControl],
         },
         {
           type: 'Category',
           label: 'C',
-          elements: undefined
-        }
-      ]
+          elements: undefined,
+        },
+      ],
     };
     const core = initCore(fixture.schema, uischema, fixture.data);
 
@@ -419,14 +416,15 @@ describe('Material categorization stepper layout', () => {
         />
       </JsonFormsStateProvider>
     );
-    const isPrevButtonEnabledBeforeClick = !wrapper.find(Button).at(1).props().disabled;
-    const isNextButtonEnabledBeforeClick = !wrapper.find(Button).at(0).props().disabled;
-    wrapper
-      .find(StepButton)
-      .at(1)
-      .simulate('click');
-    const isPrevButtonEnabledAfterClick = !wrapper.find(Button).at(1).props().disabled;
-    const isNextButtonEnabledAfterClick = !wrapper.find(Button).at(0).props().disabled;
+    const isPrevButtonEnabledBeforeClick = !wrapper.find(Button).at(1).props()
+      .disabled;
+    const isNextButtonEnabledBeforeClick = !wrapper.find(Button).at(0).props()
+      .disabled;
+    wrapper.find(StepButton).at(1).simulate('click');
+    const isPrevButtonEnabledAfterClick = !wrapper.find(Button).at(1).props()
+      .disabled;
+    const isNextButtonEnabledAfterClick = !wrapper.find(Button).at(0).props()
+      .disabled;
 
     expect(isPrevButtonEnabledBeforeClick).toBeFalsy();
     expect(isNextButtonEnabledBeforeClick).toBeTruthy();
@@ -438,7 +436,7 @@ describe('Material categorization stepper layout', () => {
   it('should render new category on button click', () => {
     const nameControl: ControlElement = {
       type: 'Control',
-      scope: '#/properties/name'
+      scope: '#/properties/name',
     };
     const innerCategorization: Categorization = {
       type: 'Categorization',
@@ -447,34 +445,34 @@ describe('Material categorization stepper layout', () => {
         {
           type: 'Category',
           label: 'A',
-          elements: [nameControl]
-        }
-      ]
+          elements: [nameControl],
+        },
+      ],
     };
     const uischema: Categorization = {
       type: 'Categorization',
       label: 'Root',
       options: {
-        showNavButtons: true
+        showNavButtons: true,
       },
       elements: [
         innerCategorization,
         {
           type: 'Category',
           label: 'B',
-          elements: [nameControl, nameControl]
+          elements: [nameControl, nameControl],
         },
         {
           type: 'Category',
           label: 'C',
-          elements: undefined
+          elements: undefined,
         },
         {
           type: 'Category',
           label: 'D',
-          elements: null
-        }
-      ]
+          elements: null,
+        },
+      ],
     };
     const core = initCore(fixture.schema, uischema, fixture.data);
 
@@ -488,10 +486,7 @@ describe('Material categorization stepper layout', () => {
       </JsonFormsStateProvider>
     );
     const activeStepBeforeClick = wrapper.find(Stepper).props().activeStep;
-    wrapper
-      .find(Button)
-      .at(0)
-      .simulate('click');
+    wrapper.find(Button).at(0).simulate('click');
     const activeStepAfterClick = wrapper.find(Stepper).props().activeStep;
 
     expect(activeStepBeforeClick).toBe(0);
@@ -500,28 +495,28 @@ describe('Material categorization stepper layout', () => {
   });
 
   it('nav button behavior after hiding a step', () => {
-    const data = { name : 'fo' };
+    const data = { name: 'fo' };
     const condition: SchemaBasedCondition = {
       scope: '#/properties/name',
-      schema: { maxLength: 3 }
+      schema: { maxLength: 3 },
     };
 
     const nameControl: ControlElement = {
       type: 'Control',
-      scope: '#/properties/name'
+      scope: '#/properties/name',
     };
 
     const uischema: Categorization = {
       type: 'Categorization',
       label: 'Root',
       options: {
-          showNavButtons: true
+        showNavButtons: true,
       },
       elements: [
         {
           type: 'Category',
           label: 'B',
-          elements: [nameControl]
+          elements: [nameControl],
         },
         {
           type: 'Category',
@@ -529,10 +524,10 @@ describe('Material categorization stepper layout', () => {
           elements: undefined,
           rule: {
             effect: RuleEffect.SHOW,
-            condition
-          }
-        }
-      ]
+            condition,
+          },
+        },
+      ],
     };
 
     const core = initCore(fixture.schema, uischema, data);
@@ -540,22 +535,28 @@ describe('Material categorization stepper layout', () => {
     const wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
         <MaterialCategorizationStepperLayoutRenderer
-            {...layoutDefaultProps}
-            schema={fixture.schema}
-            uischema={uischema}
+          {...layoutDefaultProps}
+          schema={fixture.schema}
+          uischema={uischema}
         />
       </JsonFormsStateProvider>
     );
 
-    const isNextButtonDisabledBeforeTextInput = wrapper.find(Button).at(0).props().disabled;
+    const isNextButtonDisabledBeforeTextInput = wrapper
+      .find(Button)
+      .at(0)
+      .props().disabled;
 
     expect(isNextButtonDisabledBeforeTextInput).toBe(false);
 
     core.data = { ...core.data, name: 'Barr' };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
 
-    const isNextButtonDisabledAfterTextInput = wrapper.find(Button).at(0).props().disabled;
+    const isNextButtonDisabledAfterTextInput = wrapper
+      .find(Button)
+      .at(0)
+      .props().disabled;
 
     expect(isNextButtonDisabledAfterTextInput).toBe(true);
 

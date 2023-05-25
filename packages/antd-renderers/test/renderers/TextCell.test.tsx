@@ -24,18 +24,12 @@
 */
 import './MatchMediaMock';
 import * as React from 'react';
-import {
-  ControlElement,
-  JsonSchema,
-  NOT_APPLICABLE
-} from '@jsonforms/core';
-import TextCell, {
-  textCellTester
-} from '../../src/cells/TextCell';
+import { ControlElement, JsonSchema, NOT_APPLICABLE } from '@jsonforms/core';
+import TextCell, { textCellTester } from '../../src/cells/TextCell';
 import { renderers } from '../../src';
 
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { JsonFormsStateProvider } from '@jsonforms/react';
 import { initCore, TestEmitter } from './util';
 
@@ -46,43 +40,39 @@ const DEFAULT_MAX_LENGTH = 524288;
 const data = { name: 'Foo' };
 const minLengthSchema = {
   type: 'string',
-  minLength: 3
+  minLength: 3,
 };
 const maxLengthSchema = {
   type: 'string',
-  maxLength: 5
+  maxLength: 5,
 };
 const schema = { type: 'string' };
 
 const uischema: ControlElement = {
   type: 'Control',
-  scope: '#/properties/name'
+  scope: '#/properties/name',
 };
 
 describe('Material text cell tester', () => {
   it('should fail', () => {
     expect(textCellTester(undefined, undefined)).toBe(NOT_APPLICABLE);
     expect(textCellTester(null, undefined)).toBe(NOT_APPLICABLE);
-    expect(textCellTester({ type: 'Foo' }, undefined)).toBe(
-      NOT_APPLICABLE
-    );
-    expect(textCellTester({ type: 'Control' }, undefined)).toBe(
-      NOT_APPLICABLE
-    );
+    expect(textCellTester({ type: 'Foo' }, undefined)).toBe(NOT_APPLICABLE);
+    expect(textCellTester({ type: 'Control' }, undefined)).toBe(NOT_APPLICABLE);
   });
   it('should fail with wrong schema type', () => {
     const control: ControlElement = {
       type: 'Control',
-      scope: '#/properties/foo'
+      scope: '#/properties/foo',
     };
     expect(
       textCellTester(control, {
         type: 'object',
         properties: {
           foo: {
-            type: 'number'
-          }
-        }
+            type: 'number',
+          },
+        },
       })
     ).toBe(NOT_APPLICABLE);
   });
@@ -90,19 +80,19 @@ describe('Material text cell tester', () => {
   it('should fail if only sibling has correct type', () => {
     const control: ControlElement = {
       type: 'Control',
-      scope: '#/properties/foo'
+      scope: '#/properties/foo',
     };
     expect(
       textCellTester(control, {
         type: 'object',
         properties: {
           foo: {
-            type: 'number'
+            type: 'number',
           },
           bar: {
-            type: 'string'
-          }
-        }
+            type: 'string',
+          },
+        },
       })
     ).toBe(NOT_APPLICABLE);
   });
@@ -110,16 +100,16 @@ describe('Material text cell tester', () => {
   it('should succeed with matching prop type', () => {
     const control: ControlElement = {
       type: 'Control',
-      scope: '#/properties/foo'
+      scope: '#/properties/foo',
     };
     expect(
       textCellTester(control, {
         type: 'object',
         properties: {
           foo: {
-            type: 'string'
-          }
-        }
+            type: 'string',
+          },
+        },
       })
     ).toBe(1);
   });
@@ -134,7 +124,7 @@ describe('Material text cell', () => {
     const control: ControlElement = {
       type: 'Control',
       scope: '#/properties/name',
-      options: { focus: true }
+      options: { focus: true },
     };
     const core = initCore(minLengthSchema, control, data);
     wrapper = mount(
@@ -150,7 +140,7 @@ describe('Material text cell', () => {
     const control: ControlElement = {
       type: 'Control',
       scope: '#/properties/name',
-      options: { focus: false }
+      options: { focus: false },
     };
     const core = initCore(schema, control, data);
     wrapper = mount(
@@ -165,7 +155,7 @@ describe('Material text cell', () => {
   it('should not autofocus by default', () => {
     const control: ControlElement = {
       type: 'Control',
-      scope: '#/properties/name'
+      scope: '#/properties/name',
     };
     const core = initCore(minLengthSchema, control, data);
     wrapper = mount(
@@ -181,8 +171,8 @@ describe('Material text cell', () => {
     const jsonSchema: JsonSchema = {
       type: 'object',
       properties: {
-        name: { type: 'string' }
-      }
+        name: { type: 'string' },
+      },
     };
     const core = initCore(minLengthSchema, uischema, { name: 'Foo' });
     wrapper = mount(
@@ -198,7 +188,7 @@ describe('Material text cell', () => {
   it('should update via input event', () => {
     const core = initCore(minLengthSchema, uischema, data);
     const onChangeData: any = {
-      data: undefined
+      data: undefined,
     };
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
@@ -224,7 +214,7 @@ describe('Material text cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, name: 'Bar' };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().value).toBe('Bar');
@@ -238,7 +228,7 @@ describe('Material text cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, name: undefined };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().value).toBe('');
@@ -252,7 +242,7 @@ describe('Material text cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, name: null };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().value).toBe('');
@@ -266,7 +256,7 @@ describe('Material text cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, firstname: 'Bar' };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().value).toBe('Foo');
@@ -280,7 +270,7 @@ describe('Material text cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, null: 'Bar' };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().value).toBe('Foo');
@@ -294,7 +284,7 @@ describe('Material text cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, undefined: 'Bar' };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().value).toBe('Foo');
@@ -333,8 +323,8 @@ describe('Material text cell', () => {
       scope: '#/properties/name',
       options: {
         trim: true,
-        restrict: true
-      }
+        restrict: true,
+      },
     };
     const core = initCore(maxLengthSchema, control, data);
     wrapper = mount(
@@ -351,7 +341,7 @@ describe('Material text cell', () => {
     const control: ControlElement = {
       type: 'Control',
       scope: '#/properties/name',
-      options: { restrict: true }
+      options: { restrict: true },
     };
     const core = initCore(maxLengthSchema, control, data);
     wrapper = mount(
@@ -386,8 +376,8 @@ describe('Material text cell', () => {
       scope: '#/properties/name',
       options: {
         trim: true,
-        restrict: true
-      }
+        restrict: true,
+      },
     };
     const core = initCore(schema, control, data);
     wrapper = mount(
@@ -406,7 +396,7 @@ describe('Material text cell', () => {
     const control: ControlElement = {
       type: 'Control',
       scope: '#/properties/name',
-      options: { trim: true }
+      options: { trim: true },
     };
     const core = initCore(schema, control, data);
     wrapper = mount(
@@ -426,7 +416,7 @@ describe('Material text cell', () => {
     const control: ControlElement = {
       type: 'Control',
       scope: '#/properties/name',
-      options: { restrict: true }
+      options: { restrict: true },
     };
     const core = initCore(schema, control, data);
     wrapper = mount(

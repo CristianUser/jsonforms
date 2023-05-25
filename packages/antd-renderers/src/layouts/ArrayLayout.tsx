@@ -27,7 +27,7 @@ import React from 'react';
 import {
   ArrayLayoutProps,
   computeLabel,
-  createDefaultValue
+  createDefaultValue,
 } from '@jsonforms/core';
 import { Collapse, Empty } from 'antd';
 import map from 'lodash/map';
@@ -43,16 +43,15 @@ export class ArrayLayout extends React.PureComponent<
   ArrayLayoutState
 > {
   state: ArrayLayoutState = {
-    expanded: NaN
+    expanded: NaN,
   };
   innerCreateDefaultValue = () => createDefaultValue(this.props.schema);
   handleChange = (key: number) => {
     this.setState({
-      expanded: key
+      expanded: key,
     });
   };
-  isExpanded = (index: number) =>
-    this.state.expanded === index;
+  isExpanded = (index: number) => this.state.expanded === index;
   render() {
     const {
       data,
@@ -67,7 +66,7 @@ export class ArrayLayout extends React.PureComponent<
       required,
       rootSchema,
       config,
-      uischemas
+      uischemas,
     } = this.props;
     const appliedUiSchemaOptions = merge(
       {},
@@ -93,7 +92,7 @@ export class ArrayLayout extends React.PureComponent<
             accordion
             onChange={(value: any) => this.handleChange(parseInt(value))}
           >
-            {map(range(data), index => {
+            {map(range(data), (index) => {
               return (
                 <ExpandPanelRenderer
                   index={index}

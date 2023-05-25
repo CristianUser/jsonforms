@@ -24,16 +24,12 @@
 */
 import './MatchMediaMock';
 import * as React from 'react';
-import {
-  ControlElement
-} from '@jsonforms/core';
-import EnumCell, {
-  EnumCellTester
-} from '../../src/cells/EnumCell';
+import { ControlElement } from '@jsonforms/core';
+import EnumCell, { EnumCellTester } from '../../src/cells/EnumCell';
 import { renderers } from '../../src';
 
 import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { JsonFormsStateProvider } from '@jsonforms/react';
 import { initCore } from './util';
 
@@ -42,18 +38,18 @@ Enzyme.configure({ adapter: new Adapter() });
 const data = { nationality: 'JP' };
 const schema = {
   type: 'string',
-  enum: ['DE', 'IT', 'JP', 'US', 'RU', 'Other']
+  enum: ['DE', 'IT', 'JP', 'US', 'RU', 'Other'],
 };
 const uischema: ControlElement = {
   type: 'Control',
-  scope: '#/properties/nationality'
+  scope: '#/properties/nationality',
 };
 
 describe('Material enum cell tester', () => {
   it('should succeed with matching prop type', () => {
     const control: ControlElement = {
       type: 'Control',
-      scope: '#/properties/nationality'
+      scope: '#/properties/nationality',
     };
     expect(
       EnumCellTester(control, {
@@ -61,9 +57,9 @@ describe('Material enum cell tester', () => {
         properties: {
           nationality: {
             type: 'string',
-            enum: ['DE', 'IT', 'JP', 'US', 'RU', 'Other']
-          }
-        }
+            enum: ['DE', 'IT', 'JP', 'US', 'RU', 'Other'],
+          },
+        },
       })
     ).toBe(2);
   });
@@ -74,11 +70,7 @@ describe('Material enum cell', () => {
     const core = initCore(schema, uischema, data);
     const wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <EnumCell
-          schema={schema}
-          uischema={uischema}
-          path='nationality'
-        />
+        <EnumCell schema={schema} uischema={uischema} path='nationality' />
       </JsonFormsStateProvider>
     );
     const input = wrapper.find('input');

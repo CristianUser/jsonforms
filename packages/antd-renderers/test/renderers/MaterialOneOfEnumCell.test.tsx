@@ -24,16 +24,14 @@
 */
 import './MatchMediaMock';
 import * as React from 'react';
-import {
-  ControlElement
-} from '@jsonforms/core';
+import { ControlElement } from '@jsonforms/core';
 import OneOfEnumCell, {
-  oneOfEnumCellTester
+  oneOfEnumCellTester,
 } from '../../src/cells/OneOfEnumCell';
-import {  renderers } from '../../src';
+import { renderers } from '../../src';
 
 import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { JsonFormsStateProvider } from '@jsonforms/react';
 import { initCore } from './util';
 
@@ -45,31 +43,31 @@ const schema = {
   oneOf: [
     {
       const: 'AU',
-      title: 'Australia'
+      title: 'Australia',
     },
     {
       const: 'NZ',
-      title: 'New Zealand'
-    }
-  ]
+      title: 'New Zealand',
+    },
+  ],
 };
 const uischema: ControlElement = {
   type: 'Control',
-  scope: '#/properties/country'
+  scope: '#/properties/country',
 };
 
 describe('Material one of enum cell tester', () => {
   it('should succeed with matching prop type', () => {
     const control: ControlElement = {
       type: 'Control',
-      scope: '#/properties/country'
+      scope: '#/properties/country',
     };
     expect(
       oneOfEnumCellTester(control, {
         type: 'object',
         properties: {
-          country: schema
-        }
+          country: schema,
+        },
       })
     ).toBe(2);
   });
@@ -80,11 +78,7 @@ describe('Material enum cell', () => {
     const core = initCore(schema, uischema, data);
     const wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <OneOfEnumCell
-          schema={schema}
-          uischema={uischema}
-          path='country'
-        />
+        <OneOfEnumCell schema={schema} uischema={uischema} path='country' />
       </JsonFormsStateProvider>
     );
     const input = wrapper.find('input');

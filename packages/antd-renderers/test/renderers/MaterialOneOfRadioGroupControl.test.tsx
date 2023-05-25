@@ -24,19 +24,14 @@
 */
 import './MatchMediaMock';
 import * as React from 'react';
-import {
-  ControlElement,
-  NOT_APPLICABLE,
-} from '@jsonforms/core';
+import { ControlElement, NOT_APPLICABLE } from '@jsonforms/core';
 import OneOfRadioGroupControl, {
-  oneOfRadioGroupControlTester
+  oneOfRadioGroupControlTester,
 } from '../../src/controls/OneOfRadioGroupControl';
 import { renderers } from '../../src';
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import {
-  JsonFormsStateProvider
-} from '@jsonforms/react';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+import { JsonFormsStateProvider } from '@jsonforms/react';
 import { initCore } from './util';
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -48,17 +43,17 @@ const oneOfSchema = {
       oneOf: [
         { const: 'A', title: 'Option A' },
         { const: 'B' },
-        { const: 'C', title: 'Option C' }
-      ]
-    }
-  }
+        { const: 'C', title: 'Option C' },
+      ],
+    },
+  },
 };
 const uischema: ControlElement = {
   type: 'Control',
   scope: '#/properties/foo',
   options: {
-    format: 'radio'
-  }
+    format: 'radio',
+  },
 };
 
 describe('Material oneof radio group tester', () => {
@@ -70,12 +65,9 @@ describe('Material oneof radio group tester', () => {
   it('should return NOT_APPLICABLE for enums without radio format', () => {
     const uiSchemaNoRadio = {
       type: 'Control',
-      scope: '#/properties/foo'
+      scope: '#/properties/foo',
     };
-    const rank = oneOfRadioGroupControlTester(
-      uiSchemaNoRadio,
-      oneOfSchema
-    );
+    const rank = oneOfRadioGroupControlTester(uiSchemaNoRadio, oneOfSchema);
     expect(rank).toBe(NOT_APPLICABLE);
   });
 });
@@ -89,13 +81,8 @@ describe('Material oneof radio group control', () => {
     const core = initCore(oneOfSchema, uischema, { foo: 'B' });
 
     wrapper = mount(
-      <JsonFormsStateProvider
-        initState={{ renderers, core }}
-      >
-        <OneOfRadioGroupControl
-          schema={oneOfSchema}
-          uischema={uischema}
-        />
+      <JsonFormsStateProvider initState={{ renderers, core }}>
+        <OneOfRadioGroupControl schema={oneOfSchema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
     const inputs = wrapper.find('input[type="radio"]');

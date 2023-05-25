@@ -24,16 +24,14 @@
 */
 import './MatchMediaMock';
 import * as React from 'react';
-import {
-  NOT_APPLICABLE
-} from '@jsonforms/core';
+import { NOT_APPLICABLE } from '@jsonforms/core';
 import '../../src/cells';
 import LabelRenderer, {
-  labelRendererTester
+  labelRendererTester,
 } from '../../src/additional/LabelRenderer';
 import { renderers } from '../../src';
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { JsonForms, JsonFormsStateProvider } from '@jsonforms/react';
 import { initCore } from './util';
 
@@ -42,18 +40,16 @@ Enzyme.configure({ adapter: new Adapter() });
 const data = {};
 const schema = {
   type: 'object',
-  properties: {}
+  properties: {},
 };
 const uischema = {
   type: 'Label',
-  text: 'Foo'
+  text: 'Foo',
 };
 
 describe('Material Label Renderer tester', () => {
   it('should fail', () => {
-    expect(labelRendererTester(undefined, undefined)).toBe(
-      NOT_APPLICABLE
-    );
+    expect(labelRendererTester(undefined, undefined)).toBe(NOT_APPLICABLE);
     expect(labelRendererTester(null, undefined)).toBe(NOT_APPLICABLE);
     expect(labelRendererTester({ type: 'Foo' }, undefined)).toBe(
       NOT_APPLICABLE
@@ -86,11 +82,7 @@ describe('Material Label Renderer', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <LabelRenderer
-          schema={schema}
-          uischema={uischema}
-          visible={false}
-        />
+        <LabelRenderer schema={schema} uischema={uischema} visible={false} />
       </JsonFormsStateProvider>
     );
     const labels = wrapper.find('h6');

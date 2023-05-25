@@ -27,23 +27,15 @@ import {
   isPrimitiveArrayControl,
   or,
   RankedTester,
-  rankWith
+  rankWith,
 } from '@jsonforms/core';
 import ArrayControlRenderer from './ArrayControlRenderer';
-import ObjectRenderer, {
-  objectControlTester
-} from './ObjectRenderer';
-import AllOfRenderer, {
-  allOfControlTester
-} from './AllOfRenderer';
-import AnyOfRenderer, {
-  anyOfControlTester
-} from './AnyOfRenderer';
-import OneOfRenderer, {
-  oneOfControlTester
-} from './OneOfRenderer';
+import ObjectRenderer, { objectControlTester } from './ObjectRenderer';
+import AllOfRenderer, { allOfControlTester } from './AllOfRenderer';
+import AnyOfRenderer, { anyOfControlTester } from './AnyOfRenderer';
+import OneOfRenderer, { oneOfControlTester } from './OneOfRenderer';
 import EnumArrayRenderer, {
-  enumArrayRendererTester
+  enumArrayRendererTester,
 } from './EnumArrayRenderer';
 
 export const arrayControlTester: RankedTester = rankWith(

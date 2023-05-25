@@ -35,7 +35,7 @@ import { AntdSelect } from '../antd-controls/AntdSelect';
 import { InputControl } from './InputControl';
 
 export const OneOfEnumControl = (props: ControlProps & OwnPropsOfEnum) => (
-    <InputControl {...props} input={AntdSelect} />
+  <InputControl {...props} input={AntdSelect} />
 );
 
 export const oneOfEnumControlTester: RankedTester = rankWith(

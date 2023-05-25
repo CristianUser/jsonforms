@@ -1,11 +1,11 @@
 import {
-  AnyAction, 
+  AnyAction,
   ControlProps,
   Dispatch,
   OwnPropsOfEnum,
   RankedTester,
   withIncreasedRank,
-  Actions
+  Actions,
 } from '@jsonforms/core';
 import { ExtendedUnwrapped } from '../src/extended';
 import { autocompleteOneOfEnumControlTester } from '../src/extended/AntdAutocompleteOneOfEnumControl';
@@ -17,8 +17,16 @@ const MyAutocompleteControl = (props: ControlProps & OwnPropsOfEnum) => {
   return (
     <ExtendedUnwrapped.AutocompleteOneOfEnumControl
       {...props}
-      renderOption={option => (<Typography.Text>{`${option?.value}\t-\t${option?.label}`}</Typography.Text>)}
-      filterOptions={(options, state) => options.filter(o => o.label.includes(state.inputValue) || o.value.includes(state.inputValue))}
+      renderOption={(option) => (
+        <Typography.Text>{`${option?.value}\t-\t${option?.label}`}</Typography.Text>
+      )}
+      filterOptions={(options, state) =>
+        options.filter(
+          (o) =>
+            o.label.includes(state.inputValue) ||
+            o.value.includes(state.inputValue)
+        )
+      }
     />
   );
 };
@@ -29,7 +37,6 @@ const myAutocompleteTester: RankedTester = withIncreasedRank(
 );
 
 const ConnectedControl = withJsonFormsOneOfEnumProps(MyAutocompleteControl);
-
 
 export const ExampleExtension = (dispatch: Dispatch<AnyAction>) => (
   <div>

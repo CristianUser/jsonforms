@@ -26,72 +26,63 @@ import './MatchMediaMock';
 import React from 'react';
 
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import {
-  ControlElement,
-  JsonSchema
-} from '@jsonforms/core';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+import { ControlElement, JsonSchema } from '@jsonforms/core';
 import {
   AnyOfStringOrEnumControl,
   anyOfStringOrEnumControlTester,
-  renderers
+  renderers,
 } from '../../src';
 import { JsonForms } from '@jsonforms/react';
 
 Enzyme.configure({ adapter: new Adapter() });
 
 const schema: JsonSchema = {
-  anyOf: [{ type: 'string' }, { enum: ['foo', 'bar'] }]
+  anyOf: [{ type: 'string' }, { enum: ['foo', 'bar'] }],
 };
 
 const uischema: ControlElement = {
   type: 'Control',
-  scope: '#'
+  scope: '#',
 };
 
 describe('Material simple any of control tester', () => {
   it('should only be applicable for simple any of cases', () => {
-    expect(
-      anyOfStringOrEnumControlTester({ type: 'Foo' }, schema)
-    ).toBe(-1);
+    expect(anyOfStringOrEnumControlTester({ type: 'Foo' }, schema)).toBe(-1);
     expect(anyOfStringOrEnumControlTester(uischema, schema)).toBe(5);
 
     const nestedSchema: JsonSchema = {
       properties: {
-        foo: { anyOf: [{ type: 'string' }, { enum: ['foo', 'bar'] }] }
-      }
+        foo: { anyOf: [{ type: 'string' }, { enum: ['foo', 'bar'] }] },
+      },
     };
     const nestedUischema: ControlElement = {
       type: 'Control',
-      scope: '#/properties/foo'
+      scope: '#/properties/foo',
     };
-    expect(
-      anyOfStringOrEnumControlTester(nestedUischema, nestedSchema)
-    ).toBe(5);
+    expect(anyOfStringOrEnumControlTester(nestedUischema, nestedSchema)).toBe(
+      5
+    );
     const schemaNoEnum: JsonSchema = {
-      anyOf: [{ type: 'string' }]
+      anyOf: [{ type: 'string' }],
     };
     const schemaConflictTypes: JsonSchema = {
-      anyOf: [{ type: 'string' }, { type: 'integer', enum: [1, 2] }]
+      anyOf: [{ type: 'string' }, { type: 'integer', enum: [1, 2] }],
     };
     const schemaAdditionalProps: JsonSchema = {
-      anyOf: [{ type: 'string' }, { enum: ['foo', 'bar'] }, { maxLength: 5 }]
+      anyOf: [{ type: 'string' }, { enum: ['foo', 'bar'] }, { maxLength: 5 }],
     };
     const schemaNoString: JsonSchema = {
-      anyOf: [{ type: 'integer' }, { enum: [1, 2] }]
+      anyOf: [{ type: 'integer' }, { enum: [1, 2] }],
     };
-    expect(anyOfStringOrEnumControlTester(uischema, schemaNoEnum)).toBe(
+    expect(anyOfStringOrEnumControlTester(uischema, schemaNoEnum)).toBe(-1);
+    expect(anyOfStringOrEnumControlTester(uischema, schemaConflictTypes)).toBe(
       -1
     );
     expect(
-      anyOfStringOrEnumControlTester(uischema, schemaConflictTypes)
-    ).toBe(-1);
-    expect(
       anyOfStringOrEnumControlTester(uischema, schemaAdditionalProps)
     ).toBe(5);
-    expect(
-      anyOfStringOrEnumControlTester(uischema, schemaNoString)
-    ).toBe(-1);
+    expect(anyOfStringOrEnumControlTester(uischema, schemaNoString)).toBe(-1);
   });
 });
 

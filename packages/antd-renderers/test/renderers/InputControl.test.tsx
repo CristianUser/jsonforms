@@ -25,7 +25,7 @@
 import './MatchMediaMock';
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
 import { InputControl, renderers } from '../../src';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import * as React from 'react';
 import {
   ControlElement,
@@ -37,7 +37,11 @@ import {
   RankedTester,
   rankWith,
 } from '@jsonforms/core';
-import { Control, JsonFormsStateProvider, withJsonFormsControlProps } from '@jsonforms/react';
+import {
+  Control,
+  JsonFormsStateProvider,
+  withJsonFormsControlProps,
+} from '@jsonforms/react';
 import HorizontalLayoutRenderer from '../../src/layouts/HorizontalLayout';
 import { AntdInputText } from '../../src/antd-controls';
 import { initCore } from './util';
@@ -49,13 +53,13 @@ const schema = {
   type: 'object',
   properties: {
     foo: {
-      type: 'string'
-    }
-  }
+      type: 'string',
+    },
+  },
 };
 const uischema: ControlElement = {
   type: 'Control',
-  scope: '#/properties/foo'
+  scope: '#/properties/foo',
 };
 class TestControlInner extends Control<ControlProps, ControlState> {
   render() {
@@ -76,10 +80,7 @@ describe('Material input control', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <TestControl
-          schema={schema}
-          uischema={uischema}
-        />
+        <TestControl schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
 
@@ -97,7 +98,7 @@ describe('Material input control', () => {
     const control: ControlElement = {
       type: 'Control',
       scope: '#/properties/foo',
-      label: false
+      label: false,
     };
     const core = initCore(schema, uischema);
     wrapper = mount(
@@ -111,7 +112,6 @@ describe('Material input control', () => {
 
     const label = wrapper.find('label');
     expect(label).toHaveLength(0);
-
 
     const inputs = wrapper.find('input');
     expect(inputs).toHaveLength(1);
@@ -140,7 +140,7 @@ describe('Material input control', () => {
   });
 
   it('should display a single error', () => {
-    const core = initCore(schema, uischema, data );
+    const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
         <TestControl schema={schema} uischema={uischema} />
@@ -148,7 +148,7 @@ describe('Material input control', () => {
     );
 
     core.data = { ...core.data, foo: 2 };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const validation = wrapper.find('div[role="alert"]').first();
     expect(validation.text()).toBe('should be string');
@@ -162,7 +162,7 @@ describe('Material input control', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, foo: 3 };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const validation = wrapper.find('div[role="alert"]').first();
     expect(validation.text()).toBe('should be string');
@@ -188,7 +188,7 @@ describe('Material input control', () => {
     );
     core.data = { ...core.data, foo: 3 };
     core.data = { ...core.data, foo: 'bar' };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const validation = wrapper.find('div[role="alert"]');
     expect(validation).toHaveLength(0);
@@ -199,51 +199,52 @@ describe('Material input control', () => {
       type: 'object',
       properties: {
         name: {
-          type: 'string'
+          type: 'string',
         },
         personalData: {
           type: 'object',
           properties: {
             middleName: {
-              type: 'string'
+              type: 'string',
             },
             lastName: {
-              type: 'string'
-            }
+              type: 'string',
+            },
           },
-          required: ['middleName', 'lastName']
-        }
+          required: ['middleName', 'lastName'],
+        },
       },
-      required: ['name']
+      required: ['name'],
     };
     const firstControlElement: ControlElement = {
       type: 'Control',
-      scope: '#/properties/name'
+      scope: '#/properties/name',
     };
     const secondControlElement: ControlElement = {
       type: 'Control',
-      scope: '#/properties/personalData/properties/middleName'
+      scope: '#/properties/personalData/properties/middleName',
     };
     const thirdControlElement: ControlElement = {
       type: 'Control',
-      scope: '#/properties/personalData/properties/lastName'
+      scope: '#/properties/personalData/properties/lastName',
     };
     const layout: HorizontalLayout = {
       type: 'HorizontalLayout',
-      elements: [firstControlElement, secondControlElement, thirdControlElement]
+      elements: [
+        firstControlElement,
+        secondControlElement,
+        thirdControlElement,
+      ],
     };
     const newData = {
       name: 'John Doe',
-      personalData: {}
+      personalData: {},
     };
     const core = initCore(jsonSchema, layout, newData);
     wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers, core }} >
-        <HorizontalLayoutRenderer
-          schema={jsonSchema}
-          uischema={layout}
-        />
-      </ JsonFormsStateProvider>
+      <JsonFormsStateProvider initState={{ renderers, core }}>
+        <HorizontalLayoutRenderer schema={jsonSchema} uischema={layout} />
+      </JsonFormsStateProvider>
     );
     const validation = wrapper.find('div[role="alert"]');
     expect(validation).toHaveLength(2);
@@ -257,14 +258,14 @@ describe('Material input control', () => {
       properties: {
         dateCell: {
           type: 'string',
-          format: 'date'
-        }
+          format: 'date',
+        },
       },
-      required: ['dateCell']
+      required: ['dateCell'],
     };
     const control: ControlElement = {
       type: 'Control',
-      scope: '#/properties/dateCell'
+      scope: '#/properties/dateCell',
     };
 
     const core = initCore(jsonSchema, control, {});
@@ -274,8 +275,8 @@ describe('Material input control', () => {
       </JsonFormsStateProvider>
     );
     const label = wrapper.find('label').first();
-    
-    expect(label.hasClass('ant-form-item-required')).toBeTruthy()
+
+    expect(label.hasClass('ant-form-item-required')).toBeTruthy();
     expect(label.text()).toBe('Date Cell');
   });
 
@@ -285,13 +286,13 @@ describe('Material input control', () => {
       properties: {
         dateCell: {
           type: 'string',
-          format: 'date'
-        }
-      }
+          format: 'date',
+        },
+      },
     };
     const control: ControlElement = {
       type: 'Control',
-      scope: '#/properties/dateCell'
+      scope: '#/properties/dateCell',
     };
 
     const core = initCore(jsonSchema, control, {});
@@ -308,13 +309,13 @@ describe('Material input control', () => {
     const jsonSchema = {
       type: 'object',
       properties: {
-        password: { type: 'string' }
-      }
+        password: { type: 'string' },
+      },
     };
     const control: ControlElement = {
       type: 'Control',
       scope: '#/properties/password',
-      options: { format: 'password' }
+      options: { format: 'password' },
     };
     const core = initCore(jsonSchema, control, {});
     wrapper = mount(
@@ -330,12 +331,12 @@ describe('Material input control', () => {
     const jsonSchema = {
       type: 'object',
       properties: {
-        name: { type: 'string' }
-      }
+        name: { type: 'string' },
+      },
     };
     const control: ControlElement = {
       type: 'Control',
-      scope: '#/properties/name'
+      scope: '#/properties/name',
     };
     const core = initCore(jsonSchema, control, {});
     wrapper = mount(

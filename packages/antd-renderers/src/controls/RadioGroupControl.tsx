@@ -27,12 +27,15 @@ import {
   and,
   ControlProps,
   isEnumControl,
-  optionIs, OwnPropsOfEnum, RankedTester, rankWith
+  optionIs,
+  OwnPropsOfEnum,
+  RankedTester,
+  rankWith,
 } from '@jsonforms/core';
-import {  withJsonFormsEnumProps } from '@jsonforms/react';
+import { withJsonFormsEnumProps } from '@jsonforms/react';
 import { RadioGroup } from './RadioGroup';
 export const RadioGroupControl = (props: ControlProps & OwnPropsOfEnum) => {
-   return <RadioGroup {...props} />;
+  return <RadioGroup {...props} />;
 };
 
 export const radioGroupControlTesterGroup: RankedTester = rankWith(

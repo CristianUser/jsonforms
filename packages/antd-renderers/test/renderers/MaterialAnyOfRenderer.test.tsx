@@ -26,21 +26,15 @@ import './MatchMediaMock';
 import React from 'react';
 
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import {
-  ControlElement
-} from '@jsonforms/core';
-import {
-  AnyOfRenderer,
-  cells,
-  renderers
-} from '../../src';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+import { ControlElement } from '@jsonforms/core';
+import { AnyOfRenderer, cells, renderers } from '../../src';
 import { JsonForms, JsonFormsStateProvider } from '@jsonforms/react';
 import { initCore, TestEmitter } from './util';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-const waitForAsync = () => new Promise(resolve => setImmediate(resolve));
+const waitForAsync = () => new Promise((resolve) => setImmediate(resolve));
 
 const clickAddButton = (wrapper: ReactWrapper, times: number) => {
   const buttons = wrapper.find('button');
@@ -70,23 +64,23 @@ describe('Material anyOf renderer', () => {
           anyOf: [
             {
               title: 'String',
-              type: 'string'
+              type: 'string',
             },
             {
               title: 'Number',
-              type: 'number'
-            }
-          ]
-        }
-      }
+              type: 'number',
+            },
+          ],
+        },
+      },
     };
     const uischema: ControlElement = {
       type: 'Control',
       label: 'Value',
-      scope: '#/properties/value'
+      scope: '#/properties/value',
     };
     const onChangeData: any = {
-      data: undefined
+      data: undefined,
     };
     wrapper = mount(
       <JsonForms
@@ -104,7 +98,7 @@ describe('Material anyOf renderer', () => {
     input.simulate('change', { target: { value: 'test' } });
     wrapper.update();
     expect(onChangeData.data).toEqual({
-      value: 'test'
+      value: 'test',
     });
   });
 
@@ -115,13 +109,13 @@ describe('Material anyOf renderer', () => {
         myThingsAndOrYourThings: {
           anyOf: [
             {
-              $ref: '#/definitions/myThings'
+              $ref: '#/definitions/myThings',
             },
             {
-              $ref: '#/definitions/yourThings'
-            }
-          ]
-        }
+              $ref: '#/definitions/yourThings',
+            },
+          ],
+        },
       },
       definitions: {
         myThings: {
@@ -131,10 +125,10 @@ describe('Material anyOf renderer', () => {
             type: 'object',
             properties: {
               name: {
-                type: 'string'
-              }
-            }
-          }
+                type: 'string',
+              },
+            },
+          },
         },
         yourThings: {
           title: 'YourThings',
@@ -143,24 +137,21 @@ describe('Material anyOf renderer', () => {
             type: 'object',
             properties: {
               age: {
-                type: 'number'
-              }
-            }
-          }
-        }
-      }
+                type: 'number',
+              },
+            },
+          },
+        },
+      },
     };
     const uischema: ControlElement = {
       type: 'Control',
-      scope: '#/properties/myThingsAndOrYourThings'
+      scope: '#/properties/myThingsAndOrYourThings',
     };
     const core = initCore(schema, uischema);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <AnyOfRenderer
-          schema={schema}
-          uischema={uischema}
-        />
+        <AnyOfRenderer schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
 
@@ -186,13 +177,13 @@ describe('Material anyOf renderer', () => {
         myThingsAndOrYourThings: {
           anyOf: [
             {
-              $ref: '#/definitions/myThings'
+              $ref: '#/definitions/myThings',
             },
             {
-              $ref: '#/definitions/yourThings'
-            }
-          ]
-        }
+              $ref: '#/definitions/yourThings',
+            },
+          ],
+        },
       },
       definitions: {
         myThings: {
@@ -202,10 +193,10 @@ describe('Material anyOf renderer', () => {
             type: 'object',
             properties: {
               name: {
-                type: 'string'
-              }
-            }
-          }
+                type: 'string',
+              },
+            },
+          },
         },
         yourThings: {
           title: 'YourThings',
@@ -214,19 +205,19 @@ describe('Material anyOf renderer', () => {
             type: 'object',
             properties: {
               age: {
-                type: 'number'
-              }
-            }
-          }
-        }
-      }
+                type: 'number',
+              },
+            },
+          },
+        },
+      },
     };
     const uischema: ControlElement = {
       type: 'Control',
-      scope: '#/properties/myThingsAndOrYourThings'
+      scope: '#/properties/myThingsAndOrYourThings',
     };
     const onChangeData: any = {
-      data: undefined
+      data: undefined,
     };
     const core = initCore(schema, uischema);
     wrapper = mount(
@@ -236,10 +227,7 @@ describe('Material anyOf renderer', () => {
             onChangeData.data = data;
           }}
         />
-        <AnyOfRenderer
-          schema={schema}
-          uischema={uischema}
-        />
+        <AnyOfRenderer schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
 
@@ -261,7 +249,7 @@ describe('Material anyOf renderer', () => {
     wrapper.update();
 
     expect(onChangeData.data).toEqual({
-      myThingsAndOrYourThings: [{ age: 5, name: 'test' }]
+      myThingsAndOrYourThings: [{ age: 5, name: 'test' }],
     });
   });
 
@@ -273,29 +261,25 @@ describe('Material anyOf renderer', () => {
           anyOf: [
             {
               title: 'String',
-              type: 'string'
+              type: 'string',
             },
             {
               title: 'Number',
-              type: 'number'
-            }
-          ]
-        }
-      }
+              type: 'number',
+            },
+          ],
+        },
+      },
     };
     const uischema: ControlElement = {
       type: 'Control',
       label: 'Value',
-      scope: '#/properties/value'
+      scope: '#/properties/value',
     };
     const core = initCore(schema, uischema);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <AnyOfRenderer
-          schema={schema}
-          uischema={uischema}
-          visible={false}
-        />
+        <AnyOfRenderer schema={schema} uischema={uischema} visible={false} />
       </JsonFormsStateProvider>
     );
     const inputs = wrapper.find('input');

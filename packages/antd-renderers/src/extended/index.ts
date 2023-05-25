@@ -24,12 +24,12 @@
 */
 import AutocompleteEnumControl, {
   AutocompleteEnumControl as AutocompleteEnumControlUnwrapped,
-  autocompleteEnumControlTester
+  autocompleteEnumControlTester,
 } from './AntdAutocompleteEnumControl';
 
 import AutocompleteOneOfEnumControl, {
   AutocompleteOneOfEnumControl as AutocompleteOneOfEnumControlUnwrapped,
-  autocompleteOneOfEnumControlTester
+  autocompleteOneOfEnumControlTester,
 } from './AntdAutocompleteOneOfEnumControl';
 
 import { JsonFormsRendererRegistryEntry } from '@jsonforms/core';
@@ -38,15 +38,15 @@ import { renderers } from '../index';
 export const extendedRenderers: JsonFormsRendererRegistryEntry[] = [
   {
     tester: autocompleteOneOfEnumControlTester,
-    renderer: AutocompleteOneOfEnumControl
+    renderer: AutocompleteOneOfEnumControl,
   },
   {
     tester: autocompleteEnumControlTester,
-    renderer: AutocompleteEnumControl
+    renderer: AutocompleteEnumControl,
   },
 ].concat(renderers);
 
 export const ExtendedUnwrapped = {
   AutocompleteEnumControl: AutocompleteEnumControlUnwrapped,
-  AutocompleteOneOfEnumControl: AutocompleteOneOfEnumControlUnwrapped
+  AutocompleteOneOfEnumControl: AutocompleteOneOfEnumControlUnwrapped,
 };

@@ -28,16 +28,8 @@ import merge from 'lodash/merge';
 import { InputNumber } from 'antd';
 
 export const AntdInputInteger = (props: CellProps & WithClassname) => {
-  const {
-    data,
-    className,
-    id,
-    enabled,
-    uischema,
-    path,
-    handleChange,
-    config
-  } = props;
+  const { data, className, id, enabled, uischema, path, handleChange, config } =
+    props;
   const toNumber = (value: string) =>
     value === '' ? undefined : parseInt(value, 10);
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
@@ -46,7 +38,7 @@ export const AntdInputInteger = (props: CellProps & WithClassname) => {
   return (
     <InputNumber
       value={data !== undefined && data !== null ? data : ''}
-      onChange={value => handleChange(path, toNumber(value))}
+      onChange={(value) => handleChange(path, toNumber(value))}
       className={className}
       id={id}
       disabled={!enabled}

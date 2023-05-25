@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 /*
   The MIT License
 
@@ -28,22 +29,15 @@ import { Switch } from 'antd';
 import merge from 'lodash/merge';
 
 export const AntdToggle = React.memo((props: CellProps & WithClassname) => {
-  const {
-    data,
-    className,
-    enabled,
-    uischema,
-    path,
-    handleChange,
-    config
-  } = props;
+  const { data, className, enabled, uischema, path, handleChange, config } =
+    props;
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
   const checked = !!data;
 
   return (
     <Switch
       checked={checked}
-      onChange={isChecked => handleChange(path, isChecked)}
+      onChange={(isChecked) => handleChange(path, isChecked)}
       className={className}
       disabled={!enabled}
       autoFocus={!!appliedUiSchemaOptions.focus}

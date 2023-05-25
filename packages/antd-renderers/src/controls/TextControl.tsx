@@ -27,7 +27,7 @@ import {
   ControlProps,
   isStringControl,
   RankedTester,
-  rankWith
+  rankWith,
 } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import { AntdInputText } from '../antd-controls/AntdInputText';
@@ -37,8 +37,5 @@ export const TextControl = (props: ControlProps) => (
   <InputControl {...props} input={AntdInputText} />
 );
 
-export const textControlTester: RankedTester = rankWith(
-  1,
-  isStringControl
-);
+export const textControlTester: RankedTester = rankWith(1, isStringControl);
 export default withJsonFormsControlProps(TextControl);

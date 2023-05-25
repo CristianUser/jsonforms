@@ -28,16 +28,13 @@ import {
   isDateControl,
   RankedTester,
   rankWith,
-  WithClassname
+  WithClassname,
 } from '@jsonforms/core';
 import { withJsonFormsCellProps } from '@jsonforms/react';
 import { AntdInputDate } from '../antd-controls';
 
 export const DateCell = (props: CellProps & WithClassname) => {
-
-  return (
-    <AntdInputDate {...props}/>
-  );
+  return <AntdInputDate {...props} />;
 };
 export const DateCellTester: RankedTester = rankWith(2, isDateControl);
 

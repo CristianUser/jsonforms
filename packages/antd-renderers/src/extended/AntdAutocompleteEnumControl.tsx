@@ -36,13 +36,19 @@ import merge from 'lodash/merge';
 import { InputControl } from '../controls/InputControl';
 import { AntdAutocomplete, WithOptionLabel } from './AntdAutocomplete';
 
-export const AutocompleteEnumControl = (props: ControlProps & OwnPropsOfEnum & WithOptionLabel) => {
-  const {config, uischema} = props;
+export const AutocompleteEnumControl = (
+  props: ControlProps & OwnPropsOfEnum & WithOptionLabel
+) => {
+  const { config, uischema } = props;
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
   return (
     <InputControl
       {...props}
-      input={appliedUiSchemaOptions.autocomplete === false ? AntdSelect : AntdAutocomplete}
+      input={
+        appliedUiSchemaOptions.autocomplete === false
+          ? AntdSelect
+          : AntdAutocomplete
+      }
     />
   );
 };

@@ -30,17 +30,17 @@ import {
   Layout,
   layoutDefaultProps,
   RuleEffect,
-  SchemaBasedCondition
+  SchemaBasedCondition,
 } from '@jsonforms/core';
 import { JsonFormsStateProvider } from '@jsonforms/react';
 import Enzyme, { mount } from 'enzyme';
 
 import MaterialCategorizationLayoutRenderer, {
-  materialCategorizationTester
+  materialCategorizationTester,
 } from '../../src/layouts/MaterialCategorizationLayout';
 import { LayoutRenderer, renderers } from '../../src';
 import { Tab, Tabs } from '@material-ui/core';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { initCore } from './util';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -51,19 +51,19 @@ const fixture = {
     type: 'object',
     properties: {
       name: {
-        type: 'string'
-      }
-    }
+        type: 'string',
+      },
+    },
   },
   uischema: {
     type: 'Categorization',
     elements: [
       {
         type: 'Category',
-        label: 'B'
-      }
-    ]
-  }
+        label: 'B',
+      },
+    ],
+  },
 };
 
 describe('Material categorization layout tester', () => {
@@ -79,7 +79,7 @@ describe('Material categorization layout tester', () => {
   it('should not fail with null elements and no schema', () => {
     const uischema: Layout = {
       type: 'Categorization',
-      elements: null
+      elements: null,
     };
     expect(materialCategorizationTester(uischema, undefined)).toBe(-1);
   });
@@ -87,7 +87,7 @@ describe('Material categorization layout tester', () => {
   it('should succeed with empty elements and no schema', () => {
     const uischema: Layout = {
       type: 'Categorization',
-      elements: []
+      elements: [],
     };
     expect(materialCategorizationTester(uischema, undefined)).toBe(1);
   });
@@ -97,9 +97,9 @@ describe('Material categorization layout tester', () => {
       type: 'Categorization',
       elements: [
         {
-          type: 'Foo'
-        }
-      ]
+          type: 'Foo',
+        },
+      ],
     };
     expect(materialCategorizationTester(uischema, undefined)).toBe(-1);
   });
@@ -109,9 +109,9 @@ describe('Material categorization layout tester', () => {
       type: 'Categorization',
       elements: [
         {
-          type: 'Category'
-        }
-      ]
+          type: 'Category',
+        },
+      ],
     };
     expect(materialCategorizationTester(categorization, undefined)).toBe(1);
   });
@@ -121,13 +121,13 @@ describe('Material categorization layout tester', () => {
       type: 'Categorization',
       elements: [
         {
-          type: 'Category'
-        }
-      ]
+          type: 'Category',
+        },
+      ],
     };
     const categorization: Layout = {
       type: 'Categorization',
-      elements: [nestedCategorization]
+      elements: [nestedCategorization],
     };
     expect(materialCategorizationTester(categorization, undefined)).toBe(-1);
   });
@@ -137,9 +137,9 @@ describe('Material categorization layout tester', () => {
       type: 'Categorization',
       elements: [
         {
-          type: 'Categorization'
-        }
-      ]
+          type: 'Categorization',
+        },
+      ],
     };
     expect(materialCategorizationTester(categorization, undefined)).toBe(-1);
   });
@@ -151,9 +151,9 @@ describe('Material categorization layout tester', () => {
         {
           type: 'Categorization',
           label: 'Test',
-          elements: null
-        }
-      ]
+          elements: null,
+        },
+      ],
     };
 
     expect(materialCategorizationTester(categorization, undefined)).toBe(-1);
@@ -165,9 +165,9 @@ describe('Material categorization layout tester', () => {
       elements: [
         {
           type: 'Categorization',
-          elements: []
-        }
-      ]
+          elements: [],
+        },
+      ],
     };
     expect(materialCategorizationTester(categorization, undefined)).toBe(-1);
   });
@@ -177,7 +177,7 @@ describe('Material categorization layout', () => {
   it('should render', () => {
     const nameControl = {
       type: 'Control',
-      scope: '#/properties/name'
+      scope: '#/properties/name',
     };
     const uischema: Categorization = {
       type: 'Categorization',
@@ -190,16 +190,16 @@ describe('Material categorization layout', () => {
             {
               type: 'Category',
               label: 'A',
-              elements: [nameControl]
-            }
-          ]
+              elements: [nameControl],
+            },
+          ],
         },
         {
           type: 'Category',
           label: 'B',
-          elements: [nameControl]
-        }
-      ]
+          elements: [nameControl],
+        },
+      ],
     };
 
     const core = initCore(fixture.schema, fixture.uischema, fixture.data);
@@ -221,7 +221,7 @@ describe('Material categorization layout', () => {
     const data = { name: 'Foo' };
     const nameControl: ControlElement = {
       type: 'Control',
-      scope: '#/properties/name'
+      scope: '#/properties/name',
     };
     const innerCategorization: Categorization = {
       type: 'Categorization',
@@ -230,9 +230,9 @@ describe('Material categorization layout', () => {
         {
           type: 'Category',
           label: 'A',
-          elements: [nameControl]
-        }
-      ]
+          elements: [nameControl],
+        },
+      ],
     };
     const uischema: Categorization = {
       type: 'Categorization',
@@ -242,19 +242,19 @@ describe('Material categorization layout', () => {
         {
           type: 'Category',
           label: 'B',
-          elements: [nameControl, nameControl]
+          elements: [nameControl, nameControl],
         },
         {
           type: 'Category',
           label: 'C',
-          elements: undefined
+          elements: undefined,
         },
         {
           type: 'Category',
           label: 'D',
-          elements: null
-        }
-      ]
+          elements: null,
+        },
+      ],
     };
     const core = initCore(fixture.schema, fixture.uischema, data);
 
@@ -269,10 +269,7 @@ describe('Material categorization layout', () => {
     );
 
     const beforeClick = wrapper.find(Tabs).props().value;
-    wrapper
-      .find(Tab)
-      .at(1)
-      .simulate('click');
+    wrapper.find(Tab).at(1).simulate('click');
     const afterClick = wrapper.find(Tabs).props().value;
 
     expect(beforeClick).toBe(0);
@@ -317,7 +314,7 @@ describe('Material categorization layout', () => {
   it('allows categories to be hidden', () => {
     const condition: SchemaBasedCondition = {
       scope: '#/properties/name',
-      schema: { minLength: 3 }
+      schema: { minLength: 3 },
     };
 
     const uischema: Categorization = {
@@ -327,7 +324,7 @@ describe('Material categorization layout', () => {
         {
           type: 'Category',
           label: 'A',
-          elements: []
+          elements: [],
         },
         {
           type: 'Category',
@@ -335,10 +332,10 @@ describe('Material categorization layout', () => {
           elements: [],
           rule: {
             effect: RuleEffect.HIDE,
-            condition
-          }
-        }
-      ]
+            condition,
+          },
+        },
+      ],
     };
     const core = initCore(fixture.schema, fixture.uischema, fixture.data);
     const wrapper = mount(

@@ -46,7 +46,7 @@ export const AntdAutocomplete = (
     path,
     handleChange,
     options,
-    config
+    config,
     // getOptionLabel,
     // filterOptions
   } = props;

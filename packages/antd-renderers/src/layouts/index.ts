@@ -22,21 +22,13 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import GroupLayout, {
-  antdGroupTester
-} from './GroupLayout';
-import HorizontalLayout, {
-  horizontalLayoutTester
-} from './HorizontalLayout';
-import VerticalLayout, {
-  verticalLayoutTester
-} from './VerticalLayout';
+import GroupLayout, { antdGroupTester } from './GroupLayout';
+import HorizontalLayout, { horizontalLayoutTester } from './HorizontalLayout';
+import VerticalLayout, { verticalLayoutTester } from './VerticalLayout';
 import CategorizationLayout, {
-  categorizationTester
+  categorizationTester,
 } from './CategorizationLayout';
-import ArrayLayout, {
-  arrayLayoutTester
-} from './ArrayLayoutRenderer';
+import ArrayLayout, { arrayLayoutTester } from './ArrayLayoutRenderer';
 
 export {
   arrayLayoutTester,
@@ -48,5 +40,5 @@ export {
   HorizontalLayout,
   horizontalLayoutTester,
   VerticalLayout,
-  verticalLayoutTester
+  verticalLayoutTester,
 };

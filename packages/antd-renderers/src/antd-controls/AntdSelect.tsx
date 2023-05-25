@@ -39,7 +39,7 @@ export const AntdSelect = (props: EnumCellProps & WithClassname) => {
     path,
     handleChange,
     options,
-    config
+    config,
   } = props;
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
   const selectStyle = appliedUiSchemaOptions.trim ? {} : { width: '100%' };
@@ -51,10 +51,10 @@ export const AntdSelect = (props: EnumCellProps & WithClassname) => {
       disabled={!enabled}
       autoFocus={appliedUiSchemaOptions.focus}
       value={data || ''}
-      onChange={value => handleChange(path, value)}
+      onChange={(value) => handleChange(path, value)}
       style={selectStyle}
     >
-      {[{ label: '', value: '' }].concat(options).map(optionValue => (
+      {[{ label: '', value: '' }].concat(options).map((optionValue) => (
         <Option value={optionValue.value} key={optionValue.value}>
           {optionValue.label}
         </Option>

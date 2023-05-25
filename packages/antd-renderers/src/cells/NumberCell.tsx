@@ -28,7 +28,7 @@ import {
   isNumberControl,
   RankedTester,
   rankWith,
-  WithClassname
+  WithClassname,
 } from '@jsonforms/core';
 import { withJsonFormsCellProps } from '@jsonforms/react';
 import { AntdInputNumber } from '../antd-controls/AntdInputNumber';
@@ -40,8 +40,5 @@ export const NumberCell = (props: CellProps & WithClassname) => (
  * Default tester for number controls.
  * @type {RankedTester}
  */
-export const NumberCellTester: RankedTester = rankWith(
-  3,
-  isNumberControl
-);
+export const NumberCellTester: RankedTester = rankWith(3, isNumberControl);
 export default withJsonFormsCellProps(NumberCell);

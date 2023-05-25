@@ -30,7 +30,7 @@ import startCase from 'lodash/startCase';
 import {
   DispatchCell,
   JsonFormsStateContext,
-  useJsonForms
+  useJsonForms,
 } from '@jsonforms/react';
 import React, { Fragment } from 'react';
 import {
@@ -42,9 +42,13 @@ import {
   JsonFormsRendererRegistryEntry,
   JsonSchema,
   Paths,
-  Resolve
+  Resolve,
 } from '@jsonforms/core';
-import { ArrowDownOutlined, ArrowUpOutlined, DeleteFilled } from '@ant-design/icons';
+import {
+  ArrowDownOutlined,
+  ArrowUpOutlined,
+  DeleteFilled,
+} from '@ant-design/icons';
 import { Button, Form, Table, Tooltip } from 'antd';
 import { ErrorObject } from 'ajv';
 
@@ -52,7 +56,9 @@ import { WithDeleteDialogSupport } from './DeleteDialog';
 import TableToolbar from './TableToolbar';
 import Hidden from '../util/Hidden';
 
-const RenderActionsCell = (props: ArrayLayoutProps & WithDeleteDialogSupport & any) => {
+const RenderActionsCell = (
+  props: ArrayLayoutProps & WithDeleteDialogSupport & any
+) => {
   const {
     config,
     uischema,
@@ -62,39 +68,48 @@ const RenderActionsCell = (props: ArrayLayoutProps & WithDeleteDialogSupport & a
     enableUp,
     moveDown,
     enableDown,
-    openDeleteDialog
+    openDeleteDialog,
   } = props;
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
   const childPath = Paths.compose(path, `${index}`);
 
-  return <div style={{ marginBottom: '24px' }}>
-    {appliedUiSchemaOptions.showSortButtons ? (
-      <Fragment>
-        <Tooltip title='Move up'>
-          <Button shape='circle' icon={<ArrowUpOutlined />} onClick={moveUp} disabled={!enableUp} />
-        </Tooltip>
-        <Tooltip title='Move down'>
-          <Button shape='circle' icon={<ArrowDownOutlined />} onClick={moveDown} disabled={!enableDown} />
-        </Tooltip>
-      </Fragment>
-    ) : null}
-    <Tooltip title='Delete'>
-      <Button icon={<DeleteFilled />} onClick={() => openDeleteDialog(childPath, index)} />
-    </Tooltip>
-  </div>;
+  return (
+    <div style={{ marginBottom: '24px' }}>
+      {appliedUiSchemaOptions.showSortButtons ? (
+        <Fragment>
+          <Tooltip title='Move up'>
+            <Button
+              shape='circle'
+              icon={<ArrowUpOutlined />}
+              onClick={moveUp}
+              disabled={!enableUp}
+            />
+          </Tooltip>
+          <Tooltip title='Move down'>
+            <Button
+              shape='circle'
+              icon={<ArrowDownOutlined />}
+              onClick={moveDown}
+              disabled={!enableDown}
+            />
+          </Tooltip>
+        </Fragment>
+      ) : null}
+      <Tooltip title='Delete'>
+        <Button
+          icon={<DeleteFilled />}
+          onClick={() => openDeleteDialog(childPath, index)}
+        />
+      </Tooltip>
+    </div>
+  );
 };
 
 const generateColumns = (props: ArrayLayoutProps) => {
-  const {
-    path,
-    schema,
-    enabled,
-    renderers,
-    cells
-  } = props;
+  const { path, schema, enabled, renderers, cells } = props;
 
   if (schema.type === 'object') {
-    return getValidColumnProps(schema).map(prop => {
+    return getValidColumnProps(schema).map((prop) => {
       const column = {
         dataIndex: prop,
         editable: enabled,
@@ -102,49 +117,73 @@ const generateColumns = (props: ArrayLayoutProps) => {
         render: (_field: any, _row: any, index: number) => {
           const rowPath = Paths.compose(path, `${index}`);
 
-          return <RenderCell schema={schema} propName={prop} rowPath={rowPath} enabled={enabled}
-            renderers={renderers}
-            cells={cells} />;
-        }
+          return (
+            <RenderCell
+              schema={schema}
+              propName={prop}
+              rowPath={rowPath}
+              enabled={enabled}
+              renderers={renderers}
+              cells={cells}
+            />
+          );
+        },
       };
 
       return column;
     });
   } else {
     // primitives
-    const columns = [{
-      editable: enabled,
-      render: (_field: any, _row: any, index: number) => {
-        const rowPath = Paths.compose(path, `${index}`);
+    const columns = [
+      {
+        editable: enabled,
+        render: (_field: any, _row: any, index: number) => {
+          const rowPath = Paths.compose(path, `${index}`);
 
-        return <RenderCell schema={schema} rowPath={rowPath} enabled={enabled}
-          renderers={renderers}
-          cells={cells} />;
-      }
-    }];
+          return (
+            <RenderCell
+              schema={schema}
+              rowPath={rowPath}
+              enabled={enabled}
+              renderers={renderers}
+              cells={cells}
+            />
+          );
+        },
+      },
+    ];
     return columns;
   }
 };
 
 const withActionsColumn = (columns: any, props: ArrayLayoutProps) => {
-  const appliedUiSchemaOptions = merge({}, props.config, props.uischema.options);
+  const appliedUiSchemaOptions = merge(
+    {},
+    props.config,
+    props.uischema.options
+  );
   const width = appliedUiSchemaOptions.showSortButtons ? 150 : 50;
 
-  return columns.concat([{
-    dataIndex: '',
-    title: '',
-    editable: true,
-    width,
-    render: (_field: any, _row: any, index: number) => {
-      return <RenderActionsCell {...{ index, ...props }} />;
-    }
-  }]);
+  return columns.concat([
+    {
+      dataIndex: '',
+      title: '',
+      editable: true,
+      width,
+      render: (_field: any, _row: any, index: number) => {
+        return <RenderActionsCell {...{ index, ...props }} />;
+      },
+    },
+  ]);
 };
 
 const getValidColumnProps = (scopedSchema: JsonSchema) => {
-  if (scopedSchema.type === 'object' && typeof scopedSchema.properties === 'object') {
+  if (
+    scopedSchema.type === 'object' &&
+    typeof scopedSchema.properties === 'object'
+  ) {
     return Object.keys(scopedSchema.properties).filter(
-      prop => scopedSchema.properties[prop].type !== 'array'
+      (prop) => scopedSchema.properties[prop].type !== 'array'
     );
   }
   // primitives
@@ -177,7 +216,7 @@ const ctxToRenderCellProps = (
       errorsAt(
         path,
         ownProps.schema,
-        p => p === path
+        (p) => p === path
       )(ctx.core.errors).map((error: ErrorObject) => error.message)
     )
   );
@@ -190,14 +229,14 @@ const ctxToRenderCellProps = (
     path,
     enabled: ownProps.enabled,
     cells: ownProps.cells || ctx.cells,
-    renderers: ownProps.renderers || ctx.renderers
+    renderers: ownProps.renderers || ctx.renderers,
   };
 };
 
 const controlWithoutLabel = (scope: string): ControlElement => ({
   type: 'Control',
   scope: scope,
-  label: false
+  label: false,
 });
 
 const RenderCell = (ownProps: OwnPropsOfRenderCell) => {
@@ -210,7 +249,7 @@ const RenderCell = (ownProps: OwnPropsOfRenderCell) => {
     errors,
     enabled,
     renderers,
-    cells
+    cells,
   } = ctxToRenderCellProps(ctx, ownProps);
 
   const isValid = isEmpty(errors);
@@ -263,12 +302,15 @@ export class TableControl extends React.Component<
       errors,
       visible,
       enabled,
-      data
+      data,
     } = this.props;
 
     const controlElement = uischema as ControlElement;
-    const columns: any = withActionsColumn(generateColumns(this.props), this.props);
-    const dataSource = range(data).map(index => ({ index, key: index }));
+    const columns: any = withActionsColumn(
+      generateColumns(this.props),
+      this.props
+    );
+    const dataSource = range(data).map((index) => ({ index, key: index }));
 
     return (
       <Hidden hidden={!visible}>

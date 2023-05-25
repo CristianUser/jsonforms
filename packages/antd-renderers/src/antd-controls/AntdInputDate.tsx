@@ -32,7 +32,9 @@ type AntdInputDateProps = {
   format?: string;
 };
 
-export const AntdInputDate = (props: CellProps & WithClassname & AntdInputDateProps) => {
+export const AntdInputDate = (
+  props: CellProps & WithClassname & AntdInputDateProps
+) => {
   const {
     data,
     className,
@@ -42,7 +44,7 @@ export const AntdInputDate = (props: CellProps & WithClassname & AntdInputDatePr
     path,
     handleChange,
     config,
-    format
+    format,
   } = props;
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
   const inputStyle = !appliedUiSchemaOptions.trim ? { width: '100%' } : {};
@@ -51,10 +53,7 @@ export const AntdInputDate = (props: CellProps & WithClassname & AntdInputDatePr
     <DatePicker
       value={data ? moment(data) : null}
       onChange={(datetime: any) =>
-        handleChange(
-          path,
-          datetime ? datetime.format('YYYY-MM-DD') : ''
-        )
+        handleChange(path, datetime ? datetime.format('YYYY-MM-DD') : '')
       }
       className={className}
       id={id}

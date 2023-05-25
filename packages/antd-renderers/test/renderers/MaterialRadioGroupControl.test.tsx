@@ -24,14 +24,13 @@
 */
 import './MatchMediaMock';
 import * as React from 'react';
-import {
-  ControlElement,
-  NOT_APPLICABLE
-} from '@jsonforms/core';
-import RadioGroupControl, { radioGroupControlTesterGroup } from '../../src/controls/RadioGroupControl';
+import { ControlElement, NOT_APPLICABLE } from '@jsonforms/core';
+import RadioGroupControl, {
+  radioGroupControlTesterGroup,
+} from '../../src/controls/RadioGroupControl';
 import { renderers } from '../../src';
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { JsonFormsStateProvider } from '@jsonforms/react';
 import { initCore } from './util';
 Enzyme.configure({ adapter: new Adapter() });
@@ -42,16 +41,16 @@ const schema = {
   properties: {
     foo: {
       type: 'string',
-      enum: ['A', 'B', 'C', 'D']
-    }
-  }
+      enum: ['A', 'B', 'C', 'D'],
+    },
+  },
 };
 const uischema: ControlElement = {
   type: 'Control',
   scope: '#/properties/foo',
   options: {
-    format: 'radio'
-  }
+    format: 'radio',
+  },
 };
 
 describe('Material radio group tester', () => {
@@ -63,7 +62,7 @@ describe('Material radio group tester', () => {
   it('should return NOT_APPLICABLE for enums without radio format', () => {
     const uiSchemaNoRadio = {
       type: 'Control',
-      scope: '#/properties/foo'
+      scope: '#/properties/foo',
     };
     const rank = radioGroupControlTesterGroup(uiSchemaNoRadio, schema);
     expect(rank).toBe(NOT_APPLICABLE);
@@ -94,7 +93,7 @@ describe('Material radio group control', () => {
 
     core.data = { ...core.data, foo: 'A' };
     core.data = { ...core.data, foo: 'B' };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
 
     wrapper = mount(

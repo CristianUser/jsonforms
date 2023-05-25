@@ -31,11 +31,11 @@ import {
   isDescriptionHidden,
   RankedTester,
   rankWith,
-  StatePropsOfControl
+  StatePropsOfControl,
 } from '@jsonforms/core';
 import { Control, withJsonFormsControlProps } from '@jsonforms/react';
-import moment from 'moment';
-import { Moment } from 'moment';
+import moment, { Moment } from 'moment';
+
 import { DatePicker, Form } from 'antd';
 
 export interface DateControl {
@@ -60,7 +60,7 @@ export class DateControl extends Control<
       handleChange,
       data,
       momentLocale,
-      config
+      config,
     } = this.props;
     const isValid = errors.length === 0;
     const appliedUiSchemaOptions = merge({}, config, uischema.options);
@@ -83,16 +83,14 @@ export class DateControl extends Control<
         hasFeedback={!isValid}
         status={isValid ? 'success' : 'error'}
         help={!isValid ? errors : showDescription ? description : ' '}
-        label={label}>
+        label={label}
+      >
         <DatePicker
           id={id + '-input'}
           style={pickerStyle}
           value={data ? moment(data) : null}
           onChange={(datetime: any) =>
-            handleChange(
-              path,
-              datetime ? datetime.format('YYYY-MM-DD') : ''
-            )
+            handleChange(path, datetime ? datetime.format('YYYY-MM-DD') : '')
           }
           format={localeDateTimeFormat}
           allowClear={true}
@@ -110,9 +108,6 @@ export interface StatePropsOfDateControl extends StatePropsOfControl {
   clearLabel: string;
 }
 
-export const dateControlTester: RankedTester = rankWith(
-  4,
-  isDateControl
-);
+export const dateControlTester: RankedTester = rankWith(4, isDateControl);
 
 export default withJsonFormsControlProps(DateControl);

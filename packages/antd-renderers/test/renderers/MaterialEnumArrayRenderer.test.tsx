@@ -2,16 +2,13 @@ import './MatchMediaMock';
 import { ControlElement, NOT_APPLICABLE } from '@jsonforms/core';
 import { JsonForms } from '@jsonforms/react';
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import React from 'react';
-import {
-  enumArrayRendererTester,
-  EnumArrayRenderer
-} from '../../src';
+import { enumArrayRendererTester, EnumArrayRenderer } from '../../src';
 
 const EnumArrayRendererRegistration = {
   tester: enumArrayRendererTester,
-  renderer: EnumArrayRenderer
+  renderer: EnumArrayRenderer,
 };
 const data = ['bar'];
 const oneOfSchema = {
@@ -20,27 +17,27 @@ const oneOfSchema = {
     oneOf: [
       {
         const: 'foo',
-        title: 'My Title'
+        title: 'My Title',
       },
       {
-        const: 'bar'
-      }
-    ]
+        const: 'bar',
+      },
+    ],
   },
-  uniqueItems: true
+  uniqueItems: true,
 };
 
 const enumSchema = {
   type: 'array',
   items: {
     type: 'string',
-    enum: ['a', 'b', 'c']
+    enum: ['a', 'b', 'c'],
   },
-  uniqueItems: true
+  uniqueItems: true,
 };
 const uischema: ControlElement = {
   type: 'Control',
-  scope: '#'
+  scope: '#',
 };
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -50,15 +47,15 @@ describe('EnumArrayControl tester', () => {
     expect(
       enumArrayRendererTester(uischema, {
         type: 'array',
-        items: {}
+        items: {},
       })
     ).toBe(NOT_APPLICABLE);
     expect(
       enumArrayRendererTester(uischema, {
         type: 'array',
         items: {
-          anyOf: []
-        }
+          anyOf: [],
+        },
       })
     ).toBe(NOT_APPLICABLE);
   });

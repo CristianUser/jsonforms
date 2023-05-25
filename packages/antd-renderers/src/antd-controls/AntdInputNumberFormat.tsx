@@ -38,7 +38,7 @@ export const AntdInputNumberFormat = (
     path,
     handleChange,
     schema,
-    config
+    config,
   } = props;
   const maxLength = schema.maxLength;
   const appliedUiSchemaOptions = merge({}, config, uischema.options);

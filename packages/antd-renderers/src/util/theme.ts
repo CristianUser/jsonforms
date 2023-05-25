@@ -27,7 +27,7 @@ export interface JsonFormsTheme {
     input?: {
       delete?: {
         background?: string;
-      }
-    }
+      };
+    };
   };
 }

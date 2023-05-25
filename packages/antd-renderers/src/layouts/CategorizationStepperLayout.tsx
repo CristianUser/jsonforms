@@ -34,14 +34,14 @@ import {
   RankedTester,
   rankWith,
   StatePropsOfLayout,
-  uiTypeIs
+  uiTypeIs,
 } from '@jsonforms/core';
 import { RendererComponent, withJsonFormsLayoutProps } from '@jsonforms/react';
 import {
   AjvProps,
   LayoutRenderer as LayoutRenderer,
   LayoutRendererProps as LayoutRendererProps,
-  withAjvProps
+  withAjvProps,
 } from '../util/layout';
 import { Button, Steps } from 'antd';
 import Hidden from '../util/Hidden';
@@ -60,8 +60,9 @@ export interface CategorizationStepperState {
 }
 
 export interface CategorizationStepperLayoutRendererProps
-  extends StatePropsOfLayout, AjvProps {
-    data: any;
+  extends StatePropsOfLayout,
+    AjvProps {
+  data: any;
 }
 
 export class CategorizationStepperLayoutRenderer extends RendererComponent<
@@ -69,7 +70,7 @@ export class CategorizationStepperLayoutRenderer extends RendererComponent<
   CategorizationStepperState
 > {
   state = {
-    activeCategory: 0
+    activeCategory: 0,
   };
 
   handleStep = (step: number) => {
@@ -86,21 +87,21 @@ export class CategorizationStepperLayoutRenderer extends RendererComponent<
       visible,
       cells,
       config,
-      ajv
+      ajv,
     } = this.props;
     const categorization = uischema as Categorization;
     const activeCategory = this.state.activeCategory;
     const appliedUiSchemaOptions = merge({}, config, uischema.options);
     const buttonWrapperStyle = {
-      textAlign: 'right' as 'right',
+      textAlign: 'right' as const,
       width: '100%',
-      margin: '1em auto'
+      margin: '1em auto',
     };
     const buttonNextStyle = {
-      float: 'right' as 'right'
+      float: 'right' as const,
     };
     const buttonStyle = {
-      marginRight: '1em'
+      marginRight: '1em',
     };
     const childProps: LayoutRendererProps = {
       elements: categorization.elements[activeCategory].elements,
@@ -109,7 +110,7 @@ export class CategorizationStepperLayoutRenderer extends RendererComponent<
       direction: 'column',
       visible,
       renderers,
-      cells
+      cells,
     };
     const categories = categorization.elements.filter((category: Category) =>
       isVisible(category, data, undefined, ajv)
@@ -117,38 +118,44 @@ export class CategorizationStepperLayoutRenderer extends RendererComponent<
     return (
       <Hidden hidden={!visible}>
         <Steps current={activeCategory} style={{ marginBottom: '10px' }}>
-        {categories.map((item: Category, idx: number) => (
-          <Steps.Step key={`${item.label}_${idx}`} title={item.label} onClick={() => this.handleStep(idx)}/>
-        ))}
-      </Steps>
+          {categories.map((item: Category, idx: number) => (
+            <Steps.Step
+              key={`${item.label}_${idx}`}
+              title={item.label}
+              onClick={() => this.handleStep(idx)}
+            />
+          ))}
+        </Steps>
         <div>
           <LayoutRenderer {...childProps} />
         </div>
-        { !!appliedUiSchemaOptions.showNavButtons ? (
-        <div style={buttonWrapperStyle}>
-          <Button
-            style={buttonNextStyle}
-            color='primary'
-            disabled={activeCategory >= categories.length - 1}
-            onClick={() => this.handleStep(activeCategory + 1)}
-          >
-            Next
-          </Button>
-          <Button
-            style={buttonStyle}
-            color='secondary'
-            disabled={activeCategory <= 0}
-            onClick={() => this.handleStep(activeCategory - 1)}
-          >
-            Previous
-          </Button>
-        </div>
-        ) : (<></>)}
+        {appliedUiSchemaOptions.showNavButtons ? (
+          <div style={buttonWrapperStyle}>
+            <Button
+              style={buttonNextStyle}
+              color='primary'
+              disabled={activeCategory >= categories.length - 1}
+              onClick={() => this.handleStep(activeCategory + 1)}
+            >
+              Next
+            </Button>
+            <Button
+              style={buttonStyle}
+              color='secondary'
+              disabled={activeCategory <= 0}
+              onClick={() => this.handleStep(activeCategory - 1)}
+            >
+              Previous
+            </Button>
+          </div>
+        ) : (
+          <></>
+        )}
       </Hidden>
     );
   }
 }
 
-export default withJsonFormsLayoutProps(withAjvProps(
-  CategorizationStepperLayoutRenderer
-));
+export default withJsonFormsLayoutProps(
+  withAjvProps(CategorizationStepperLayoutRenderer)
+);

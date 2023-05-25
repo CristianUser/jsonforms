@@ -28,7 +28,7 @@ import {
   ControlProps,
   isBooleanControl,
   RankedTester,
-  rankWith
+  rankWith,
 } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import { AntdCheckbox } from '../antd-controls/AntdCheckbox';
@@ -47,17 +47,13 @@ export const BooleanControl = ({
   handleChange,
   errors,
   path,
-  config
+  config,
 }: ControlProps) => {
   const isValid = isEmpty(errors);
 
   return (
     <Hidden hidden={!visible}>
-      <Form.Item
-        id={id}
-        hasFeedback={!isValid}
-        help={!isValid ? errors : null}
-      >
+      <Form.Item id={id} hasFeedback={!isValid} help={!isValid ? errors : null}>
         <AntdCheckbox
           id={`${id}-input`}
           isValid={isEmpty(errors)}
@@ -78,8 +74,5 @@ export const BooleanControl = ({
   );
 };
 
-export const booleanControlTester: RankedTester = rankWith(
-  2,
-  isBooleanControl
-);
+export const booleanControlTester: RankedTester = rankWith(2, isBooleanControl);
 export default withJsonFormsControlProps(BooleanControl);

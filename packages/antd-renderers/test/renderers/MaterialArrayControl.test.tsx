@@ -23,17 +23,13 @@
   THE SOFTWARE.
 */
 import './MatchMediaMock';
-import {
-  ControlElement,
-  DispatchCellProps,
-  JsonSchema
-} from '@jsonforms/core';
+import { ControlElement, DispatchCellProps, JsonSchema } from '@jsonforms/core';
 import * as React from 'react';
 
 import ArrayControlRenderer from '../../src/complex/ArrayControlRenderer';
 import { cells, renderers } from '../../src';
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { JsonFormsStateProvider, StatelessRenderer } from '@jsonforms/react';
 import { initCore, TestEmitter } from './util';
 
@@ -47,11 +43,11 @@ const fixture: {
   data: [
     {
       message: 'El Barto was here',
-      done: true
+      done: true,
     },
     {
-      message: 'Yolo'
-    }
+      message: 'Yolo',
+    },
   ],
   schema: {
     type: 'array',
@@ -60,18 +56,18 @@ const fixture: {
       properties: {
         message: {
           type: 'string',
-          maxLength: 3
+          maxLength: 3,
         },
         done: {
-          type: 'boolean'
-        }
-      }
-    }
+          type: 'boolean',
+        },
+      },
+    },
   },
   uischema: {
     type: 'Control',
-    scope: '#'
-  }
+    scope: '#',
+  },
 };
 
 const fixture2: {
@@ -85,17 +81,17 @@ const fixture2: {
     properties: {
       test: {
         type: 'array',
-        items: { type: 'string' }
-      }
-    }
+        items: { type: 'string' },
+      },
+    },
   },
   uischema: {
     type: 'Control',
     scope: '#/properties/test',
     options: {
-      showSortButtons: true
-    }
-  }
+      showSortButtons: true,
+    },
+  },
 };
 
 describe('Material array control', () => {
@@ -146,13 +142,13 @@ describe('Material array control', () => {
       properties: {
         test: {
           type: 'array',
-          items: { type: 'object' }
-        }
-      }
+          items: { type: 'object' },
+        },
+      },
     };
     const uischema: ControlElement = {
       type: 'Control',
-      scope: '#/properties/test'
+      scope: '#/properties/test',
     };
     const core = initCore(schema, uischema, data);
 
@@ -176,32 +172,32 @@ describe('Material array control', () => {
     const schema: JsonSchema = {
       type: 'object',
       properties: {
-          test: {
-              type: 'array',
-              items: {
-                  type: 'object',
-                  properties: {
-                      test1: {
-                          type: 'string',
-                          title: 'first test'
-                      },
-                      test_2: {
-                          type: 'string',
-                      }
-                  }
-              }
-          }
-      }
+        test: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              test1: {
+                type: 'string',
+                title: 'first test',
+              },
+              test_2: {
+                type: 'string',
+              },
+            },
+          },
+        },
+      },
     };
     const uischema: ControlElement = {
       type: 'Control',
-      scope: '#/properties/test'
+      scope: '#/properties/test',
     };
     const core = initCore(schema, uischema, data);
 
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-          <ArrayControlRenderer schema={schema} uischema={uischema} />
+        <ArrayControlRenderer schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
 
@@ -223,13 +219,13 @@ describe('Material array control', () => {
       properties: {
         test: {
           type: 'array',
-          items: { type: 'string' }
-        }
-      }
+          items: { type: 'string' },
+        },
+      },
     };
     const uischema: ControlElement = {
       type: 'Control',
-      scope: '#/properties/test'
+      scope: '#/properties/test',
     };
     const core = initCore(schema, uischema, data);
     wrapper = mount(
@@ -255,13 +251,13 @@ describe('Material array control', () => {
       properties: {
         test: {
           type: 'array',
-          items: { type: 'string' }
-        }
-      }
+          items: { type: 'string' },
+        },
+      },
     };
     const uischema: ControlElement = {
       type: 'Control',
-      scope: '#/properties/test'
+      scope: '#/properties/test',
     };
     const core = initCore(schema, uischema, data);
     wrapper = mount(
@@ -278,7 +274,7 @@ describe('Material array control', () => {
   it('should delete an item', () => {
     const core = initCore(fixture.schema, fixture.uischema, fixture.data);
     const onChangeData: any = {
-      data: undefined
+      data: undefined,
     };
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, cells: cells, core }}>
@@ -329,11 +325,12 @@ describe('Material array control', () => {
     const cells = [
       {
         tester: () => 50,
-        cell: CellRenderer1
-      }, {
+        cell: CellRenderer1,
+      },
+      {
         tester: () => 51,
-        cell: CellRenderer2
-      }
+        cell: CellRenderer2,
+      },
     ];
 
     wrapper = mount(
@@ -355,7 +352,7 @@ describe('Material array control', () => {
     const core = initCore(fixture.schema, fixture.uischema, fixture.data);
     const cell = {
       tester: () => 50,
-      cell: CellRenderer1
+      cell: CellRenderer1,
     };
 
     wrapper = mount(
@@ -363,7 +360,7 @@ describe('Material array control', () => {
         <ArrayControlRenderer
           schema={fixture.schema}
           uischema={fixture.uischema}
-          cells={[ cell, { tester: () => 60, cell: CellRenderer2 }]}
+          cells={[cell, { tester: () => 60, cell: CellRenderer2 }]}
         />
       </JsonFormsStateProvider>
     );
@@ -383,24 +380,24 @@ describe('Material array control', () => {
             type: 'object',
             properties: {
               somethingElse: {
-                type: 'string'
+                type: 'string',
               },
               thing: {
                 type: 'string',
-                enum: ['thing']
-              }
-            }
-          }
-        }
-      }
+                enum: ['thing'],
+              },
+            },
+          },
+        },
+      },
     };
     const uischema: ControlElement = {
       type: 'Control',
-      scope: '#/properties/things'
+      scope: '#/properties/things',
     };
     const core = initCore(schema, uischema, {});
     const onChangeData: any = {
-      data: undefined
+      data: undefined,
     };
 
     wrapper = mount(
@@ -442,20 +439,20 @@ describe('Material array control', () => {
             type: 'object',
             properties: {
               somethingElse: {
-                type: 'string'
+                type: 'string',
               },
               thing: {
                 type: 'string',
-                enum: ['thing']
-              }
-            }
-          }
-        }
-      }
+                enum: ['thing'],
+              },
+            },
+          },
+        },
+      },
     };
     const uischema: ControlElement = {
       type: 'Control',
-      scope: '#/properties/things'
+      scope: '#/properties/things',
     };
     const core = initCore(schema, uischema, {});
     wrapper = mount(
@@ -497,7 +494,7 @@ describe('Material array control', () => {
   it('should be able to move item down if down button is clicked', () => {
     const core = initCore(fixture2.schema, fixture2.uischema, fixture2.data);
     const onChangeData: any = {
-      data: undefined
+      data: undefined,
     };
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
@@ -520,13 +517,13 @@ describe('Material array control', () => {
       .find({ 'aria-label': 'Move down' });
     downButton.simulate('click');
     expect(onChangeData.data).toEqual({
-      test: ['baz', 'foo', 'bar']
+      test: ['baz', 'foo', 'bar'],
     });
   });
   it('should be able to move item up if up button is clicked', () => {
     const core = initCore(fixture2.schema, fixture2.uischema, fixture2.data);
     const onChangeData: any = {
-      data: undefined
+      data: undefined,
     };
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
@@ -549,7 +546,7 @@ describe('Material array control', () => {
       .find({ 'aria-label': 'Move up' });
     upButton.simulate('click');
     expect(onChangeData.data).toEqual({
-      test: ['foo', 'bar', 'baz']
+      test: ['foo', 'bar', 'baz'],
     });
   });
   it('should have up button disabled for first element', () => {
@@ -583,11 +580,7 @@ describe('Material array control', () => {
       </JsonFormsStateProvider>
     );
     // first row is header in table
-    const input = wrapper
-      .find('tr')
-      .at(1)
-      .find('input')
-      .first();
+    const input = wrapper.find('tr').at(1).find('input').first();
     expect(input.props().disabled).toBe(false);
   });
 
@@ -603,11 +596,7 @@ describe('Material array control', () => {
       </JsonFormsStateProvider>
     );
     // first row is header in table
-    const input = wrapper
-      .find('tr')
-      .at(1)
-      .find('input')
-      .first();
+    const input = wrapper.find('tr').at(1).find('input').first();
     expect(input.props().disabled).toBe(true);
   });
 

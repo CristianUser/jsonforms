@@ -30,7 +30,7 @@ import {
   isBooleanControl,
   optionIs,
   RankedTester,
-  rankWith
+  rankWith,
 } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import { AntdToggle } from '../antd-controls/AntdToggle';
@@ -49,7 +49,7 @@ export const BooleanToggleControl = ({
   handleChange,
   errors,
   path,
-  config
+  config,
 }: ControlProps) => {
   const isValid = isEmpty(errors);
 
@@ -62,7 +62,6 @@ export const BooleanToggleControl = ({
         hasFeedback={!isValid}
         help={!isValid ? errors : null}
       >
-
         <AntdToggle
           id={`${id}-input`}
           isValid={isValid}

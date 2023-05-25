@@ -28,7 +28,7 @@ import {
   isStringControl,
   RankedTester,
   rankWith,
-  WithClassname
+  WithClassname,
 } from '@jsonforms/core';
 import { withJsonFormsCellProps } from '@jsonforms/react';
 import { AntdInputText } from '../antd-controls/AntdInputText';
@@ -41,9 +41,6 @@ export const TextCell = (props: CellProps & WithClassname) => (
  * Default tester for text-based/string controls.
  * @type {RankedTester}
  */
-export const textCellTester: RankedTester = rankWith(
-  1,
-  isStringControl
-);
+export const textCellTester: RankedTester = rankWith(1, isStringControl);
 
 export default withJsonFormsCellProps(TextCell);

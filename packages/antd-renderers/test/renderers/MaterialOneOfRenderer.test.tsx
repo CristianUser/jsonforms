@@ -27,21 +27,20 @@ import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+import { ControlElement } from '@jsonforms/core';
+import { OneOfRenderer, renderers } from '../../src';
 import {
-  ControlElement
-} from '@jsonforms/core';
-import {
-  OneOfRenderer,
-  renderers
-} from '../../src';
-import { JsonForms, JsonFormsDispatch, JsonFormsStateProvider } from '@jsonforms/react';
+  JsonForms,
+  JsonFormsDispatch,
+  JsonFormsStateProvider,
+} from '@jsonforms/react';
 import { Tab } from '@material-ui/core';
 import { initCore, TestEmitter } from './util';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-const waitForAsync = () => new Promise(resolve => setImmediate(resolve));
+const waitForAsync = () => new Promise((resolve) => setImmediate(resolve));
 
 const clickAddButton = (wrapper: ReactWrapper, times: number) => {
   // click add button
@@ -65,22 +64,13 @@ const selectOneOfTab = (
 
   if (expectConfim) {
     // confirm dialog
-    const confirmButton = wrapper
-      .find(Dialog)
-      .last()
-      .find('button')
-      .at(1);
+    const confirmButton = wrapper.find(Dialog).last().find('button').at(1);
     confirmButton.simulate('click');
     wrapper.update();
   } else {
-    expect(
-      wrapper
-        .find(Dialog)
-        .last()
-        .find('button')
-        .at(1)
-        .exists()
-    ).toBe(false);
+    expect(wrapper.find(Dialog).last().find('button').at(1).exists()).toBe(
+      false
+    );
   }
 };
 
@@ -97,20 +87,20 @@ describe('Material oneOf renderer', () => {
           oneOf: [
             {
               title: 'String',
-              type: 'string'
+              type: 'string',
             },
             {
               title: 'Number',
-              type: 'number'
-            }
-          ]
-        }
-      }
+              type: 'number',
+            },
+          ],
+        },
+      },
     };
     const uischema: ControlElement = {
       type: 'Control',
       label: 'Value',
-      scope: '#/properties/value'
+      scope: '#/properties/value',
     };
     const core = initCore(schema, uischema, { data: undefined });
     wrapper = mount(
@@ -130,23 +120,23 @@ describe('Material oneOf renderer', () => {
           oneOf: [
             {
               title: 'String',
-              type: 'string'
+              type: 'string',
             },
             {
               title: 'Number',
-              type: 'number'
-            }
-          ]
-        }
-      }
+              type: 'number',
+            },
+          ],
+        },
+      },
     };
     const uischema: ControlElement = {
       type: 'Control',
       label: 'Value',
-      scope: '#/properties/value'
+      scope: '#/properties/value',
     };
     const data = {
-      value: 5
+      value: 5,
     };
     wrapper = mount(
       <JsonForms
@@ -171,29 +161,29 @@ describe('Material oneOf renderer', () => {
               title: 'String',
               type: 'object',
               properties: {
-                foo: { type: 'string' }
+                foo: { type: 'string' },
               },
-              additionalProperties: false
+              additionalProperties: false,
             },
             {
               title: 'Number',
               type: 'object',
               properties: {
-                bar: { type: 'string' }
+                bar: { type: 'string' },
               },
-              additionalProperties: false
-            }
-          ]
-        }
-      }
+              additionalProperties: false,
+            },
+          ],
+        },
+      },
     };
     const uischema: ControlElement = {
       type: 'Control',
       label: 'Value',
-      scope: '#/properties/value'
+      scope: '#/properties/value',
     };
     const data = {
-      value: { bar: 'bar' }
+      value: { bar: 'bar' },
     };
     wrapper = mount(
       <JsonForms
@@ -218,29 +208,29 @@ describe('Material oneOf renderer', () => {
               title: 'String',
               type: 'object',
               properties: {
-                foo: { type: 'string' }
+                foo: { type: 'string' },
               },
-              required: ['foo']
+              required: ['foo'],
             },
             {
               title: 'Number',
               type: 'object',
               properties: {
-                bar: { type: 'string' }
+                bar: { type: 'string' },
               },
-              required: ['bar']
-            }
-          ]
-        }
-      }
+              required: ['bar'],
+            },
+          ],
+        },
+      },
     };
     const uischema: ControlElement = {
       type: 'Control',
       label: 'Value',
-      scope: '#/properties/value'
+      scope: '#/properties/value',
     };
     const data = {
-      value: { bar: 'bar' }
+      value: { bar: 'bar' },
     };
     wrapper = mount(
       <JsonForms
@@ -264,23 +254,23 @@ describe('Material oneOf renderer', () => {
           oneOf: [
             {
               title: 'String',
-              type: 'string'
+              type: 'string',
             },
             {
               title: 'Number',
-              type: 'number'
-            }
-          ]
-        }
-      }
+              type: 'number',
+            },
+          ],
+        },
+      },
     };
     const uischema: ControlElement = {
       type: 'Control',
       label: 'Value',
-      scope: '#/properties/value'
+      scope: '#/properties/value',
     };
     const onChangeData: any = {
-      data: undefined
+      data: undefined,
     };
     wrapper = mount(
       <JsonForms
@@ -299,7 +289,7 @@ describe('Material oneOf renderer', () => {
     input.simulate('change', { target: { value: 'test' } });
     wrapper.update();
     expect(onChangeData.data).toEqual({
-      value: 'test'
+      value: 'test',
     });
   });
 
@@ -310,31 +300,31 @@ describe('Material oneOf renderer', () => {
         thingOrThings: {
           oneOf: [
             {
-              $ref: '#/definitions/thing'
+              $ref: '#/definitions/thing',
             },
             {
-              $ref: '#/definitions/thingArray'
-            }
-          ]
-        }
+              $ref: '#/definitions/thingArray',
+            },
+          ],
+        },
       },
       definitions: {
         thing: {
           title: 'Thing',
-          type: 'string'
+          type: 'string',
         },
         thingArray: {
           title: 'Things',
           type: 'array',
           items: {
-            $ref: '#/definitions/thing'
-          }
-        }
-      }
+            $ref: '#/definitions/thing',
+          },
+        },
+      },
     };
     const uischema: ControlElement = {
       type: 'Control',
-      scope: '#/properties/thingOrThings'
+      scope: '#/properties/thingOrThings',
     };
 
     const core = initCore(schema, uischema, { data: {} });
@@ -371,38 +361,38 @@ describe('Material oneOf renderer', () => {
               type: 'object',
               properties: {
                 thing: {
-                  $ref: '#/definitions/thing'
-                }
-              }
+                  $ref: '#/definitions/thing',
+                },
+              },
             },
             {
-              $ref: '#/definitions/thingArray'
-            }
-          ]
-        }
+              $ref: '#/definitions/thingArray',
+            },
+          ],
+        },
       },
       definitions: {
         thing: {
           title: 'Thing',
-          type: 'string'
+          type: 'string',
         },
         thingArray: {
           title: 'Things',
           type: 'array',
           items: {
-            $ref: '#/definitions/thing'
-          }
-        }
-      }
+            $ref: '#/definitions/thing',
+          },
+        },
+      },
     };
     const uischema: ControlElement = {
       type: 'Control',
-      scope: '#/properties/thingOrThings'
+      scope: '#/properties/thingOrThings',
     };
 
     const core = initCore(schema, uischema, {});
     const onChangeData: any = {
-      data: undefined
+      data: undefined,
     };
 
     wrapper = mount(
@@ -431,7 +421,7 @@ describe('Material oneOf renderer', () => {
     // 1 header row + 2 data rows (one is replacing the 'No data' one)
     expect(nrOfRowsAfterAdd.length).toBe(3);
     expect(onChangeData.data).toEqual({
-      thingOrThings: ['', '']
+      thingOrThings: ['', ''],
     });
   });
 
@@ -446,51 +436,48 @@ describe('Material oneOf renderer', () => {
               type: 'object',
               properties: {
                 thing: {
-                  $ref: '#/definitions/thing'
-                }
-              }
+                  $ref: '#/definitions/thing',
+                },
+              },
             },
             {
-              $ref: '#/definitions/thingArray'
-            }
-          ]
-        }
+              $ref: '#/definitions/thingArray',
+            },
+          ],
+        },
       },
       definitions: {
         thing: {
           title: 'Thing',
-          type: 'string'
+          type: 'string',
         },
         thingArray: {
           title: 'Things',
           type: 'array',
           items: {
-            $ref: '#/definitions/thing'
-          }
-        }
-      }
+            $ref: '#/definitions/thing',
+          },
+        },
+      },
     };
     const uischema: ControlElement = {
       type: 'Control',
-      scope: '#/properties/thingOrThings'
+      scope: '#/properties/thingOrThings',
     };
 
     const core = initCore(schema, uischema, {});
     const onChangeData: any = {
-      data: undefined
+      data: undefined,
     };
 
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
         <TestEmitter
-            onChange={({ data }) => {
-              onChangeData.data = data;
-            }}
+          onChange={({ data }) => {
+            onChangeData.data = data;
+          }}
         />
-        <JsonFormsDispatch
-          schema={schema}
-          uischema={uischema}
-        />
+        <JsonFormsDispatch schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
 
@@ -506,7 +493,7 @@ describe('Material oneOf renderer', () => {
     input.simulate('change', { target: { value: 'test' } });
     wrapper.update();
     expect(onChangeData.data).toEqual({
-      thingOrThings: { thing: 'test' }
+      thingOrThings: { thing: 'test' },
     });
   });
 
@@ -518,25 +505,25 @@ describe('Material oneOf renderer', () => {
           oneOf: [
             {
               title: 'String',
-              type: 'string'
+              type: 'string',
             },
             {
               title: 'Number',
-              type: 'number'
-            }
-          ]
-        }
-      }
+              type: 'number',
+            },
+          ],
+        },
+      },
     };
 
     const uischema: ControlElement = {
       type: 'Control',
       label: 'Value',
-      scope: '#/properties/value'
+      scope: '#/properties/value',
     };
 
     const data = {
-      value: 'Foo Bar'
+      value: 'Foo Bar',
     };
     wrapper = mount(
       <JsonForms
@@ -561,29 +548,25 @@ describe('Material oneOf renderer', () => {
           oneOf: [
             {
               title: 'String',
-              type: 'string'
+              type: 'string',
             },
             {
               title: 'Number',
-              type: 'number'
-            }
-          ]
-        }
-      }
+              type: 'number',
+            },
+          ],
+        },
+      },
     };
     const uischema: ControlElement = {
       type: 'Control',
       label: 'Value',
-      scope: '#/properties/value'
+      scope: '#/properties/value',
     };
     const core = initCore(schema, uischema, { data: undefined });
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <OneOfRenderer
-          schema={schema}
-          uischema={uischema}
-          visible={false}
-        />
+        <OneOfRenderer schema={schema} uischema={uischema} visible={false} />
       </JsonFormsStateProvider>
     );
     const inputs = wrapper.find('input');

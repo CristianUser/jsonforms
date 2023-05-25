@@ -24,7 +24,7 @@
 */
 import {
   JsonFormsCellRendererRegistryEntry,
-  JsonFormsRendererRegistryEntry
+  JsonFormsRendererRegistryEntry,
 } from '@jsonforms/core';
 import {
   allOfControlTester,
@@ -38,13 +38,13 @@ import {
   objectControlTester,
   ObjectRenderer,
   oneOfControlTester,
-  OneOfRenderer
+  OneOfRenderer,
 } from './complex';
 import {
   LabelRenderer,
   labelRendererTester,
   ListWithDetailRenderer,
-  listWithDetailTester
+  listWithDetailTester,
 } from './additional';
 import {
   AnyOfStringOrEnumControl,
@@ -74,7 +74,7 @@ import {
   SliderControl,
   sliderControlTester,
   TextControl,
-  textControlTester
+  textControlTester,
 } from './controls';
 import {
   antdGroupTester,
@@ -86,7 +86,7 @@ import {
   HorizontalLayout,
   horizontalLayoutTester,
   VerticalLayout,
-  verticalLayoutTester
+  verticalLayoutTester,
 } from './layouts';
 import {
   BooleanCell,
@@ -108,10 +108,10 @@ import {
   TextCell,
   textCellTester,
   TimeCell,
-  timeCellTester
+  timeCellTester,
 } from './cells';
 import MaterialCategorizationStepperLayout, {
-  categorizationStepperTester
+  categorizationStepperTester,
 } from './layouts/CategorizationStepperLayout';
 
 export * from './complex';
@@ -125,7 +125,7 @@ export const renderers: JsonFormsRendererRegistryEntry[] = [
   // controls
   {
     tester: arrayControlTester,
-    renderer: ArrayControlRenderer
+    renderer: ArrayControlRenderer,
   },
   { tester: booleanControlTester, renderer: BooleanControl },
   { tester: booleanToggleControlTester, renderer: BooleanToggleControl },
@@ -143,43 +143,43 @@ export const renderers: JsonFormsRendererRegistryEntry[] = [
   { tester: oneOfControlTester, renderer: OneOfRenderer },
   {
     tester: radioGroupControlTesterGroup,
-    renderer: RadioGroupControl
+    renderer: RadioGroupControl,
   },
   {
     tester: oneOfRadioGroupControlTester,
-    renderer: OneOfRadioGroupControl
+    renderer: OneOfRadioGroupControl,
   },
   { tester: oneOfEnumControlTester, renderer: OneOfEnumControl },
   // layouts
   { tester: antdGroupTester, renderer: GroupLayout },
   {
     tester: horizontalLayoutTester,
-    renderer: HorizontalLayout
+    renderer: HorizontalLayout,
   },
   { tester: verticalLayoutTester, renderer: VerticalLayout },
   {
     tester: categorizationTester,
-    renderer: CategorizationLayout
+    renderer: CategorizationLayout,
   },
   {
     tester: categorizationStepperTester,
-    renderer: MaterialCategorizationStepperLayout
+    renderer: MaterialCategorizationStepperLayout,
   },
   { tester: arrayLayoutTester, renderer: ArrayLayout },
   // additional
   { tester: labelRendererTester, renderer: LabelRenderer },
   {
     tester: listWithDetailTester,
-    renderer: ListWithDetailRenderer
+    renderer: ListWithDetailRenderer,
   },
   {
     tester: anyOfStringOrEnumControlTester,
-    renderer: AnyOfStringOrEnumControl
+    renderer: AnyOfStringOrEnumControl,
   },
   {
     tester: enumArrayRendererTester,
-    renderer: EnumArrayRenderer
-  }
+    renderer: EnumArrayRenderer,
+  },
 ];
 
 export const cells: JsonFormsCellRendererRegistryEntry[] = [
@@ -192,5 +192,5 @@ export const cells: JsonFormsCellRendererRegistryEntry[] = [
   { tester: NumberCellTester, cell: NumberCell },
   { tester: numberFormatCellTester, cell: NumberFormatCell },
   { tester: textCellTester, cell: TextCell },
-  { tester: timeCellTester, cell: TimeCell }
+  { tester: timeCellTester, cell: TimeCell },
 ];

@@ -24,17 +24,12 @@
 */
 import './MatchMediaMock';
 import * as React from 'react';
-import {
-  ControlElement,
-  NOT_APPLICABLE
-} from '@jsonforms/core';
-import TimeCell, {
-  timeCellTester
-} from '../../src/cells/TimeCell';
+import { ControlElement, NOT_APPLICABLE } from '@jsonforms/core';
+import TimeCell, { timeCellTester } from '../../src/cells/TimeCell';
 import { renderers } from '../../src';
 
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { JsonFormsStateProvider } from '@jsonforms/react';
 import { initCore, TestEmitter } from './util';
 
@@ -44,24 +39,20 @@ const data = { foo: '13:37' };
 
 const schema = {
   type: 'string',
-  format: 'time'
+  format: 'time',
 };
 
 const uischema: ControlElement = {
   type: 'Control',
-  scope: '#/properties/foo'
+  scope: '#/properties/foo',
 };
 
 describe('Material time cell tester', () => {
   it('should fail', () => {
     expect(timeCellTester(undefined, undefined)).toBe(NOT_APPLICABLE);
     expect(timeCellTester(null, undefined)).toBe(NOT_APPLICABLE);
-    expect(timeCellTester({ type: 'Foo' }, undefined)).toBe(
-      NOT_APPLICABLE
-    );
-    expect(timeCellTester({ type: 'Control' }, undefined)).toBe(
-      NOT_APPLICABLE
-    );
+    expect(timeCellTester({ type: 'Foo' }, undefined)).toBe(NOT_APPLICABLE);
+    expect(timeCellTester({ type: 'Control' }, undefined)).toBe(NOT_APPLICABLE);
   });
 
   it('should fail with wrong prop type', () => {
@@ -69,8 +60,8 @@ describe('Material time cell tester', () => {
       timeCellTester(uischema, {
         type: 'object',
         properties: {
-          foo: { type: 'string' }
-        }
+          foo: { type: 'string' },
+        },
       })
     ).toBe(NOT_APPLICABLE);
   });
@@ -83,9 +74,9 @@ describe('Material time cell tester', () => {
           foo: { type: 'string' },
           bar: {
             type: 'string',
-            format: 'time'
-          }
-        }
+            format: 'time',
+          },
+        },
       })
     ).toBe(NOT_APPLICABLE);
   });
@@ -97,9 +88,9 @@ describe('Material time cell tester', () => {
         properties: {
           foo: {
             type: 'string',
-            format: 'time'
-          }
-        }
+            format: 'time',
+          },
+        },
       })
     ).toBe(2);
   });
@@ -115,8 +106,8 @@ describe('Material time cell', () => {
       type: 'Control',
       scope: '#/properties/foo',
       options: {
-        focus: true
-      }
+        focus: true,
+      },
     };
     const core = initCore(schema, control, data);
     wrapper = mount(
@@ -133,8 +124,8 @@ describe('Material time cell', () => {
       type: 'Control',
       scope: '#/properties/foo',
       options: {
-        focus: false
-      }
+        focus: false,
+      },
     };
     const core = initCore(schema, control, data);
     wrapper = mount(
@@ -149,7 +140,7 @@ describe('Material time cell', () => {
   it('should not autofocus by default', () => {
     const control: ControlElement = {
       type: 'Control',
-      scope: '#/properties/foo'
+      scope: '#/properties/foo',
     };
     const core = initCore(schema, control, data);
     wrapper = mount(
@@ -177,7 +168,7 @@ describe('Material time cell', () => {
   it('should update via event', () => {
     const core = initCore(schema, uischema, data);
     const onChangeData: any = {
-      data: undefined
+      data: undefined,
     };
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
@@ -202,7 +193,7 @@ describe('Material time cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, foo: '20:15' };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().value).toBe('20:15');
@@ -216,7 +207,7 @@ describe('Material time cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, foo: null };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().value).toBe('');
@@ -230,7 +221,7 @@ describe('Material time cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, foo: undefined };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().value).toBe('');
@@ -244,7 +235,7 @@ describe('Material time cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, bar: 'Bar' };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().value).toBe('13:37');
@@ -258,7 +249,7 @@ describe('Material time cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, null: '20:15' };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().value).toBe('13:37');
@@ -272,7 +263,7 @@ describe('Material time cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, undefined: '20:15' };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().value).toBe('13:37');

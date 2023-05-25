@@ -28,7 +28,7 @@ import Enzyme, { mount, ReactWrapper } from 'enzyme';
 import { TextControl } from '../../src/controls/TextControl';
 import { InputControl } from '../../src/controls/InputControl';
 import { AntdInputText } from '../../src/antd-controls/AntdInputText';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { ControlElement, ControlProps } from '@jsonforms/core';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -37,13 +37,13 @@ const schema = {
   type: 'object',
   properties: {
     foo: {
-      type: 'string'
-    }
-  }
+      type: 'string',
+    },
+  },
 };
 const uischema: ControlElement = {
   type: 'Control',
-  scope: '#/properties/foo'
+  scope: '#/properties/foo',
 };
 
 const createTextControl = (props: ControlProps) => {
@@ -62,7 +62,7 @@ const defaultControlProps = (): ControlProps => {
     label: 'Foo',
     id: 'foo-id',
     errors: '',
-    data: ''
+    data: '',
   };
 };
 
@@ -78,7 +78,7 @@ describe('Material text control', () => {
     wrapper = mount(createTextControl(props));
     expect(wrapper.find(InputControl).props()).toEqual({
       ...props,
-      input: AntdInputText
+      input: AntdInputText,
     });
 
     expect(wrapper.find('input').props().id).toEqual(`${props.id}-input`);
@@ -88,7 +88,7 @@ describe('Material text control', () => {
     const props = defaultControlProps();
     delete props.data;
     wrapper = mount(createTextControl(props));
-    const clearButton = wrapper.find('span.ant-input-suffix')
+    const clearButton = wrapper.find('span.ant-input-suffix');
     expect(clearButton).toHaveLength(0);
   });
 });

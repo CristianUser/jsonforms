@@ -23,18 +23,13 @@
   THE SOFTWARE.
 */
 import './MatchMediaMock';
-import {
-  ControlElement
-} from '@jsonforms/core';
+import { ControlElement } from '@jsonforms/core';
 import * as React from 'react';
 
 import { renderers } from '../../src';
-import {
-  ArrayLayout,
-  arrayLayoutTester
-} from '../../src/layouts';
+import { ArrayLayout, arrayLayoutTester } from '../../src/layouts';
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { JsonForms, JsonFormsStateProvider } from '@jsonforms/react';
 import { ExpansionPanel } from '@material-ui/core';
 import { initCore } from './util';
@@ -45,12 +40,12 @@ const data = [
   {
     message: 'El Barto was here',
     message2: 'El Barto was here 2',
-    done: true
+    done: true,
   },
   {
     message: 'Yolo',
-    message2: 'Yolo 2'
-  }
+    message2: 'Yolo 2',
+  },
 ];
 const schema = {
   type: 'array',
@@ -59,25 +54,25 @@ const schema = {
     properties: {
       message: {
         type: 'string',
-        maxLength: 3
+        maxLength: 3,
       },
       done: {
-        type: 'boolean'
-      }
-    }
-  }
+        type: 'boolean',
+      },
+    },
+  },
 };
 
 const nestedSchema = {
   type: 'array',
   items: {
-    ...schema
-  }
+    ...schema,
+  },
 };
 
 const uischema: ControlElement = {
   type: 'Control',
-  scope: '#'
+  scope: '#',
 };
 
 const nestedSchema2 = {
@@ -91,29 +86,29 @@ const nestedSchema2 = {
           choices: {
             type: 'array',
             items: {
-              type: 'string'
-            }
-          }
-        }
-      }
-    }
-  }
+              type: 'string',
+            },
+          },
+        },
+      },
+    },
+  },
 };
 
 const uischemaWithSortOption: ControlElement = {
   type: 'Control',
   scope: '#',
   options: {
-    showSortButtons: true
-  }
+    showSortButtons: true,
+  },
 };
 
 const uischemaWithChildLabelProp: ControlElement = {
   type: 'Control',
   scope: '#',
   options: {
-    elementLabelProp: 'message2'
-  }
+    elementLabelProp: 'message2',
+  },
 };
 
 const uischemaOptions: {
@@ -125,15 +120,15 @@ const uischemaOptions: {
     type: 'Control',
     scope: '#',
     options: {
-      detail: 'DEFAULT'
-    }
+      detail: 'DEFAULT',
+    },
   },
   generate: {
     type: 'Control',
     scope: '#',
     options: {
-      detail: 'GENERATE'
-    }
+      detail: 'GENERATE',
+    },
   },
   inline: {
     type: 'Control',
@@ -144,12 +139,12 @@ const uischemaOptions: {
         elements: [
           {
             type: 'Control',
-            scope: '#/properties/message'
-          }
-        ]
-      }
-    }
-  }
+            scope: '#/properties/message',
+          },
+        ],
+      },
+    },
+  },
 };
 
 describe('Material array layout tester', () => {
@@ -212,11 +207,7 @@ describe('Material array layout', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <ArrayLayout
-          schema={schema}
-          uischema={uischema}
-          visible={false}
-        />
+        <ArrayLayout schema={schema} uischema={uischema} visible={false} />
       </JsonFormsStateProvider>
     );
 
@@ -229,11 +220,7 @@ describe('Material array layout', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <ArrayLayout
-          schema={schema}
-          uischema={uischema}
-          renderers={[]}
-        />
+        <ArrayLayout schema={schema} uischema={uischema} renderers={[]} />
       </JsonFormsStateProvider>
     );
 
@@ -244,7 +231,7 @@ describe('Material array layout', () => {
   it('ui schema label for array', () => {
     const uischemaWithLabel = {
       ...uischema,
-      label: 'My awesome label'
+      label: 'My awesome label',
     };
     wrapper = mount(
       <JsonForms
@@ -264,7 +251,7 @@ describe('Material array layout', () => {
   it('schema title for array', () => {
     const titleSchema = {
       ...schema,
-      title: 'My awesome title'
+      title: 'My awesome title',
     };
     const core = initCore(schema, uischema, data);
     wrapper = mount(
@@ -308,7 +295,7 @@ describe('Material array layout', () => {
   });
   it('should move item up if up button is presses', () => {
     const onChangeData: any = {
-      data: undefined
+      data: undefined,
     };
     wrapper = mount(
       <JsonForms
@@ -334,18 +321,18 @@ describe('Material array layout', () => {
     expect(onChangeData.data).toEqual([
       {
         message: 'Yolo',
-        message2: 'Yolo 2'
+        message2: 'Yolo 2',
       },
       {
         message: 'El Barto was here',
         message2: 'El Barto was here 2',
-        done: true
-      }
+        done: true,
+      },
     ]);
   });
   it('shoud move item down if down button is pressed', () => {
     const onChangeData: any = {
-      data: undefined
+      data: undefined,
     };
     wrapper = mount(
       <JsonForms
@@ -371,13 +358,13 @@ describe('Material array layout', () => {
     expect(onChangeData.data).toEqual([
       {
         message: 'Yolo',
-        message2: 'Yolo 2'
+        message2: 'Yolo 2',
       },
       {
         message: 'El Barto was here',
         message2: 'El Barto was here 2',
-        done: true
-      }
+        done: true,
+      },
     ]);
   });
   it('should have up button disabled for first element', () => {
@@ -424,12 +411,7 @@ describe('Material array layout', () => {
   const getChildLabel = (wrapper: ReactWrapper, index: number) =>
     wrapper
       .find(
-        `#${
-        wrapper
-          .find(ExpansionPanel)
-          .at(index)
-          .props()['aria-labelledby']
-        }`
+        `#${wrapper.find(ExpansionPanel).at(index).props()['aria-labelledby']}`
       )
       .text();
 

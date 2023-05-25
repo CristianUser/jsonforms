@@ -35,12 +35,9 @@ import { AntdSelect } from '../antd-controls/AntdSelect';
 import { InputControl } from './InputControl';
 
 export const EnumControl = (props: ControlProps & OwnPropsOfEnum) => (
-    <InputControl {...props} input={AntdSelect} />
+  <InputControl {...props} input={AntdSelect} />
 );
 
-export const enumControlTester: RankedTester = rankWith(
-  2,
-  isEnumControl
-);
+export const enumControlTester: RankedTester = rankWith(2, isEnumControl);
 
 export default withJsonFormsEnumProps(EnumControl);

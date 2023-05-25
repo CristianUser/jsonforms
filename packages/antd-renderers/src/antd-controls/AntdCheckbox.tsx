@@ -40,7 +40,7 @@ export const AntdCheckbox = (props: CellProps & WithClassname & Props) => {
     uischema,
     path,
     handleChange,
-    config
+    config,
   } = props;
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
   // !! causes undefined value to be converted to false, otherwise has no effect
@@ -54,6 +54,8 @@ export const AntdCheckbox = (props: CellProps & WithClassname & Props) => {
       id={id}
       disabled={!enabled}
       autoFocus={!!appliedUiSchemaOptions.focus}
-    >{label}</Checkbox>
+    >
+      {label}
+    </Checkbox>
   );
 };

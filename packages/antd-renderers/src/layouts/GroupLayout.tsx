@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 /*
   The MIT License
 
@@ -33,28 +34,37 @@ import {
 } from '@jsonforms/core';
 import { withJsonFormsLayoutProps } from '@jsonforms/react';
 import { Card } from 'antd';
-import {
-  LayoutRenderer,
-  LayoutRendererProps
-} from '../util/layout';
+import { LayoutRenderer, LayoutRendererProps } from '../util/layout';
 
 export const groupTester: RankedTester = rankWith(1, uiTypeIs('Group'));
 const style: { [x: string]: any } = { marginBottom: '10px' };
 
-const GroupComponent = React.memo(({ visible, enabled, uischema, ...props }: LayoutRendererProps) => {
-  const groupLayout = uischema as GroupLayout;
-  return (
-    <Card
-      hidden={!visible}
-      title={groupLayout.label}
-      style={style}
-    >
-      <LayoutRenderer {...props} visible={visible} enabled={enabled} elements={groupLayout.elements} />
-    </Card>
-  );
-});
+const GroupComponent = React.memo(
+  ({ visible, enabled, uischema, ...props }: LayoutRendererProps) => {
+    const groupLayout = uischema as GroupLayout;
+    return (
+      <Card hidden={!visible} title={groupLayout.label} style={style}>
+        <LayoutRenderer
+          {...props}
+          visible={visible}
+          enabled={enabled}
+          elements={groupLayout.elements}
+        />
+      </Card>
+    );
+  }
+);
 
-export const GroupLayoutRenderer = ({ uischema, schema, path, visible, enabled, renderers, cells, direction }: LayoutProps) => {
+export const GroupLayoutRenderer = ({
+  uischema,
+  schema,
+  path,
+  visible,
+  enabled,
+  renderers,
+  cells,
+  direction,
+}: LayoutProps) => {
   const groupLayout = uischema as GroupLayout;
 
   return (
@@ -74,7 +84,4 @@ export const GroupLayoutRenderer = ({ uischema, schema, path, visible, enabled, 
 
 export default withJsonFormsLayoutProps(GroupLayoutRenderer);
 
-export const antdGroupTester: RankedTester = withIncreasedRank(
-  1,
-  groupTester
-);
+export const antdGroupTester: RankedTester = withIncreasedRank(1, groupTester);

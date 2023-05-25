@@ -29,7 +29,7 @@ import {
   isObjectControl,
   RankedTester,
   rankWith,
-  StatePropsOfControlWithDetail
+  StatePropsOfControlWithDetail,
 } from '@jsonforms/core';
 import { JsonFormsDispatch, withJsonFormsDetailProps } from '@jsonforms/react';
 import React, { useMemo } from 'react';
@@ -45,7 +45,7 @@ const ObjectRenderer = ({
   visible,
   enabled,
   uischema,
-  rootSchema
+  rootSchema,
 }: StatePropsOfControlWithDetail) => {
   const detailUiSchema = useMemo(
     () =>
@@ -80,8 +80,5 @@ const ObjectRenderer = ({
   );
 };
 
-export const objectControlTester: RankedTester = rankWith(
-  2,
-  isObjectControl
-);
+export const objectControlTester: RankedTester = rankWith(2, isObjectControl);
 export default withJsonFormsDetailProps(ObjectRenderer);

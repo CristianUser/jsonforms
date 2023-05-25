@@ -26,7 +26,7 @@ import './MatchMediaMock';
 import React from 'react';
 
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { ControlElement } from '@jsonforms/core';
 import { AllOfRenderer, renderers } from '../../src';
 import { JsonForms, JsonFormsStateProvider } from '@jsonforms/react';
@@ -47,20 +47,20 @@ describe('Material allOf renderer', () => {
           allOf: [
             {
               title: 'String',
-              type: 'string'
+              type: 'string',
             },
             {
               title: 'Number',
-              type: 'number'
-            }
-          ]
-        }
-      }
+              type: 'number',
+            },
+          ],
+        },
+      },
     };
     const uischema: ControlElement = {
       type: 'Control',
       label: 'Value',
-      scope: '#/properties/value'
+      scope: '#/properties/value',
     };
     wrapper = mount(
       <JsonForms
@@ -83,29 +83,25 @@ describe('Material allOf renderer', () => {
           allOf: [
             {
               title: 'String',
-              type: 'string'
+              type: 'string',
             },
             {
               title: 'Number',
-              type: 'number'
-            }
-          ]
-        }
-      }
+              type: 'number',
+            },
+          ],
+        },
+      },
     };
     const uischema: ControlElement = {
       type: 'Control',
       label: 'Value',
-      scope: '#/properties/value'
+      scope: '#/properties/value',
     };
     const core = initCore(schema, uischema);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <AllOfRenderer
-          schema={schema}
-          uischema={uischema}
-          visible={false}
-        />
+        <AllOfRenderer schema={schema} uischema={uischema} visible={false} />
       </JsonFormsStateProvider>
     );
     const inputs = wrapper.find('input');

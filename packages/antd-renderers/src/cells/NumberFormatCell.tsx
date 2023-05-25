@@ -29,7 +29,7 @@ import {
   isNumberFormatControl,
   RankedTester,
   rankWith,
-  WithClassname
+  WithClassname,
 } from '@jsonforms/core';
 import { withJsonFormsCellProps } from '@jsonforms/react';
 import { AntdInputNumberFormat } from '../antd-controls/AntdInputNumberFormat';

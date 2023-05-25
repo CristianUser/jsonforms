@@ -22,26 +22,8 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import { renderExample } from '../../example/src/index';
+import { renderExample } from '../../examples-react/src/index';
 import { cells } from '../src';
 import { extendedRenderers } from '../src/extended';
-import { ExampleExtension } from './CustomAutocomplete';
-import { ReactExampleDescription } from '../../example/src/util';
 
-const addCustomAutocompleteControl = (examples: ReactExampleDescription[]) => {
-  return examples.map(example => {
-    if(example.name === 'enum'){
-      const adjustedExample = Object.assign({}, example, {
-        customReactExtension: ExampleExtension
-      })
-      return adjustedExample;
-    }
-    return example;
-  });
-};
-
-renderExample(
-  extendedRenderers,
-  cells,
-  addCustomAutocompleteControl
-);
+renderExample(extendedRenderers, cells);

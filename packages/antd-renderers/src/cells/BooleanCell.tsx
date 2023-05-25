@@ -28,7 +28,7 @@ import {
   isBooleanControl,
   RankedTester,
   rankWith,
-  WithClassname
+  WithClassname,
 } from '@jsonforms/core';
 import { withJsonFormsCellProps } from '@jsonforms/react';
 import { AntdCheckbox } from '../antd-controls/AntdCheckbox';
@@ -37,9 +37,6 @@ export const BooleanCell = (props: CellProps & WithClassname) => {
   return <AntdCheckbox {...props} />;
 };
 
-export const BooleanCellTester: RankedTester = rankWith(
-  2,
-  isBooleanControl
-);
+export const BooleanCellTester: RankedTester = rankWith(2, isBooleanControl);
 
 export default withJsonFormsCellProps(BooleanCell);

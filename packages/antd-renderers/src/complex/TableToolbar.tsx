@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 /*
   The MIT License
 
@@ -26,7 +27,7 @@ import React from 'react';
 import {
   ControlElement,
   createDefaultValue,
-  JsonSchema
+  JsonSchema,
 } from '@jsonforms/core';
 import { Button, Col, PageHeader, Row, Tooltip, Typography } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
@@ -44,15 +45,16 @@ export interface MaterialTableToolbarProps {
   addItem(path: string, value: any): () => void;
 }
 
-const renderTitle = (label: string, errors: string) =>
-(<Row>
-  <Col>
-    <Title level={3} >{label}</Title>
-  </Col>
-  <Col style={{ padding: '0 10px' }}>
-    <ValidationIcon id='tooltip-validation' errorMessages={errors} />
-  </Col>
-</Row>);
+const renderTitle = (label: string, errors: string) => (
+  <Row>
+    <Col>
+      <Title level={3}>{label}</Title>
+    </Col>
+    <Col style={{ padding: '0 10px' }}>
+      <ValidationIcon id='tooltip-validation' errorMessages={errors} />
+    </Col>
+  </Row>
+);
 
 const TableToolbar = React.memo(
   ({
@@ -61,16 +63,25 @@ const TableToolbar = React.memo(
     path,
     addItem,
     schema,
-    enabled
+    enabled,
   }: MaterialTableToolbarProps) => (
     <PageHeader
       ghost={false}
       title={renderTitle(label, errors)}
-      extra={enabled ? [
-        <Tooltip key='1' title={`Add to ${label}`}>
-          <Button type='primary' onClick={addItem(path, createDefaultValue(schema))} shape='circle' icon={<PlusOutlined />} />
-        </Tooltip>
-      ] : []}
+      extra={
+        enabled
+          ? [
+              <Tooltip key='1' title={`Add to ${label}`}>
+                <Button
+                  type='primary'
+                  onClick={addItem(path, createDefaultValue(schema))}
+                  shape='circle'
+                  icon={<PlusOutlined />}
+                />
+              </Tooltip>,
+            ]
+          : []
+      }
     />
   )
 );

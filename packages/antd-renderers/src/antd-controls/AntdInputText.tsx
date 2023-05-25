@@ -38,7 +38,7 @@ export const AntdInputText = (props: CellProps & WithClassname) => {
     uischema,
     path,
     handleChange,
-    schema
+    schema,
   } = props;
   const maxLength = schema.maxLength;
   const appliedUiSchemaOptions = merge({}, config, uischema.options);

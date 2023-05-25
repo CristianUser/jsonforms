@@ -33,7 +33,7 @@ import {
   StatePropsOfLayout,
   Tester,
   UISchemaElement,
-  uiTypeIs
+  uiTypeIs,
 } from '@jsonforms/core';
 import { RendererComponent, withJsonFormsLayoutProps } from '@jsonforms/react';
 import { Tabs } from 'antd';
@@ -41,7 +41,7 @@ import {
   AjvProps,
   LayoutRenderer as LayoutRenderer,
   LayoutRendererProps as LayoutRendererProps,
-  withAjvProps
+  withAjvProps,
 } from '../util/layout';
 import Hidden from '../util/Hidden';
 
@@ -71,7 +71,8 @@ export interface CategorizationState {
 }
 
 export interface CategorizationLayoutRendererProps
-  extends StatePropsOfLayout, AjvProps {
+  extends StatePropsOfLayout,
+    AjvProps {
   selected?: number;
   ownState?: boolean;
   data?: any;
@@ -83,7 +84,7 @@ export class CategorizationLayoutRenderer extends RendererComponent<
   CategorizationState
 > {
   state = {
-    activeCategory: 0
+    activeCategory: 0,
   };
 
   render() {
@@ -97,7 +98,7 @@ export class CategorizationLayoutRenderer extends RendererComponent<
       visible,
       enabled,
       selected,
-      ajv
+      ajv,
     } = this.props;
     const categorization = uischema as Categorization;
     const value = this.hasOwnState() ? this.state.activeCategory : selected;
@@ -109,7 +110,7 @@ export class CategorizationLayoutRenderer extends RendererComponent<
       enabled,
       visible,
       renderers,
-      cells
+      cells,
     };
 
     const categories = categorization.elements.filter((category: Category) =>
@@ -144,4 +145,6 @@ export class CategorizationLayoutRenderer extends RendererComponent<
   };
 }
 
-export default withJsonFormsLayoutProps(withAjvProps(CategorizationLayoutRenderer));
+export default withJsonFormsLayoutProps(
+  withAjvProps(CategorizationLayoutRenderer)
+);

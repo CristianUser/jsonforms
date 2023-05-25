@@ -28,7 +28,7 @@ import {
   ControlProps,
   ControlState,
   isDescriptionHidden,
-  OwnPropsOfEnum
+  OwnPropsOfEnum,
 } from '@jsonforms/core';
 import { Control } from '@jsonforms/react';
 import { Form, Radio } from 'antd';
@@ -46,7 +46,7 @@ export class RadioGroup extends Control<
       errors,
       // data,
       visible,
-      options
+      options,
     } = this.props;
     const isValid = errors.length === 0;
     const appliedUiSchemaOptions = merge(
@@ -75,13 +75,10 @@ export class RadioGroup extends Control<
       >
         <Radio.Group
           value={this.state.value}
-          onChange={e => this.handleChange(e.target.value)}
+          onChange={(e) => this.handleChange(e.target.value)}
         >
-          {options.map(option => (
-            <Radio
-              value={option.value}
-              key={option.label}
-            >
+          {options.map((option) => (
+            <Radio value={option.value} key={option.label}>
               {option.label}
             </Radio>
           ))}

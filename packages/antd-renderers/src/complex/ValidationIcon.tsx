@@ -32,18 +32,17 @@ export interface ValidationProps {
   id: string;
 }
 
-const ValidationIcon: React.FC<ValidationProps> =
-  ({ errorMessages, id }) => {
-    return (
-      <Tooltip
-        id={id}
-        title={errorMessages}
-      >
-        <Badge count={errorMessages.split('\n').length} size='small' >
-          <ExclamationCircleOutlined color='inherit' style={{ fontSize: '20px' }}/>
-        </Badge>
-      </Tooltip>
-    );
+const ValidationIcon: React.FC<ValidationProps> = ({ errorMessages, id }) => {
+  return (
+    <Tooltip id={id} title={errorMessages}>
+      <Badge count={errorMessages.split('\n').length} size='small'>
+        <ExclamationCircleOutlined
+          color='inherit'
+          style={{ fontSize: '20px' }}
+        />
+      </Badge>
+    </Tooltip>
+  );
 };
 
-export default (ValidationIcon);
+export default ValidationIcon;

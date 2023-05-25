@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable react/display-name */
 /*
   The MIT License
 
@@ -23,8 +25,8 @@
   THE SOFTWARE.
 */
 import isEmpty from 'lodash/isEmpty';
-import React from 'react';
-import { ComponentType } from 'react';
+import React, { ComponentType } from 'react';
+
 import Ajv from 'ajv';
 import {
   getAjv,
@@ -32,7 +34,7 @@ import {
   JsonFormsRendererRegistryEntry,
   JsonSchema,
   OwnPropsOfRenderer,
-  UISchemaElement
+  UISchemaElement,
 } from '@jsonforms/core';
 import { JsonFormsDispatch, useJsonForms } from '@jsonforms/react';
 import { Col, Row } from 'antd';
@@ -42,9 +44,9 @@ const useStyles = createUseStyles({
   row: {
     width: '100%',
     '& > div:not([class]), & > div[class^="ant-"]': {
-      width: '100%'
-    }
-  }
+      width: '100%',
+    },
+  },
 });
 
 export const renderLayoutElements = (
@@ -92,7 +94,7 @@ export const LayoutRenderer = ({
   enabled,
   direction,
   renderers,
-  cells
+  cells,
 }: LayoutRendererProps) => {
   const GridContainer = direction === 'row' ? Row : Col;
   const containerProps: any = {};
@@ -125,11 +127,11 @@ export interface AjvProps {
   ajv: Ajv;
 }
 
-export const withAjvProps = <P extends {}>(
-  Component: ComponentType<AjvProps & P>
-) => (props: P) => {
-  const ctx = useJsonForms();
-  const ajv = getAjv({ jsonforms: { ...ctx } });
+export const withAjvProps =
+  <P extends {}>(Component: ComponentType<AjvProps & P>) =>
+  (props: P) => {
+    const ctx = useJsonForms();
+    const ajv = getAjv({ jsonforms: { ...ctx } });
 
-  return <Component {...props} ajv={ajv} />;
-};
+    return <Component {...props} ajv={ajv} />;
+  };

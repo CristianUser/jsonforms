@@ -24,17 +24,12 @@
 */
 import './MatchMediaMock';
 import * as React from 'react';
-import {
-  ControlElement,
-  NOT_APPLICABLE
-} from '@jsonforms/core';
-import IntegerCell, {
-  IntegerCellTester
-} from '../../src/cells/IntegerCell';
+import { ControlElement, NOT_APPLICABLE } from '@jsonforms/core';
+import IntegerCell, { IntegerCellTester } from '../../src/cells/IntegerCell';
 import { renderers } from '../../src';
 
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { JsonFormsStateProvider } from '@jsonforms/react';
 import { initCore, TestEmitter } from './util';
 
@@ -43,40 +38,36 @@ Enzyme.configure({ adapter: new Adapter() });
 const data = { foo: 42 };
 const schema = {
   type: 'integer',
-  minimum: 5
+  minimum: 5,
 };
 const uischema: ControlElement = {
   type: 'Control',
-  scope: '#/properties/foo'
+  scope: '#/properties/foo',
 };
 
 describe('Material integer cells tester', () => {
   const controlElement: ControlElement = {
     type: 'Control',
-    scope: '#/properties/foo'
+    scope: '#/properties/foo',
   };
 
   it('should fail', () => {
-    expect(IntegerCellTester(undefined, undefined)).toBe(
-      NOT_APPLICABLE
-    );
+    expect(IntegerCellTester(undefined, undefined)).toBe(NOT_APPLICABLE);
     expect(IntegerCellTester(null, undefined)).toBe(NOT_APPLICABLE);
-    expect(IntegerCellTester({ type: 'Foo' }, undefined)).toBe(
-      NOT_APPLICABLE
-    );
+    expect(IntegerCellTester({ type: 'Foo' }, undefined)).toBe(NOT_APPLICABLE);
     expect(IntegerCellTester({ type: 'Control' }, undefined)).toBe(
       NOT_APPLICABLE
     );
     expect(
       IntegerCellTester(controlElement, {
         type: 'object',
-        properties: { foo: { type: 'string' } }
+        properties: { foo: { type: 'string' } },
       })
     ).toBe(NOT_APPLICABLE);
     expect(
       IntegerCellTester(controlElement, {
         type: 'object',
-        properties: { foo: { type: 'string' }, bar: { type: 'integer' } }
+        properties: { foo: { type: 'string' }, bar: { type: 'integer' } },
       })
     ).toBe(NOT_APPLICABLE);
   });
@@ -85,7 +76,7 @@ describe('Material integer cells tester', () => {
     expect(
       IntegerCellTester(controlElement, {
         type: 'object',
-        properties: { foo: { type: 'integer' } }
+        properties: { foo: { type: 'integer' } },
       })
     ).toBe(2);
   });
@@ -101,8 +92,8 @@ describe('Material integer cells', () => {
       type: 'Control',
       scope: '#/properties/foo',
       options: {
-        focus: true
-      }
+        focus: true,
+      },
     };
     const core = initCore(schema, control, data);
     wrapper = mount(
@@ -119,8 +110,8 @@ describe('Material integer cells', () => {
       type: 'Control',
       scope: '#/properties/foo',
       options: {
-        focus: false
-      }
+        focus: false,
+      },
     };
     const core = initCore(schema, control, data);
     wrapper = mount(
@@ -135,7 +126,7 @@ describe('Material integer cells', () => {
   it('should not autofocus by default', () => {
     const control: ControlElement = {
       type: 'Control',
-      scope: '#/properties/foo'
+      scope: '#/properties/foo',
     };
     const core = initCore(schema, control, data);
     wrapper = mount(
@@ -178,7 +169,7 @@ describe('Material integer cells', () => {
   it('should update via input event', () => {
     const core = initCore(schema, uischema, data);
     const onChangeData: any = {
-      data: undefined
+      data: undefined,
     };
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
@@ -204,7 +195,7 @@ describe('Material integer cells', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, foo: 42 };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().value).toBe(42);
@@ -218,7 +209,7 @@ describe('Material integer cells', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, foo: undefined };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input');
     expect(input.props().value).toBe('');
@@ -232,7 +223,7 @@ describe('Material integer cells', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, foo: null };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().value).toBe('');
@@ -246,7 +237,7 @@ describe('Material integer cells', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, bar: 11 };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input');
     expect(input.props().value).toBe(42);
@@ -260,7 +251,7 @@ describe('Material integer cells', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, null: 13 };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().value).toBe(42);
@@ -274,7 +265,7 @@ describe('Material integer cells', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, undefined: 13 };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().value).toBe(42);

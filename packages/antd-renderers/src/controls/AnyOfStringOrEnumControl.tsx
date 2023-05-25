@@ -32,24 +32,24 @@ import {
   rankWith,
   schemaMatches,
   uiTypeIs,
-  WithClassname
+  WithClassname,
 } from '@jsonforms/core';
 import { Control, withJsonFormsControlProps } from '@jsonforms/react';
 import { AutoComplete } from 'antd';
 import merge from 'lodash/merge';
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { InputControl } from './InputControl';
 
 interface AutoCompleteOption {
-  value: string
-};
+  value: string;
+}
 
 const findEnumSchema = (schemas: JsonSchema[]) =>
   schemas.find(
-    s => s.enum !== undefined && (s.type === 'string' || s.type === undefined)
+    (s) => s.enum !== undefined && (s.type === 'string' || s.type === undefined)
   );
 const findTextSchema = (schemas: JsonSchema[]) =>
-  schemas.find(s => s.type === 'string' && s.enum === undefined);
+  schemas.find((s) => s.type === 'string' && s.enum === undefined);
 
 const AntdAutocompleteInputText = (props: EnumCellProps & WithClassname) => {
   const {
@@ -62,24 +62,33 @@ const AntdAutocompleteInputText = (props: EnumCellProps & WithClassname) => {
     // isValid,
     path,
     handleChange,
-    schema
+    schema,
   } = props;
   const enumSchema = findEnumSchema(schema.anyOf);
   const stringSchema = findTextSchema(schema.anyOf);
   const maxLength = stringSchema.maxLength;
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
-  const options: AutoCompleteOption[] = enumSchema.enum?.map(value => ({ value }));
-  const [filteredOptions, setFilteredOptions] = useState<AutoCompleteOption[]>(options);
+  const options: AutoCompleteOption[] = enumSchema.enum?.map((value) => ({
+    value,
+  }));
+  const [filteredOptions, setFilteredOptions] =
+    useState<AutoCompleteOption[]>(options);
 
   const onChange = (value: any) => handleChange(path, value);
   const onSearch = (searchText: string) => {
     setFilteredOptions(
-      !searchText ? options : options.filter(option => option.value.toLowerCase().includes(searchText)),
+      !searchText
+        ? options
+        : options.filter((option) =>
+            option.value.toLowerCase().includes(searchText)
+          )
     );
   };
-  const inputStyle = !appliedUiSchemaOptions.trim || maxLength === undefined ? { width: '100%' } : {};
+  const inputStyle =
+    !appliedUiSchemaOptions.trim || maxLength === undefined
+      ? { width: '100%' }
+      : {};
   return (
-
     <AutoComplete
       className={className}
       id={id}
@@ -101,9 +110,7 @@ export class AnyOfStringOrEnumControl extends Control<
   ControlState
 > {
   render() {
-    return (
-      <InputControl {...this.props} input={AntdAutocompleteInputText} />
-    );
+    return <InputControl {...this.props} input={AntdAutocompleteInputText} />;
   }
 }
 const hasEnumAndText = (schemas: JsonSchema[]) => {
@@ -111,15 +118,17 @@ const hasEnumAndText = (schemas: JsonSchema[]) => {
   const enumSchema = findEnumSchema(schemas);
   const stringSchema = findTextSchema(schemas);
   const remainingSchemas = schemas.filter(
-    s => s !== enumSchema || s !== stringSchema
+    (s) => s !== enumSchema || s !== stringSchema
   );
-  const wrongType = remainingSchemas.find(s => s.type && s.type !== 'string');
+  const wrongType = remainingSchemas.find((s) => s.type && s.type !== 'string');
   return enumSchema && stringSchema && !wrongType;
 };
 const simpleAnyOf = and(
   uiTypeIs('Control'),
   schemaMatches(
-    schema => schema.hasOwnProperty('anyOf') && hasEnumAndText(schema.anyOf)
+    (schema) =>
+      Object.prototype.hasOwnProperty.call(schema, 'anyOf') &&
+      hasEnumAndText(schema.anyOf)
   )
 );
 export const anyOfStringOrEnumControlTester: RankedTester = rankWith(

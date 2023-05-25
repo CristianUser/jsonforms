@@ -24,18 +24,13 @@
 */
 import './MatchMediaMock';
 import * as React from 'react';
-import {
-  ControlElement,
-  NOT_APPLICABLE,
-} from '@jsonforms/core';
-import BooleanCell, {
-  BooleanCellTester
-} from '../../src/cells/BooleanCell';
+import { ControlElement, NOT_APPLICABLE } from '@jsonforms/core';
+import BooleanCell, { BooleanCellTester } from '../../src/cells/BooleanCell';
 import * as ReactDOM from 'react-dom';
 import { renderers } from '../../src';
 
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { JsonFormsStateProvider } from '@jsonforms/react';
 import { initCore, TestEmitter } from './util';
 
@@ -43,34 +38,30 @@ Enzyme.configure({ adapter: new Adapter() });
 
 const data = { foo: true };
 const schema = {
-  type: 'boolean'
+  type: 'boolean',
 };
 const uischema: ControlElement = {
   type: 'Control',
-  scope: '#/properties/foo'
+  scope: '#/properties/foo',
 };
 
 describe('Material boolean cell tester', () => {
   const control: ControlElement = {
     type: 'Control',
-    scope: '#/properties/foo'
+    scope: '#/properties/foo',
   };
 
   it('should fail', () => {
-    expect(BooleanCellTester(undefined, undefined)).toBe(
-      NOT_APPLICABLE
-    );
+    expect(BooleanCellTester(undefined, undefined)).toBe(NOT_APPLICABLE);
     expect(BooleanCellTester(null, undefined)).toBe(NOT_APPLICABLE);
-    expect(BooleanCellTester({ type: 'Foo' }, undefined)).toBe(
-      NOT_APPLICABLE
-    );
+    expect(BooleanCellTester({ type: 'Foo' }, undefined)).toBe(NOT_APPLICABLE);
     expect(BooleanCellTester({ type: 'Control' }, undefined)).toBe(
       NOT_APPLICABLE
     );
     expect(
       BooleanCellTester(control, {
         type: 'object',
-        properties: { foo: { type: 'string' } }
+        properties: { foo: { type: 'string' } },
       })
     ).toBe(NOT_APPLICABLE);
     expect(
@@ -78,12 +69,12 @@ describe('Material boolean cell tester', () => {
         type: 'object',
         properties: {
           foo: {
-            type: 'string'
+            type: 'string',
           },
           bar: {
-            type: 'boolean'
-          }
-        }
+            type: 'boolean',
+          },
+        },
       })
     ).toBe(NOT_APPLICABLE);
   });
@@ -94,9 +85,9 @@ describe('Material boolean cell tester', () => {
         type: 'object',
         properties: {
           foo: {
-            type: 'boolean'
-          }
-        }
+            type: 'boolean',
+          },
+        },
       })
     ).toBe(2);
   });
@@ -120,8 +111,8 @@ describe('Material boolean cell', () => {
       type: 'Control',
       scope: '#/properties/foo',
       options: {
-        focus: true
-      }
+        focus: true,
+      },
     };
     const core = initCore(schema, uischema, data);
     wrapper = mount(
@@ -138,8 +129,8 @@ describe('Material boolean cell', () => {
       type: 'Control',
       scope: '#/properties/foo',
       options: {
-        focus: false
-      }
+        focus: false,
+      },
     };
     const core = initCore(schema, uischema, data);
     wrapper = mount(
@@ -154,7 +145,7 @@ describe('Material boolean cell', () => {
   it('should not autofocus by default', () => {
     const control: ControlElement = {
       type: 'Control',
-      scope: '#/properties/foo'
+      scope: '#/properties/foo',
     };
     const core = initCore(schema, uischema, data);
     wrapper = mount(
@@ -182,7 +173,7 @@ describe('Material boolean cell', () => {
   it('should update via input event', () => {
     const core = initCore(schema, uischema, data);
     const onChangeData: any = {
-      data: undefined
+      data: undefined,
     };
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
@@ -203,7 +194,7 @@ describe('Material boolean cell', () => {
   it('should update via action', () => {
     const core = initCore(schema, uischema, data);
     const onChangeData: any = {
-      data: undefined
+      data: undefined,
     };
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
@@ -216,7 +207,7 @@ describe('Material boolean cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, foo: false };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().checked).toBeFalsy();
@@ -226,7 +217,7 @@ describe('Material boolean cell', () => {
   it('should update with undefined value', () => {
     const core = initCore(schema, uischema, data);
     const onChangeData: any = {
-      data: undefined
+      data: undefined,
     };
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
@@ -239,7 +230,7 @@ describe('Material boolean cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, foo: undefined };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().checked).toBeFalsy();
@@ -248,7 +239,7 @@ describe('Material boolean cell', () => {
   it('should update with null value', () => {
     const core = initCore(schema, uischema, data);
     const onChangeData: any = {
-      data: undefined
+      data: undefined,
     };
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
@@ -261,7 +252,7 @@ describe('Material boolean cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, foo: null };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().checked).toBeFalsy();
@@ -270,7 +261,7 @@ describe('Material boolean cell', () => {
   it('should not update with wrong ref', () => {
     const core = initCore(schema, uischema, data);
     const onChangeData: any = {
-      data: undefined
+      data: undefined,
     };
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
@@ -283,7 +274,7 @@ describe('Material boolean cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, bar: 11 };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     const input = wrapper.find('input').first();
     expect(input.props().checked).toBeTruthy();
   });
@@ -291,7 +282,7 @@ describe('Material boolean cell', () => {
   it('should not update with null ref', () => {
     const core = initCore(schema, uischema, data);
     const onChangeData: any = {
-      data: undefined
+      data: undefined,
     };
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
@@ -304,7 +295,7 @@ describe('Material boolean cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, null: false };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     const input = wrapper.find('input').first();
     expect(input.props().checked).toBeTruthy();
   });
@@ -312,7 +303,7 @@ describe('Material boolean cell', () => {
   it('should not update with an undefined ref', () => {
     const core = initCore(schema, uischema, data);
     const onChangeData: any = {
-      data: undefined
+      data: undefined,
     };
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
@@ -324,8 +315,8 @@ describe('Material boolean cell', () => {
         <BooleanCell schema={schema} uischema={uischema} path='foo' />
       </JsonFormsStateProvider>
     );
-    core.data = { ...core.data, undefined: false};
-    wrapper.setProps({ initState: { renderers, core }} );
+    core.data = { ...core.data, undefined: false };
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().checked).toBeTruthy();

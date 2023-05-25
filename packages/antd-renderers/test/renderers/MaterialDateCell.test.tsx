@@ -24,18 +24,13 @@
 */
 import './MatchMediaMock';
 import * as React from 'react';
-import {
-  ControlElement,
-  NOT_APPLICABLE
-} from '@jsonforms/core';
+import { ControlElement, NOT_APPLICABLE } from '@jsonforms/core';
 import { JsonFormsStateProvider } from '@jsonforms/react';
-import DateCell, {
-  DateCellTester
-} from '../../src/cells/DateCell';
+import DateCell, { DateCellTester } from '../../src/cells/DateCell';
 import { renderers } from '../../src';
 
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { initCore, TestEmitter } from './util';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -43,30 +38,26 @@ Enzyme.configure({ adapter: new Adapter() });
 const data = { foo: '1980-06-04' };
 const schema = {
   type: 'string',
-  format: 'date'
+  format: 'date',
 };
 const uischema: ControlElement = {
   type: 'Control',
-  scope: '#/properties/foo'
+  scope: '#/properties/foo',
 };
 
 describe('Material date cell', () => {
   it('should fail', () => {
     expect(DateCellTester(undefined, undefined)).toBe(NOT_APPLICABLE);
     expect(DateCellTester(null, undefined)).toBe(NOT_APPLICABLE);
-    expect(DateCellTester({ type: 'Foo' }, undefined)).toBe(
-      NOT_APPLICABLE
-    );
-    expect(DateCellTester({ type: 'Control' }, undefined)).toBe(
-      NOT_APPLICABLE
-    );
+    expect(DateCellTester({ type: 'Foo' }, undefined)).toBe(NOT_APPLICABLE);
+    expect(DateCellTester({ type: 'Control' }, undefined)).toBe(NOT_APPLICABLE);
 
     expect(
       DateCellTester(uischema, {
         type: 'object',
         properties: {
-          foo: { type: 'string' }
-        }
+          foo: { type: 'string' },
+        },
       })
     ).toBe(NOT_APPLICABLE);
     expect(
@@ -76,9 +67,9 @@ describe('Material date cell', () => {
           foo: { type: 'string' },
           bar: {
             type: 'string',
-            format: 'date'
-          }
-        }
+            format: 'date',
+          },
+        },
       })
     ).toBe(NOT_APPLICABLE);
   });
@@ -90,9 +81,9 @@ describe('Material date cell', () => {
         properties: {
           foo: {
             type: 'string',
-            format: 'date'
-          }
-        }
+            format: 'date',
+          },
+        },
       })
     ).toBe(2);
   });
@@ -108,8 +99,8 @@ describe('Material date cell', () => {
       type: 'Control',
       scope: '#/properties/foo',
       options: {
-        focus: true
-      }
+        focus: true,
+      },
     };
     const core = initCore(schema, control, data);
     wrapper = mount(
@@ -126,8 +117,8 @@ describe('Material date cell', () => {
       type: 'Control',
       scope: '#/properties/foo',
       options: {
-        focus: false
-      }
+        focus: false,
+      },
     };
     const core = initCore(schema, uischema, data);
     wrapper = mount(
@@ -142,7 +133,7 @@ describe('Material date cell', () => {
   it('should not autofocus by default', () => {
     const control: ControlElement = {
       type: 'Control',
-      scope: '#/properties/foo'
+      scope: '#/properties/foo',
     };
     const core = initCore(schema, uischema, data);
     wrapper = mount(
@@ -170,7 +161,7 @@ describe('Material date cell', () => {
   it('should update via event', () => {
     const core = initCore(schema, uischema, data);
     const onChangeData: any = {
-      data: undefined
+      data: undefined,
     };
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
@@ -195,7 +186,7 @@ describe('Material date cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, foo: '1961-04-12' };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().value).toBe('1961-04-12');
@@ -209,7 +200,7 @@ describe('Material date cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, foo: null };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input');
     expect(input.props().value).toBe('');
@@ -223,7 +214,7 @@ describe('Material date cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, foo: undefined };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().value).toBe('');
@@ -237,7 +228,7 @@ describe('Material date cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, bar: 'Bar' };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().value).toBe('1980-06-04');
@@ -251,7 +242,7 @@ describe('Material date cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, null: '1961-04-12' };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().value).toBe('1980-06-04');
@@ -265,7 +256,7 @@ describe('Material date cell', () => {
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, undefined: '1961-04-12' };
-    wrapper.setProps({ initState: { renderers, core }} );
+    wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
     expect(input.props().value).toBe('1980-06-04');

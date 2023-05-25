@@ -22,26 +22,16 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import BooleanCell, {
-  BooleanCellTester
-} from './BooleanCell';
+import BooleanCell, { BooleanCellTester } from './BooleanCell';
 import BooleanToggleCell, {
-  BooleanToggleCellTester
+  BooleanToggleCellTester,
 } from './BooleanToggleCell';
 import DateCell, { DateCellTester } from './DateCell';
 import EnumCell, { EnumCellTester } from './EnumCell';
-import IntegerCell, {
-  IntegerCellTester
-} from './IntegerCell';
-import NumberCell, {
-  NumberCellTester
-} from './NumberCell';
-import NumberFormatCell, {
-  numberFormatCellTester
-} from './NumberFormatCell';
-import OneOfEnumCell, {
-  oneOfEnumCellTester
-} from './OneOfEnumCell';
+import IntegerCell, { IntegerCellTester } from './IntegerCell';
+import NumberCell, { NumberCellTester } from './NumberCell';
+import NumberFormatCell, { numberFormatCellTester } from './NumberFormatCell';
+import OneOfEnumCell, { oneOfEnumCellTester } from './OneOfEnumCell';
 import TextCell, { textCellTester } from './TextCell';
 import TimeCell, { timeCellTester } from './TimeCell';
 
@@ -65,7 +55,7 @@ export {
   TextCell,
   textCellTester,
   TimeCell,
-  timeCellTester
+  timeCellTester,
 };
 import * as Customizable from './CustomizableCells';
 export { Customizable };

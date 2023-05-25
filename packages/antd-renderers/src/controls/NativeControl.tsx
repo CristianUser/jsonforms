@@ -31,7 +31,7 @@ import {
   isTimeControl,
   or,
   RankedTester,
-  rankWith
+  rankWith,
 } from '@jsonforms/core';
 import { Control, withJsonFormsControlProps } from '@jsonforms/react';
 import merge from 'lodash/merge';
@@ -51,7 +51,7 @@ export class NativeControl extends Control<ControlProps, ControlState> {
       path,
       handleChange,
       data,
-      config
+      config,
     } = this.props;
     const isValid = errors.length === 0;
     const appliedUiSchemaOptions = merge(

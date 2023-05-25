@@ -29,7 +29,7 @@ import {
   isDescriptionHidden,
   isRangeControl,
   RankedTester,
-  rankWith
+  rankWith,
 } from '@jsonforms/core';
 import { Control, withJsonFormsControlProps } from '@jsonforms/react';
 import merge from 'lodash/merge';
@@ -49,7 +49,7 @@ export class SliderControl extends Control<ControlProps, ControlState> {
       visible,
       path,
       required,
-      config
+      config,
     } = this.props;
     const isValid = errors.length === 0;
     const appliedUiSchemaOptions = merge(
@@ -58,7 +58,7 @@ export class SliderControl extends Control<ControlProps, ControlState> {
       this.props.uischema.options
     );
     const sliderStyle: { [x: string]: any } = {
-      marginTop: '7px'
+      marginTop: '7px',
     };
 
     const showDescription = !isDescriptionHidden(
@@ -70,7 +70,7 @@ export class SliderControl extends Control<ControlProps, ControlState> {
 
     const marks = {
       [schema.minimum]: schema.minimum,
-      [schema.maximum]: schema.maximum
+      [schema.maximum]: schema.maximum,
     };
     const controlStyle = !appliedUiSchemaOptions.trim ? { width: '100%' } : {};
 
@@ -102,9 +102,6 @@ export class SliderControl extends Control<ControlProps, ControlState> {
     );
   }
 }
-export const sliderControlTester: RankedTester = rankWith(
-  4,
-  isRangeControl
-);
+export const sliderControlTester: RankedTester = rankWith(4, isRangeControl);
 
 export default withJsonFormsControlProps(SliderControl);

@@ -25,7 +25,7 @@
 import './MatchMediaMock';
 import * as React from 'react';
 import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import MaterialGroupLayout from '../../src/layouts/MaterialGroupLayout';
 import { LayoutRenderer } from '../../src/util/layout';
 
@@ -37,14 +37,14 @@ const schema = {
     name: {
       type: 'string',
       minLength: 3,
-      description: 'Please enter your name'
+      description: 'Please enter your name',
     },
     birthDate: {
       type: 'string',
       format: 'date',
-      description: 'Please enter your birth date.'
-    }
-  }
+      description: 'Please enter your birth date.',
+    },
+  },
 };
 
 const uischema = {
@@ -54,14 +54,14 @@ const uischema = {
     {
       type: 'Control',
       label: 'Name',
-      scope: '#/properties/name'
+      scope: '#/properties/name',
     },
     {
       type: 'Control',
       label: 'Birth Date',
-      scope: '#/properties/birthDate'
-    }
-  ]
+      scope: '#/properties/birthDate',
+    },
+  ],
 };
 
 describe('Material group layout', () => {
@@ -69,9 +69,7 @@ describe('Material group layout', () => {
     const wrapper = mount(
       <MaterialGroupLayout schema={schema} uischema={uischema} />
     );
-    expect(wrapper.find(LayoutRenderer).props().direction).toBe(
-      'column'
-    );
+    expect(wrapper.find(LayoutRenderer).props().direction).toBe('column');
   });
 
   it('should render a GroupComponent with direction row when this is provided as a direction prop', () => {

@@ -29,16 +29,13 @@ import {
   ControlState,
   isDateTimeControl,
   RankedTester,
-  rankWith
+  rankWith,
 } from '@jsonforms/core';
 import { Control, withJsonFormsControlProps } from '@jsonforms/react';
 import { DatePicker, Form } from 'antd';
 import moment from 'moment';
 
-export class DateTimeControl extends Control<
-  ControlProps,
-  ControlState
-> {
+export class DateTimeControl extends Control<ControlProps, ControlState> {
   render() {
     const {
       id,
@@ -52,7 +49,7 @@ export class DateTimeControl extends Control<
       path,
       handleChange,
       data,
-      config
+      config,
     } = this.props;
     const appliedUiSchemaOptions = merge({}, config, uischema.options);
     const isValid = errors.length === 0;
@@ -65,17 +62,15 @@ export class DateTimeControl extends Control<
         hasFeedback={!isValid}
         status={isValid ? 'success' : 'error'}
         help={!isValid ? errors : description}
-        label={label}>
+        label={label}
+      >
         <DatePicker
           id={id + '-input'}
           style={pickerStyle}
           showTime={true}
           value={data ? moment(data) : null}
           onChange={(datetime: any) =>
-            handleChange(
-              path,
-              datetime ? datetime.format() : ''
-            )
+            handleChange(path, datetime ? datetime.format() : '')
           }
           format={'MM/DD/YYYY h:mm a'}
           allowClear={true}

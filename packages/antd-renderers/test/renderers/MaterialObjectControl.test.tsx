@@ -23,17 +23,14 @@
   THE SOFTWARE.
 */
 import './MatchMediaMock';
-import {
-  ControlElement,
-  NOT_APPLICABLE
-} from '@jsonforms/core';
+import { ControlElement, NOT_APPLICABLE } from '@jsonforms/core';
 import * as React from 'react';
 import { renderers } from '../../src';
 import ObjectRenderer, {
-  objectControlTester
+  objectControlTester,
 } from '../../src/complex/ObjectRenderer';
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { JsonFormsStateProvider } from '@jsonforms/react';
 import { initCore } from './util';
 
@@ -46,31 +43,29 @@ const schema = {
     foo: {
       type: 'object',
       properties: {
-        foo_1: { type: 'string' }
-      }
+        foo_1: { type: 'string' },
+      },
     },
     bar: {
       type: 'object',
       properties: {
-        bar_1: { type: 'string' }
-      }
-    }
-  }
+        bar_1: { type: 'string' },
+      },
+    },
+  },
 };
 const uischema1: ControlElement = {
   type: 'Control',
-  scope: '#'
+  scope: '#',
 };
 const uischema2: ControlElement = {
   type: 'Control',
-  scope: '#/properties/foo'
+  scope: '#/properties/foo',
 };
 
 describe('Material object renderer tester', () => {
   test('should fail', () => {
-    expect(objectControlTester(undefined, undefined)).toBe(
-      NOT_APPLICABLE
-    );
+    expect(objectControlTester(undefined, undefined)).toBe(NOT_APPLICABLE);
     expect(objectControlTester(null, undefined)).toBe(NOT_APPLICABLE);
     expect(objectControlTester({ type: 'Foo' }, undefined)).toBe(
       NOT_APPLICABLE
@@ -82,8 +77,8 @@ describe('Material object renderer tester', () => {
       objectControlTester(uischema2, {
         type: 'object',
         properties: {
-          foo: { type: 'string' }
-        }
+          foo: { type: 'string' },
+        },
       })
     ).toBe(NOT_APPLICABLE);
     expect(
@@ -91,8 +86,8 @@ describe('Material object renderer tester', () => {
         type: 'object',
         properties: {
           foo: { type: 'string' },
-          bar: schema.properties.bar
-        }
+          bar: schema.properties.bar,
+        },
       })
     ).toBe(NOT_APPLICABLE);
   });
@@ -102,8 +97,8 @@ describe('Material object renderer tester', () => {
       objectControlTester(uischema2, {
         type: 'object',
         properties: {
-          foo: schema.properties.foo
-        }
+          foo: schema.properties.foo,
+        },
       })
     ).toBe(2);
   });
@@ -159,11 +154,7 @@ describe('Material object control', () => {
     const core = initCore(schema, uischema2, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <ObjectRenderer
-          schema={schema}
-          uischema={uischema2}
-          visible={false}
-        />
+        <ObjectRenderer schema={schema} uischema={uischema2} visible={false} />
       </JsonFormsStateProvider>
     );
     const inputs = wrapper.find('input');
