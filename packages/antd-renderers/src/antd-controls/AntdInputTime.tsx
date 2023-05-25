@@ -26,17 +26,26 @@ import React from 'react';
 import { CellProps, WithClassname } from '@jsonforms/core';
 import { TimePicker } from 'antd';
 import merge from 'lodash/merge';
+import moment from 'moment';
 
 export const AntdInputTime = (props: CellProps & WithClassname) => {
   const { data, className, id, enabled, uischema, path, handleChange, config } =
     props;
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
   const inputStyle = !appliedUiSchemaOptions.trim ? { width: '100%' } : {};
+  const format = 'HH:mm';
+
+  const onChange = (time: any, timeString: string) => {
+    console.log('timeString', timeString);
+    console.log('time', time);
+    handleChange(path, timeString);
+  };
 
   return (
     <TimePicker
-      value={data || ''}
-      onChange={(_mValue, strValue) => handleChange(path, strValue)}
+      value={data ? moment(data, format) : null}
+      format={format}
+      onChange={onChange}
       className={className}
       id={id}
       disabled={!enabled}

@@ -32,6 +32,7 @@ import {
 } from '@jsonforms/core';
 import { Control } from '@jsonforms/react';
 import { Form, Radio } from 'antd';
+import Hidden from '../util/Hidden';
 
 export class RadioGroup extends Control<
   ControlProps & OwnPropsOfEnum,
@@ -64,26 +65,27 @@ export class RadioGroup extends Control<
     const controlStyle = !appliedUiSchemaOptions.trim ? { width: '100%' } : {};
 
     return (
-      <Form.Item
-        hidden={!visible}
-        required={required}
-        style={controlStyle}
-        hasFeedback={!isValid}
-        status={isValid ? 'success' : 'error'}
-        help={!isValid ? errors : showDescription ? description : null}
-        label={label}
-      >
-        <Radio.Group
-          value={this.state.value}
-          onChange={(e) => this.handleChange(e.target.value)}
+      <Hidden hidden={!visible}>
+        <Form.Item
+          required={required}
+          style={controlStyle}
+          hasFeedback={!isValid}
+          status={isValid ? 'success' : 'error'}
+          help={!isValid ? errors : showDescription ? description : null}
+          label={label}
         >
-          {options.map((option) => (
-            <Radio value={option.value} key={option.label}>
-              {option.label}
-            </Radio>
-          ))}
-        </Radio.Group>
-      </Form.Item>
+          <Radio.Group
+            value={this.state.value}
+            onChange={(e) => this.handleChange(e.target.value)}
+          >
+            {options.map((option) => (
+              <Radio value={option.value} key={option.label}>
+                {option.label}
+              </Radio>
+            ))}
+          </Radio.Group>
+        </Form.Item>
+      </Hidden>
     );
   }
 }

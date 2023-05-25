@@ -25,9 +25,7 @@
 import './MatchMediaMock';
 import * as React from 'react';
 import { ControlElement } from '@jsonforms/core';
-import OneOfEnumCell, {
-  oneOfEnumCellTester,
-} from '../../src/cells/OneOfEnumCell';
+import EnumCell, { EnumCellTester } from '../../src/cells/EnumCell';
 import { renderers } from '../../src';
 
 import Enzyme, { mount } from 'enzyme';
@@ -37,51 +35,49 @@ import { initCore } from './util';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-const data = { country: 'AU' };
+const data = { nationality: 'JP' };
 const schema = {
   type: 'string',
-  oneOf: [
-    {
-      const: 'AU',
-      title: 'Australia',
-    },
-    {
-      const: 'NZ',
-      title: 'New Zealand',
-    },
-  ],
+  enum: ['DE', 'IT', 'JP', 'US', 'RU', 'Other'],
 };
 const uischema: ControlElement = {
   type: 'Control',
-  scope: '#/properties/country',
+  scope: '#/properties/nationality',
 };
 
-describe('Material one of enum cell tester', () => {
+describe('Ant Design enum cell tester', () => {
   it('should succeed with matching prop type', () => {
     const control: ControlElement = {
       type: 'Control',
-      scope: '#/properties/country',
+      scope: '#/properties/nationality',
     };
     expect(
-      oneOfEnumCellTester(control, {
-        type: 'object',
-        properties: {
-          country: schema,
+      EnumCellTester(
+        control,
+        {
+          type: 'object',
+          properties: {
+            nationality: {
+              type: 'string',
+              enum: ['DE', 'IT', 'JP', 'US', 'RU', 'Other'],
+            },
+          },
         },
-      })
+        undefined
+      )
     ).toBe(2);
   });
 });
 
-describe('Material enum cell', () => {
+describe('Ant Design enum cell', () => {
   it('should select an item from dropdown list', () => {
     const core = initCore(schema, uischema, data);
     const wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <OneOfEnumCell schema={schema} uischema={uischema} path='country' />
+        <EnumCell schema={schema} uischema={uischema} path='nationality' />
       </JsonFormsStateProvider>
     );
-    const input = wrapper.find('input');
-    expect(input.props().value).toBe('AU');
+    const input = wrapper.find('.ant-select-selection-item');
+    expect(input.props().title).toBe('JP');
   });
 });

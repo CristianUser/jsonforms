@@ -25,9 +25,9 @@
 import './MatchMediaMock';
 import * as React from 'react';
 import { ControlElement, NOT_APPLICABLE } from '@jsonforms/core';
-import OneOfRadioGroupControl, {
-  oneOfRadioGroupControlTester,
-} from '../../src/controls/OneOfRadioGroupControl';
+import RadioGroupControl, {
+  radioGroupControlTesterGroup,
+} from '../../src/controls/RadioGroupControl';
 import { renderers } from '../../src';
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
@@ -35,16 +35,13 @@ import { JsonFormsStateProvider } from '@jsonforms/react';
 import { initCore } from './util';
 Enzyme.configure({ adapter: new Adapter() });
 
-const oneOfSchema = {
+const data = { foo: 'D' };
+const schema = {
   type: 'object',
   properties: {
     foo: {
       type: 'string',
-      oneOf: [
-        { const: 'A', title: 'Option A' },
-        { const: 'B' },
-        { const: 'C', title: 'Option C' },
-      ],
+      enum: ['A', 'B', 'C', 'D'],
     },
   },
 };
@@ -56,9 +53,9 @@ const uischema: ControlElement = {
   },
 };
 
-describe('Material oneof radio group tester', () => {
-  it('should return valid rank for oneof enums with radio format', () => {
-    const rank = oneOfRadioGroupControlTester(uischema, oneOfSchema);
+describe('Material radio group tester', () => {
+  it('should return valid rank for enums with radio format', () => {
+    const rank = radioGroupControlTesterGroup(uischema, schema, undefined);
     expect(rank).not.toBe(NOT_APPLICABLE);
   });
 
@@ -67,28 +64,65 @@ describe('Material oneof radio group tester', () => {
       type: 'Control',
       scope: '#/properties/foo',
     };
-    const rank = oneOfRadioGroupControlTester(uiSchemaNoRadio, oneOfSchema);
+    const rank = radioGroupControlTesterGroup(
+      uiSchemaNoRadio,
+      schema,
+      undefined
+    );
     expect(rank).toBe(NOT_APPLICABLE);
   });
 });
 
-describe('Material oneof radio group control', () => {
+describe('Material radio group control', () => {
   let wrapper: ReactWrapper;
 
   afterEach(() => wrapper.unmount());
 
-  it('should render oneOf schemas ', () => {
-    const core = initCore(oneOfSchema, uischema, { foo: 'B' });
+  it('should have option selected', () => {
+    const core = initCore(schema, uischema, data);
+    wrapper = mount(
+      <JsonFormsStateProvider initState={{ renderers, core }}>
+        <RadioGroupControl schema={schema} uischema={uischema} />
+      </JsonFormsStateProvider>
+    );
+
+    const radioButtons = wrapper.find('input[type="radio"]');
+    const currentlyChecked = wrapper.find('input[type="radio"][checked=true]');
+    expect(radioButtons.length).toBe(4);
+    expect(currentlyChecked.first().props().value).toBe('D');
+  });
+
+  it('should have only update selected option ', () => {
+    const core = initCore(schema, uischema, data);
+
+    core.data = { ...core.data, foo: 'A' };
+    core.data = { ...core.data, foo: 'B' };
+    wrapper.setProps({ initState: { renderers, core } });
+    wrapper.update();
 
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <OneOfRadioGroupControl schema={oneOfSchema} uischema={uischema} />
+        <RadioGroupControl schema={schema} uischema={uischema} />
       </JsonFormsStateProvider>
     );
-    const inputs = wrapper.find('input[type="radio"]');
-    expect(inputs.length).toBe(3);
-    const currentlyChecked = inputs.find('[checked=true]');
+    const currentlyChecked = wrapper.find('input[type="radio"][checked=true]');
     expect(currentlyChecked.length).toBe(1);
     expect(currentlyChecked.first().props().value).toBe('B');
+  });
+
+  it('should be hideable ', () => {
+    const core = initCore(schema, uischema, data);
+    wrapper = mount(
+      <JsonFormsStateProvider initState={{ renderers, core }}>
+        <RadioGroupControl
+          schema={schema}
+          uischema={uischema}
+          visible={false}
+        />
+      </JsonFormsStateProvider>
+    );
+
+    const radioButtons = wrapper.find('input[type="radio"]');
+    expect(radioButtons.length).toBe(0);
   });
 });

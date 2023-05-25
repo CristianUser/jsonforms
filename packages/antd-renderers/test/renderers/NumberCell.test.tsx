@@ -24,10 +24,9 @@
 */
 import './MatchMediaMock';
 import * as React from 'react';
-import { ControlElement, NOT_APPLICABLE } from '@jsonforms/core';
-import IntegerCell, { IntegerCellTester } from '../../src/cells/IntegerCell';
+import { ControlElement, JsonSchema, NOT_APPLICABLE } from '@jsonforms/core';
+import NumberCell, { NumberCellTester } from '../../src/cells/NumberCell';
 import { renderers } from '../../src';
-
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { JsonFormsStateProvider } from '@jsonforms/react';
@@ -35,9 +34,9 @@ import { initCore, TestEmitter } from './util';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-const data = { foo: 42 };
+const data = { foo: '3.14' };
 const schema = {
-  type: 'integer',
+  type: 'number',
   minimum: 5,
 };
 const uischema: ControlElement = {
@@ -45,44 +44,88 @@ const uischema: ControlElement = {
   scope: '#/properties/foo',
 };
 
-describe('Material integer cells tester', () => {
-  const controlElement: ControlElement = {
-    type: 'Control',
-    scope: '#/properties/foo',
-  };
-
+describe('Ant Design number cells tester', () => {
   it('should fail', () => {
-    expect(IntegerCellTester(undefined, undefined)).toBe(NOT_APPLICABLE);
-    expect(IntegerCellTester(null, undefined)).toBe(NOT_APPLICABLE);
-    expect(IntegerCellTester({ type: 'Foo' }, undefined)).toBe(NOT_APPLICABLE);
-    expect(IntegerCellTester({ type: 'Control' }, undefined)).toBe(
+    expect(NumberCellTester(undefined, undefined, undefined)).toBe(
       NOT_APPLICABLE
     );
+    expect(NumberCellTester(null, undefined, undefined)).toBe(NOT_APPLICABLE);
+    expect(NumberCellTester({ type: 'Foo' }, undefined, undefined)).toBe(
+      NOT_APPLICABLE
+    );
+    expect(NumberCellTester({ type: 'Control' }, undefined, undefined)).toBe(
+      NOT_APPLICABLE
+    );
+  });
+
+  it('should succeed with wrong schema type', () => {
+    const control: ControlElement = {
+      type: 'Control',
+      scope: '#/properties/foo',
+    };
     expect(
-      IntegerCellTester(controlElement, {
-        type: 'object',
-        properties: { foo: { type: 'string' } },
-      })
-    ).toBe(NOT_APPLICABLE);
-    expect(
-      IntegerCellTester(controlElement, {
-        type: 'object',
-        properties: { foo: { type: 'string' }, bar: { type: 'integer' } },
-      })
+      NumberCellTester(
+        control,
+        {
+          type: 'object',
+          properties: {
+            foo: {
+              type: 'string',
+            },
+          },
+        },
+        undefined
+      )
     ).toBe(NOT_APPLICABLE);
   });
 
-  it('should succeed', () => {
+  it('should fail if only sibling has correct type', () => {
+    const control: ControlElement = {
+      type: 'Control',
+      scope: '#/properties/foo',
+    };
     expect(
-      IntegerCellTester(controlElement, {
-        type: 'object',
-        properties: { foo: { type: 'integer' } },
-      })
+      NumberCellTester(
+        control,
+        {
+          type: 'object',
+          properties: {
+            foo: {
+              type: 'string',
+            },
+            bar: {
+              type: 'number',
+            },
+          },
+        },
+        undefined
+      )
+    ).toBe(NOT_APPLICABLE);
+  });
+
+  it('should succeed with matching prop type', () => {
+    const control: ControlElement = {
+      type: 'Control',
+      scope: '#/properties/foo',
+    };
+    expect(
+      NumberCellTester(
+        control,
+        {
+          type: 'object',
+          properties: {
+            foo: {
+              type: 'number',
+            },
+          },
+        },
+        undefined
+      )
     ).toBe(2);
   });
 });
 
-describe('Material integer cells', () => {
+describe('Ant Design number cells', () => {
   let wrapper: ReactWrapper;
 
   afterEach(() => wrapper.unmount());
@@ -98,11 +141,11 @@ describe('Material integer cells', () => {
     const core = initCore(schema, control, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <IntegerCell schema={schema} uischema={control} path='foo' />
+        <NumberCell schema={schema} uischema={control} path='foo' />
       </JsonFormsStateProvider>
     );
-    const input = wrapper.find('input').first();
-    expect(input.props().autoFocus).toBeTruthy();
+    const inputs = wrapper.find('input');
+    expect(inputs.first().props().autoFocus).toBeTruthy();
   });
 
   it('should not autofocus via option', () => {
@@ -116,11 +159,11 @@ describe('Material integer cells', () => {
     const core = initCore(schema, control, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <IntegerCell schema={schema} uischema={control} path='foo' />
+        <NumberCell schema={schema} uischema={uischema} path='foo' />
       </JsonFormsStateProvider>
     );
-    const input = wrapper.find('input');
-    expect(input.props().autoFocus).toBeFalsy();
+    const inputs = wrapper.find('input');
+    expect(inputs.first().props().autoFocus).toBeFalsy();
   });
 
   it('should not autofocus by default', () => {
@@ -128,42 +171,56 @@ describe('Material integer cells', () => {
       type: 'Control',
       scope: '#/properties/foo',
     };
-    const core = initCore(schema, control, data);
-    wrapper = mount(
-      <JsonFormsStateProvider initState={{ renderers, core }}>
-        <IntegerCell schema={schema} uischema={control} path='foo' />
-      </JsonFormsStateProvider>
-    );
-    const input = wrapper.find('input').first();
-    expect(input.props().autoFocus).toBeFalsy();
-  });
-
-  it('should render', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <IntegerCell schema={schema} uischema={uischema} path='foo' />
+        <NumberCell schema={schema} uischema={control} path='foo' />
+      </JsonFormsStateProvider>
+    );
+    const inputs = wrapper.find('input');
+    expect(inputs.first().props().autoFocus).toBeFalsy();
+  });
+
+  it('should render', () => {
+    const jsonSchema: JsonSchema = {
+      type: 'object',
+      properties: {
+        foo: {
+          type: 'number',
+        },
+      },
+    };
+    const core = initCore(schema, uischema, { foo: 3.14 });
+    wrapper = mount(
+      <JsonFormsStateProvider initState={{ renderers, core }}>
+        <NumberCell schema={jsonSchema} uischema={uischema} path='foo' />
       </JsonFormsStateProvider>
     );
 
     const input = wrapper.find('input').first();
-    expect(input.props().type).toBe('number');
-    expect(input.props().step).toBe('1');
-    expect(input.props().value).toBe(42);
+    expect(input.props().step).toBe('0.1');
+    expect(input.props().value).toBe('3.14');
   });
 
   it('should render 0', () => {
+    const jsonSchema: JsonSchema = {
+      type: 'object',
+      properties: {
+        foo: {
+          type: 'number',
+        },
+      },
+    };
     const core = initCore(schema, uischema, { foo: 0 });
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <IntegerCell schema={schema} uischema={uischema} path='foo' />
+        <NumberCell schema={jsonSchema} uischema={uischema} path='foo' />
       </JsonFormsStateProvider>
     );
 
     const input = wrapper.find('input').first();
-    expect(input.props().type).toBe('number');
-    expect(input.props().step).toBe('1');
-    expect(input.props().value).toBe(0);
+    expect(input.props().step).toBe('0.1');
+    expect(input.props().value).toBe('0.0');
   });
 
   it('should update via input event', () => {
@@ -178,40 +235,42 @@ describe('Material integer cells', () => {
             onChangeData.data = data;
           }}
         />
-        <IntegerCell schema={schema} uischema={uischema} path='foo' />
+        <NumberCell schema={schema} uischema={uischema} path='foo' />
       </JsonFormsStateProvider>
     );
-
     const input = wrapper.find('input');
-    input.simulate('change', { target: { value: 13 } });
-    expect(onChangeData.data.foo).toBe(13);
+    input.simulate('change', { target: { value: 2.72 } });
+    expect(onChangeData.data.foo).toBe(2.72);
   });
 
   it('should update via action', () => {
-    const core = initCore(schema, uischema, { foo: 13 });
+    const core = initCore(schema, uischema, { foo: 2.72 });
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <IntegerCell schema={schema} uischema={uischema} path='foo' />
+        <NumberCell schema={schema} uischema={uischema} path='foo' />
       </JsonFormsStateProvider>
     );
-    core.data = { ...core.data, foo: 42 };
+    const input = wrapper.find('input').first();
+    expect(input.props().value).toBe('2.72');
+
+    core.data = { ...core.data, foo: 3.14 };
     wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
-    const input = wrapper.find('input').first();
-    expect(input.props().value).toBe(42);
+
+    expect(wrapper.find('input').first().props().value).toBe('3.14');
   });
 
-  it('should not update with undefined value', () => {
+  it('should update with undefined value', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <IntegerCell schema={schema} uischema={uischema} path='foo' />
+        <NumberCell schema={schema} uischema={uischema} path='foo' />
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, foo: undefined };
     wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
-    const input = wrapper.find('input');
+    const input = wrapper.find('input').first();
     expect(input.props().value).toBe('');
   });
 
@@ -219,7 +278,7 @@ describe('Material integer cells', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <IntegerCell schema={schema} uischema={uischema} path='foo' />
+        <NumberCell schema={schema} uischema={uischema} path='foo' />
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, foo: null };
@@ -233,53 +292,53 @@ describe('Material integer cells', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <IntegerCell schema={schema} uischema={uischema} path='foo' />
+        <NumberCell schema={schema} uischema={uischema} path='foo' />
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, bar: 11 };
     wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
-    const input = wrapper.find('input');
-    expect(input.props().value).toBe(42);
+    const input = wrapper.find('input').first();
+    expect(input.props().value).toBe('3.14');
   });
 
   it('should not update with null ref', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <IntegerCell schema={schema} uischema={uischema} path='foo' />
+        <NumberCell schema={schema} uischema={uischema} path='foo' />
       </JsonFormsStateProvider>
     );
-    core.data = { ...core.data, null: 13 };
+    core.data = { ...core.data, null: 2.72 };
     wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
-    expect(input.props().value).toBe(42);
+    expect(input.props().value).toBe('3.14');
   });
 
   it('should not update with undefined ref', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <IntegerCell schema={schema} uischema={uischema} path='foo' />
+        <NumberCell schema={schema} uischema={uischema} path='foo' />
       </JsonFormsStateProvider>
     );
     core.data = { ...core.data, undefined: 13 };
     wrapper.setProps({ initState: { renderers, core } });
     wrapper.update();
     const input = wrapper.find('input').first();
-    expect(input.props().value).toBe(42);
+    expect(input.props().value).toBe('3.14');
   });
 
   it('can be disabled', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <IntegerCell
+        <NumberCell
           schema={schema}
           uischema={uischema}
-          enabled={false}
           path='foo'
+          enabled={false}
         />
       </JsonFormsStateProvider>
     );
@@ -291,7 +350,7 @@ describe('Material integer cells', () => {
     const core = initCore(schema, uischema, data);
     wrapper = mount(
       <JsonFormsStateProvider initState={{ renderers, core }}>
-        <IntegerCell schema={schema} uischema={uischema} path='foo' />
+        <NumberCell schema={schema} uischema={uischema} path='foo' />
       </JsonFormsStateProvider>
     );
     const input = wrapper.find('input').first();

@@ -34,6 +34,7 @@ import {
 import { Control, withJsonFormsControlProps } from '@jsonforms/react';
 import merge from 'lodash/merge';
 import { Form, Slider } from 'antd';
+import Hidden from '../util/Hidden';
 
 export class SliderControl extends Control<ControlProps, ControlState> {
   render() {
@@ -75,30 +76,31 @@ export class SliderControl extends Control<ControlProps, ControlState> {
     const controlStyle = !appliedUiSchemaOptions.trim ? { width: '100%' } : {};
 
     return (
-      <Form.Item
-        hidden={!visible}
-        required={required}
-        id={id + '-input'}
-        hasFeedback={!isValid}
-        status={isValid ? 'success' : 'error'}
-        help={!isValid ? errors : showDescription ? description : null}
-        style={controlStyle}
-        label={label}
-      >
-        <Slider
-          id={id}
-          style={sliderStyle}
-          min={schema.minimum}
-          max={schema.maximum}
-          marks={marks}
-          value={Number(data || schema.default)}
-          onChange={(value: any) => {
-            handleChange(path, Number(value));
-          }}
-          disabled={!enabled}
-          step={schema.multipleOf || 1}
-        />
-      </Form.Item>
+      <Hidden hidden={!visible}>
+        <Form.Item
+          required={required}
+          id={id + '-input'}
+          hasFeedback={!isValid}
+          status={isValid ? 'success' : 'error'}
+          help={!isValid ? errors : showDescription ? description : null}
+          style={controlStyle}
+          label={label}
+        >
+          <Slider
+            id={id}
+            style={sliderStyle}
+            min={schema.minimum}
+            max={schema.maximum}
+            marks={marks}
+            value={Number(data || schema.default)}
+            onChange={(value: any) => {
+              handleChange(path, Number(value));
+            }}
+            disabled={!enabled}
+            step={schema.multipleOf || 1}
+          />
+        </Form.Item>
+      </Hidden>
     );
   }
 }
