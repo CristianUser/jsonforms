@@ -2,12 +2,12 @@
   <control-wrapper
     v-bind="controlWrapper"
     :styles="styles"
-    :isFocused="isFocused"
-    :appliedOptions="appliedOptions"
+    :is-focused="isFocused"
+    :applied-options="appliedOptions"
   >
     <input
-      type="datetime-local"
       :id="control.id + '-input'"
+      type="datetime-local"
       :class="styles.control.input"
       :value="dataTime"
       :disabled="!control.enabled"
@@ -25,32 +25,38 @@ import {
   ControlElement,
   JsonFormsRendererRegistryEntry,
   rankWith,
-  isDateTimeControl
+  isDateTimeControl,
 } from '@jsonforms/core';
-import { defineComponent } from '../../config/vue';
-import { rendererProps, useJsonFormsControl, RendererProps } from '../../config/jsonforms';
+import { defineComponent } from 'vue';
+import {
+  rendererProps,
+  useJsonFormsControl,
+  RendererProps,
+} from '../../config/jsonforms';
 import { default as ControlWrapper } from './ControlWrapper.vue';
 import { useVanillaControl } from '../util';
 
 const toISOString = (inputDateTime: string) => {
-  return inputDateTime === '' ? '' : inputDateTime + ':00.000Z';
+  return inputDateTime === '' ? undefined : inputDateTime + ':00.000Z';
 };
 
 const controlRenderer = defineComponent({
-  name: 'datetime-control-renderer',
+  name: 'DatetimeControlRenderer',
   components: {
-    ControlWrapper
+    ControlWrapper,
   },
   props: {
-    ...rendererProps<ControlElement>()
+    ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
-    return useVanillaControl(useJsonFormsControl(props), target => toISOString(target.value));
+    return useVanillaControl(useJsonFormsControl(props), (target) =>
+      toISOString(target.value)
+    );
   },
   computed: {
     dataTime(): string {
       return (this.control.data ?? '').substr(0, 16);
-    }
+    },
   },
 });
 
@@ -58,6 +64,6 @@ export default controlRenderer;
 
 export const entry: JsonFormsRendererRegistryEntry = {
   renderer: controlRenderer,
-  tester: rankWith(2, isDateTimeControl)
+  tester: rankWith(2, isDateTimeControl),
 };
 </script>

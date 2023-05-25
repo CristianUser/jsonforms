@@ -2,13 +2,13 @@
   <control-wrapper
     v-bind="controlWrapper"
     :styles="styles"
-    :isFocused="isFocused"
-    :appliedOptions="appliedOptions"
+    :is-focused="isFocused"
+    :applied-options="appliedOptions"
   >
     <input
+      :id="control.id + '-input'"
       type="number"
       :step="step"
-      :id="control.id + '-input'"
       :class="styles.control.input"
       :value="control.data"
       :disabled="!control.enabled"
@@ -26,38 +26,42 @@ import {
   ControlElement,
   JsonFormsRendererRegistryEntry,
   rankWith,
-  isNumberControl
+  isNumberControl,
 } from '@jsonforms/core';
-import { defineComponent } from '../../config/vue';
-import { rendererProps, useJsonFormsControl, RendererProps } from '../../config/jsonforms';
+import { defineComponent } from 'vue';
+import {
+  rendererProps,
+  useJsonFormsControl,
+  RendererProps,
+} from '../../config/jsonforms';
 import { default as ControlWrapper } from './ControlWrapper.vue';
 import { useVanillaControl } from '../util';
 
 const controlRenderer = defineComponent({
-  name: 'number-control-renderer',
+  name: 'NumberControlRenderer',
   components: {
-    ControlWrapper
+    ControlWrapper,
   },
   props: {
-    ...rendererProps<ControlElement>()
+    ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
-    return useVanillaControl(useJsonFormsControl(props), target =>
-      Number(target.value)
+    return useVanillaControl(useJsonFormsControl(props), (target) =>
+      target.value === '' ? undefined : Number(target.value)
     );
   },
   computed: {
     step(): number {
       const options: any = this.appliedOptions;
       return options.step ?? 0.1;
-    }
-  }
+    },
+  },
 });
 
 export default controlRenderer;
 
 export const entry: JsonFormsRendererRegistryEntry = {
   renderer: controlRenderer,
-  tester: rankWith(1, isNumberControl)
+  tester: rankWith(1, isNumberControl),
 };
 </script>

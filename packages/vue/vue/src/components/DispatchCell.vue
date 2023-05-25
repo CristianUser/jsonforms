@@ -1,39 +1,43 @@
 <template>
-  <component v-bind:is="determinedCell" v-bind="cell"></component>
+  <component :is="determinedCell" v-bind="cell"></component>
 </template>
 
 <script lang="ts">
-import { defineComponent } from '../../config';
+import { defineComponent } from 'vue';
 import UnknownRenderer from './UnknownRenderer.vue';
 import maxBy from 'lodash/maxBy';
 import {
   rendererProps,
-  useJsonFormsDispatchCell
+  useJsonFormsDispatchCell,
 } from '../jsonFormsCompositions';
 import { ControlElement } from '@jsonforms/core';
 
 export default defineComponent({
-  name: 'dispatch-cell',
+  name: 'DispatchCell',
   props: {
-    ...rendererProps<ControlElement>()
+    ...rendererProps<ControlElement>(),
   },
   setup(props) {
     return useJsonFormsDispatchCell(props);
   },
   computed: {
     determinedCell(): any {
-      const cell = maxBy(this.cell.cells, r =>
-        r.tester(this.cell.uischema, this.cell.schema)
+      const testerContext = {
+        rootSchema: this.cell.rootSchema,
+        config: this.config,
+      };
+      const cell = maxBy(this.cell.cells, (r) =>
+        r.tester(this.cell.uischema, this.cell.schema, testerContext)
       );
       if (
         cell === undefined ||
-        cell.tester(this.cell.uischema, this.cell.schema) === -1
+        cell.tester(this.cell.uischema, this.cell.schema, testerContext) === -1
       ) {
         return UnknownRenderer;
       } else {
         return cell.cell;
       }
-    }
-  }
+    },
+  },
 });
 </script>

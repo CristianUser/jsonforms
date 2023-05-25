@@ -25,7 +25,8 @@
 
 import isEmpty from 'lodash/isEmpty';
 import get from 'lodash/get';
-import { JsonSchema } from '../models';
+import type { JsonSchema, JsonSchema7 } from '../models';
+import { decode } from './path';
 
 /**
  * Map for storing refs and the respective schemas they are pointing to.
@@ -47,15 +48,16 @@ export const resolveData = (instance: any, dataPath: string): any => {
   }
   const dataPathSegments = dataPath.split('.');
 
-  return dataPathSegments
-    .map(segment => decodeURIComponent(segment))
-    .reduce((curInstance, decodedSegment) => {
-      if (!curInstance || !curInstance.hasOwnProperty(decodedSegment)) {
-        return undefined;
-      }
+  return dataPathSegments.reduce((curInstance, decodedSegment) => {
+    if (
+      !curInstance ||
+      !Object.prototype.hasOwnProperty.call(curInstance, decodedSegment)
+    ) {
+      return undefined;
+    }
 
-      return curInstance[decodedSegment];
-    }, instance);
+    return curInstance[decodedSegment];
+  }, instance);
 };
 
 /**
@@ -72,7 +74,7 @@ export const findAllRefs = (
   resolveTuples = false
 ): ReferenceSchemaMap => {
   if (isObjectSchema(schema)) {
-    Object.keys(schema.properties).forEach(key =>
+    Object.keys(schema.properties).forEach((key) =>
       findAllRefs(schema.properties[key], result)
     );
   }
@@ -80,7 +82,7 @@ export const findAllRefs = (
     if (Array.isArray(schema.items)) {
       if (resolveTuples) {
         const items: JsonSchema[] = schema.items;
-        items.forEach(child => findAllRefs(child, result));
+        items.forEach((child) => findAllRefs(child, result));
       }
     } else {
       findAllRefs(schema.items, result);
@@ -88,7 +90,7 @@ export const findAllRefs = (
   }
   if (Array.isArray(schema.anyOf)) {
     const anyOf: JsonSchema[] = schema.anyOf;
-    anyOf.forEach(child => findAllRefs(child, result));
+    anyOf.forEach((child) => findAllRefs(child, result));
   }
   if (schema.$ref !== undefined) {
     result[schema.$ref] = schema;
@@ -110,80 +112,72 @@ const invalidSegment = (pathSegment: string) =>
 export const resolveSchema = (
   schema: JsonSchema,
   schemaPath: string,
-  rootSchema?: JsonSchema
+  rootSchema: JsonSchema
+): JsonSchema => {
+  const segments = schemaPath?.split('/').map(decode);
+  return resolveSchemaWithSegments(schema, segments, rootSchema);
+};
+
+const resolveSchemaWithSegments = (
+  schema: JsonSchema,
+  pathSegments: string[],
+  rootSchema: JsonSchema
 ): JsonSchema => {
   if (isEmpty(schema)) {
     return undefined;
   }
-  const validPathSegments = schemaPath.split('/');
-  let resultSchema = schema;
-  for (let i = 0; i < validPathSegments.length; i++) {
-    let pathSegment = validPathSegments[i];
-    resultSchema =
-      resultSchema === undefined || resultSchema.$ref === undefined
-        ? resultSchema
-        : resolveSchema(schema, resultSchema.$ref);
-    if (invalidSegment(pathSegment)) {
-      // skip invalid segments
-      continue;
-    }
-    let curSchema = get(resultSchema, pathSegment);
-    if (!curSchema) {
-      // resolving was not successful, check whether the scope omitted an oneOf, allOf or anyOf and resolve anyway
-      const schemas = [].concat(
-        resultSchema?.oneOf ?? [],
-        resultSchema?.allOf ?? [],
-        resultSchema?.anyOf ?? []
+
+  if (schema.$ref) {
+    schema = resolveSchema(rootSchema, schema.$ref, rootSchema);
+  }
+
+  if (!pathSegments || pathSegments.length === 0) {
+    return schema;
+  }
+
+  const [segment, ...remainingSegments] = pathSegments;
+
+  if (invalidSegment(segment)) {
+    return resolveSchemaWithSegments(schema, remainingSegments, rootSchema);
+  }
+
+  const singleSegmentResolveSchema = get(schema, segment);
+
+  const resolvedSchema = resolveSchemaWithSegments(
+    singleSegmentResolveSchema,
+    remainingSegments,
+    rootSchema
+  );
+  if (resolvedSchema) {
+    return resolvedSchema;
+  }
+
+  if (segment === 'properties' || segment === 'items') {
+    // Let's try to resolve the path, assuming oneOf/allOf/anyOf/then/else was omitted.
+    // We only do this when traversing an object or array as we want to avoid
+    // following a property which is named oneOf, allOf, anyOf, then or else.
+    let alternativeResolveResult = undefined;
+
+    const subSchemas = [].concat(
+      schema.oneOf ?? [],
+      schema.allOf ?? [],
+      schema.anyOf ?? [],
+      (schema as JsonSchema7).then ?? [],
+      (schema as JsonSchema7).else ?? []
+    );
+
+    for (const subSchema of subSchemas) {
+      alternativeResolveResult = resolveSchemaWithSegments(
+        subSchema,
+        [segment, ...remainingSegments],
+        rootSchema
       );
-      for (let item of schemas) {
-        curSchema = resolveSchema(item, validPathSegments.slice(i).join('/'));
-        if (curSchema) {
-          break;
-        }
-      }
-      if (curSchema) {
-        // already resolved rest of the path
-        resultSchema = curSchema;
+      if (alternativeResolveResult) {
         break;
       }
     }
-    resultSchema = curSchema;
-  }
-  // TODO: because schema is already scoped we might end up with refs pointing
-  // outside of the current schema. It would be better if we'd always could deal
-  // with absolute paths here, so that we don't need to keep two different
-  // schemas around
-  if (resultSchema !== undefined && resultSchema.$ref !== undefined) {
-    try {
-      return retrieveResolvableSchema(schema, resultSchema.$ref);
-    } catch (e) {
-      return retrieveResolvableSchema(rootSchema, resultSchema.$ref);
-    }
+    return alternativeResolveResult;
   }
 
-  return resultSchema;
+  return undefined;
 };
-
-/**
- * Normalizes the schema and resolves the given ref.
- *
- * @param {JsonSchema} full the JSON schema to resolved the reference against
- * @param {string} reference the reference to be resolved
- * @returns {JsonSchema} the resolved sub-schema
- */
-// disable rule because resolve is mutually recursive
-// tslint:disable:only-arrow-functions
-function retrieveResolvableSchema(
-  full: JsonSchema,
-  reference: string
-): JsonSchema {
-  // tslint:enable:only-arrow-functions
-  const child = resolveSchema(full, reference);
-  const allRefs = findAllRefs(child);
-  const innerSelfReference = allRefs[reference];
-  if (innerSelfReference !== undefined) {
-    innerSelfReference.$ref = '#';
-  }
-
-  return child;
-}

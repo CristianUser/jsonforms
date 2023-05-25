@@ -1,5 +1,5 @@
 <template>
-  <div v-if="visible" :class="styles.control.root" :id="id">
+  <div v-if="visible" :id="id" :class="styles.control.root">
     <label :for="id + '-input'" :class="styles.control.label">
       {{ computedLabel }}
     </label>
@@ -14,56 +14,56 @@
 
 <script lang="ts">
 import { isDescriptionHidden, computeLabel } from '@jsonforms/core';
-import { defineComponent, CompType } from '../../config/vue';
+import { defineComponent, PropType } from 'vue';
 import { Styles } from '../styles';
 import { Options } from '../util';
 
 export default defineComponent({
-  name: 'control-wrapper',
+  name: 'ControlWrapper',
   props: {
     id: {
-      required: true as true,
-      type: String
+      required: true,
+      type: String,
     },
     description: {
-      required: false as false,
+      required: false as const,
       type: String,
-      default: undefined
+      default: undefined,
     },
     errors: {
-      required: false as false,
+      required: false as const,
       type: String,
-      default: undefined
+      default: undefined,
     },
     label: {
-      required: false as false,
+      required: false as const,
       type: String,
-      default: undefined
+      default: undefined,
     },
     appliedOptions: {
-      required: false as false,
-      type: Object as CompType<Options, ObjectConstructor>,
-      default: undefined
+      required: false as const,
+      type: Object as PropType<Options>,
+      default: undefined,
     },
     visible: {
-      required: false as false,
+      required: false as const,
       type: Boolean,
-      default: true
+      default: true,
     },
     required: {
-      required: false as false,
+      required: false as const,
       type: Boolean,
-      default: false
+      default: false,
     },
     isFocused: {
-      required: false as false,
+      required: false as const,
       type: Boolean,
-      default: false
+      default: false,
     },
     styles: {
       required: true,
-      type: Object as CompType<Styles, ObjectConstructor>
-    }
+      type: Object as PropType<Styles>,
+    },
   },
   computed: {
     showDescription(): boolean {
@@ -80,7 +80,7 @@ export default defineComponent({
         this.required,
         !!this.appliedOptions?.hideRequiredAsterisk
       );
-    }
-  }
+    },
+  },
 });
 </script>

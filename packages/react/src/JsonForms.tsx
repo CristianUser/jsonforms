@@ -23,8 +23,9 @@
   THE SOFTWARE.
 */
 import maxBy from 'lodash/maxBy';
-import React, { useMemo } from 'react';
-import Ajv from 'ajv';
+import React, { ComponentType, useMemo } from 'react';
+import type Ajv from 'ajv';
+import type { ErrorObject } from 'ajv';
 import { UnknownRenderer } from './UnknownRenderer';
 import {
   createId,
@@ -40,11 +41,11 @@ import {
   OwnPropsOfJsonFormsRenderer,
   removeId,
   UISchemaElement,
-  ValidationMode
+  ValidationMode,
 } from '@jsonforms/core';
 import {
   JsonFormsStateProvider,
-  useJsonForms
+  withJsonFormsRendererProps,
 } from './JsonFormsContext';
 
 interface JsonFormsRendererState {
@@ -73,64 +74,85 @@ export class JsonFormsDispatchRenderer extends React.Component<
       removeId(this.state.id);
     }
   }
-  
+
   render() {
-    const { schema, uischema, path, enabled, renderers, cells } = this.props as JsonFormsProps;
+    const {
+      schema,
+      rootSchema,
+      uischema,
+      path,
+      enabled,
+      renderers,
+      cells,
+      config,
+    } = this.props as JsonFormsProps;
 
     return (
       <TestAndRender
         uischema={uischema}
         schema={schema}
+        rootSchema={rootSchema}
         path={path}
         enabled={enabled}
         renderers={renderers}
         cells={cells}
         id={this.state.id}
+        config={config}
       />
     );
   }
 }
 
-const TestAndRender = React.memo(
-  (props: {
-    uischema: UISchemaElement;
-    schema: JsonSchema;
-    path: string;
-    enabled: boolean;
-    renderers: JsonFormsRendererRegistryEntry[];
-    cells: JsonFormsCellRendererRegistryEntry[];
-    id: string;
-  }) => {
-    const renderer = useMemo(
-      () => maxBy(props.renderers, r => r.tester(props.uischema, props.schema)),
-      [props.renderers, props.uischema, props.schema]
+const TestAndRender = React.memo(function TestAndRender(props: {
+  uischema: UISchemaElement;
+  schema: JsonSchema;
+  rootSchema: JsonSchema;
+  path: string;
+  enabled: boolean;
+  renderers: JsonFormsRendererRegistryEntry[];
+  cells: JsonFormsCellRendererRegistryEntry[];
+  id: string;
+  config: any;
+}) {
+  const testerContext = useMemo(
+    () => ({
+      rootSchema: props.rootSchema,
+      config: props.config,
+    }),
+    [props.rootSchema, props.config]
+  );
+  const renderer = useMemo(
+    () =>
+      maxBy(props.renderers, (r) =>
+        r.tester(props.uischema, props.schema, testerContext)
+      ),
+    [props.renderers, props.uischema, props.schema, testerContext]
+  );
+  if (
+    renderer === undefined ||
+    renderer.tester(props.uischema, props.schema, testerContext) === -1
+  ) {
+    return <UnknownRenderer type={'renderer'} />;
+  } else {
+    const Render = renderer.renderer;
+    return (
+      <Render
+        uischema={props.uischema}
+        schema={props.schema}
+        path={props.path}
+        enabled={props.enabled}
+        renderers={props.renderers}
+        cells={props.cells}
+        id={props.id}
+      />
     );
-    if (
-      renderer === undefined ||
-      renderer.tester(props.uischema, props.schema) === -1
-    ) {
-      return <UnknownRenderer type={'renderer'} />;
-    } else {
-      const Render = renderer.renderer;
-      return (
-        <Render
-          uischema={props.uischema}
-          schema={props.schema}
-          path={props.path}
-          enabled={props.enabled}
-          renderers={props.renderers}
-          cells={props.cells}
-          id={props.id}
-        />
-      );
-    }
   }
-);
+});
 
 /**
  * @deprecated Since Version 3.0 this optimization renderer is no longer necessary.
  * Use `JsonFormsDispatch` instead.
- * We still export it for backward compatibility 
+ * We still export it for backward compatibility
  */
 export class ResolvedJsonFormsDispatchRenderer extends JsonFormsDispatchRenderer {
   constructor(props: JsonFormsProps) {
@@ -138,38 +160,16 @@ export class ResolvedJsonFormsDispatchRenderer extends JsonFormsDispatchRenderer
   }
 }
 
-const useJsonFormsDispatchRendererProps = (props: OwnPropsOfJsonFormsRenderer & JsonFormsReactProps) => {
-  const ctx = useJsonForms();
-
-  return {
-    schema: props.schema || ctx.core.schema,
-    uischema: props.uischema || ctx.core.uischema,
-    path: props.path || '',
-    enabled: props.enabled,
-    rootSchema: ctx.core.schema,
-    renderers: props.renderers || ctx.renderers,
-    cells: props.cells || ctx.cells,
-  };
-}
-
-export const JsonFormsDispatch = React.memo(
-  (props: OwnPropsOfJsonFormsRenderer & JsonFormsReactProps) => {
-    const renderProps = useJsonFormsDispatchRendererProps(props);
-    return <JsonFormsDispatchRenderer {...renderProps} />
-  }
-);
+export const JsonFormsDispatch: ComponentType<OwnPropsOfJsonFormsRenderer> =
+  withJsonFormsRendererProps(JsonFormsDispatchRenderer);
 
 /**
  * @deprecated Since Version 3.0 this optimization component is no longer necessary.
  * Use `JsonFormsDispatch` instead.
- * We still export it for backward compatibility 
+ * We still export it for backward compatibility
  */
-export const ResolvedJsonFormsDispatch = React.memo(
-  (props: OwnPropsOfJsonFormsRenderer & JsonFormsReactProps) => {
-    const renderProps = useJsonFormsDispatchRendererProps(props);
-    return <ResolvedJsonFormsDispatchRenderer {...renderProps} />
-  }
-);
+export const ResolvedJsonFormsDispatch: ComponentType<OwnPropsOfJsonFormsRenderer> =
+  withJsonFormsRendererProps(ResolvedJsonFormsDispatchRenderer);
 
 export interface JsonFormsInitStateProps {
   data: any;
@@ -183,6 +183,7 @@ export interface JsonFormsInitStateProps {
   readonly?: boolean;
   validationMode?: ValidationMode;
   i18n?: JsonFormsI18nState;
+  additionalErrors?: ErrorObject[];
 }
 
 export const JsonForms = (
@@ -200,7 +201,8 @@ export const JsonForms = (
     uischemas,
     readonly,
     validationMode,
-    i18n
+    i18n,
+    additionalErrors,
   } = props;
   const schemaToUse = useMemo(
     () => (schema !== undefined ? schema : Generate.jsonSchema(data)),
@@ -220,14 +222,15 @@ export const JsonForms = (
           data,
           schema: schemaToUse,
           uischema: uischemaToUse,
-          validationMode: validationMode
+          validationMode: validationMode,
+          additionalErrors: additionalErrors,
         },
         config,
         uischemas,
         renderers,
         cells,
         readonly,
-        i18n
+        i18n,
       }}
       onChange={onChange}
     >

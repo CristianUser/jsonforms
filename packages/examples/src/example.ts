@@ -22,7 +22,14 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import { JsonSchema, UISchemaElement } from '@jsonforms/core';
+import {
+  JsonFormsCellRendererRegistryEntry,
+  JsonFormsUISchemaRegistryEntry,
+  JsonFormsRendererRegistryEntry,
+  JsonSchema,
+  UISchemaElement,
+  JsonFormsI18nState,
+} from '@jsonforms/core';
 
 export interface ExampleDescription {
   name: string;
@@ -30,17 +37,18 @@ export interface ExampleDescription {
   data: any;
   schema: JsonSchema;
   uischema: UISchemaElement;
+  uischemas?: JsonFormsUISchemaRegistryEntry[];
   config?: any;
+  actions?: { label: string; apply: (props: StateProps) => any }[];
+  i18n?: JsonFormsI18nState;
 }
-export const CHANGE_EXAMPLE: 'jsonforms-example/CHANGE' =
-  'jsonforms-example/CHANGE';
-export interface ChangeExampleAction {
-  type: 'jsonforms-example/CHANGE';
-  example: ExampleDescription;
+
+export interface StateProps {
+  data: any;
+  schema?: JsonSchema;
+  uischema?: UISchemaElement;
+  renderers: JsonFormsRendererRegistryEntry[];
+  cells?: JsonFormsCellRendererRegistryEntry[];
+  config?: any;
+  uischemas?: JsonFormsUISchemaRegistryEntry[];
 }
-export const changeExample = (
-  example: ExampleDescription
-): ChangeExampleAction => ({
-  type: CHANGE_EXAMPLE,
-  example: example
-});

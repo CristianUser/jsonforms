@@ -1,43 +1,38 @@
 <template>
-  <label v-if="layout.visible" :class="styles.label.root">
-    {{ this.layout.uischema.text }}
+  <label v-if="label.visible" :class="styles.label.root">
+    {{ label.text }}
   </label>
 </template>
 
 <script lang="ts">
 import {
   JsonFormsRendererRegistryEntry,
-  Layout,
+  LabelElement,
   rankWith,
-  uiTypeIs
+  uiTypeIs,
 } from '@jsonforms/core';
-import { defineComponent } from '../../config/vue';
+import { defineComponent } from 'vue';
 import {
-  DispatchRenderer,
   rendererProps,
-  useJsonFormsLayout,
-  RendererProps
+  RendererProps,
+  useJsonFormsLabel,
 } from '../../config/jsonforms';
-import { useVanillaLayout } from '../util';
+import { useVanillaLabel } from '../util';
 
 const labelRenderer = defineComponent({
-  name: 'label-renderer',
-  components: {
-    DispatchRenderer
-  },
+  name: 'LabelRenderer',
   props: {
-    ...rendererProps<Layout>()
+    ...rendererProps<LabelElement>(),
   },
-  setup(props: RendererProps<Layout>) {
-    // reuse layout bindings for label
-    return useVanillaLayout(useJsonFormsLayout(props));
-  }
+  setup(props: RendererProps<LabelElement>) {
+    return useVanillaLabel(useJsonFormsLabel(props));
+  },
 });
 
 export default labelRenderer;
 
 export const entry: JsonFormsRendererRegistryEntry = {
   renderer: labelRenderer,
-  tester: rankWith(1, uiTypeIs('Label'))
+  tester: rankWith(1, uiTypeIs('Label')),
 };
 </script>

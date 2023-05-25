@@ -23,14 +23,8 @@
   THE SOFTWARE.
 */
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import {
-  getLocale,
-  isDateControl,
-  RankedTester,
-  rankWith
-} from '@jsonforms/core';
+import { isDateControl, RankedTester, rankWith } from '@jsonforms/core';
 import { JsonFormsAngularService, JsonFormsControl } from '@jsonforms/angular';
-import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'DateControlRenderer',
@@ -43,29 +37,25 @@ import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
         [id]="id"
         [formControl]="form"
         [matDatepicker]="datepicker"
+        (focus)="focused = true"
+        (focusout)="focused = false"
       />
       <mat-datepicker-toggle
         matSuffix
         [for]="datepicker"
       ></mat-datepicker-toggle>
       <mat-datepicker #datepicker></mat-datepicker>
-      <mat-hint *ngIf="shouldShowUnfocusedDescription()">{{ description }}</mat-hint>
+      <mat-hint *ngIf="shouldShowUnfocusedDescription() || focused">{{
+        description
+      }}</mat-hint>
       <mat-error>{{ error }}</mat-error>
     </mat-form-field>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DateControlRenderer extends JsonFormsControl {
-  constructor(
-    jsonformsService: JsonFormsAngularService,
-    private dateAdapter: DateAdapter<NativeDateAdapter>
-  ) {
+  constructor(jsonformsService: JsonFormsAngularService) {
     super(jsonformsService);
-  }
-
-  mapAdditionalProps() {
-    const locale = getLocale(this.jsonFormsService.getState());
-    this.dateAdapter.setLocale(locale);
   }
 
   getEventValue = (event: any) => event.value.toISOString().substr(0, 10);

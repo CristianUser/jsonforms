@@ -27,18 +27,24 @@ import {
   JsonFormsCellRendererRegistryEntry,
   defaultMapStateToEnumCellProps,
   mapStateToDispatchCellProps,
+  mapStateToOneOfEnumCellProps,
   StatePropsOfJsonFormsRenderer,
   createId,
-  removeId
+  removeId,
+  mapStateToMultiEnumControlProps,
+  mapDispatchToMultiEnumProps,
+  mapStateToLabelProps,
+  LabelElement,
 } from '@jsonforms/core';
 import {
-  CompType,
+  PropType,
   computed,
+  ComputedRef,
   inject,
   onBeforeMount,
   onUnmounted,
-  ref
-} from '../config';
+  ref,
+} from 'vue';
 
 /**
  * Constructs a props declaration for Vue components which can be used
@@ -51,38 +57,37 @@ import {
  */
 export const rendererProps = <U = UISchemaElement>() => ({
   schema: {
-    required: true as true,
-    type: [Object, Boolean] as CompType<
-      JsonSchema,
-      [ObjectConstructor, BooleanConstructor]
-    >
+    required: true as const,
+    type: [Object, Boolean] as PropType<JsonSchema>,
   },
   uischema: {
-    required: true as true,
-    type: Object as CompType<U, ObjectConstructor>
+    required: true as const,
+    type: Object as PropType<U>,
   },
   path: {
-    required: true as true,
-    type: String
+    required: true as const,
+    type: String,
   },
   enabled: {
-    required: false as false,
+    required: false as const,
     type: Boolean,
-    default: undefined
+    default: undefined,
   },
   renderers: {
     required: false,
-    type: Array as CompType<JsonFormsRendererRegistryEntry[], ArrayConstructor>,
-    default: undefined
+    type: Array as PropType<JsonFormsRendererRegistryEntry[]>,
+    default: undefined,
   },
   cells: {
     required: false,
-    type: Array as CompType<
-      JsonFormsCellRendererRegistryEntry[],
-      ArrayConstructor
-    >,
-    default: undefined
-  }
+    type: Array as PropType<JsonFormsCellRendererRegistryEntry[]>,
+    default: undefined,
+  },
+  config: {
+    required: false,
+    type: Object,
+    default: undefined,
+  },
 });
 
 /**
@@ -91,37 +96,31 @@ export const rendererProps = <U = UISchemaElement>() => ({
  */
 export const masterListItemProps = () => ({
   index: {
-    required: true as true,
-    type: Number
+    required: true as const,
+    type: Number,
   },
   selected: {
-    required: true as true,
-    type: Boolean
+    required: true as const,
+    type: Boolean,
   },
   path: {
-    required: true as true,
-    type: String
+    required: true as const,
+    type: String,
   },
   schema: {
-    required: true as true,
-    type: [Object, Boolean] as CompType<
-      JsonSchema,
-      [ObjectConstructor, BooleanConstructor]
-    >
+    required: true as const,
+    type: [Object, Boolean] as PropType<JsonSchema>,
   },
   handleSelect: {
-    required: false as false,
-    type: Function as CompType<(index: number) => void, FunctionConstructor>,
-    default: undefined
+    required: false as const,
+    type: Function as PropType<(index: number) => void>,
+    default: undefined,
   },
   removeItem: {
-    required: false as false,
-    type: Function as CompType<
-      (path: string, value: number) => void,
-      FunctionConstructor
-    >,
-    default: undefined
-  }
+    required: false as const,
+    type: Function as PropType<(path: string, value: number) => void>,
+    default: undefined,
+  },
 });
 
 export interface RendererProps<U = UISchemaElement> {
@@ -131,6 +130,7 @@ export interface RendererProps<U = UISchemaElement> {
   enabled?: boolean;
   renderers?: JsonFormsRendererRegistryEntry[];
   cells?: JsonFormsCellRendererRegistryEntry[];
+  config?: any;
 }
 
 export interface ControlProps extends RendererProps {
@@ -141,15 +141,21 @@ export type Required<T> = T extends object
   ? { [P in keyof T]-?: NonNullable<T[P]> }
   : T;
 
+// TODO fix @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/ban-types, @typescript-eslint/no-unused-vars
 export function useControl<R, D, P extends {}>(
   props: P,
   stateMap: (state: JsonFormsState, props: P) => R
-): { control: Required<R> };
+): { control: ComputedRef<Required<R>> };
+// TODO fix @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function useControl<R, D, P extends {}>(
   props: P,
   stateMap: (state: JsonFormsState, props: P) => R,
   dispatchMap: (dispatch: Dispatch<CoreActions>) => D
-): { control: Required<R> } & D;
+): { control: ComputedRef<Required<R>> } & D;
+// TODO fix @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function useControl<R, D, P extends {}>(
   props: P,
   stateMap: (state: JsonFormsState, props: P) => R,
@@ -164,8 +170,9 @@ export function useControl<R, D, P extends {}>(
 
   const id = ref<string | undefined>(undefined);
   const control = computed(() => ({
+    ...props,
     ...stateMap({ jsonforms }, props),
-    id: id.value
+    id: id.value,
   }));
 
   const dispatchMethods = dispatchMap?.(dispatch);
@@ -184,8 +191,8 @@ export function useControl<R, D, P extends {}>(
   });
 
   return {
-    control: (control as unknown) as R,
-    ...dispatchMethods
+    control: control as unknown as ComputedRef<R>,
+    ...dispatchMethods,
   };
 }
 
@@ -288,6 +295,20 @@ export const useJsonFormsOneOfControl = (props: ControlProps) => {
   return useControl(props, mapStateToOneOfProps, mapDispatchToControlProps);
 };
 
+/**
+ * Provides bindings for 'Control' elements which resolve to multiple choice enums.
+ *
+ * Access bindings via the provided reactive `control` object.
+ * Dispatch changes via the provided `handleChange` method.
+ */
+export const useJsonFormsMultiEnumControl = (props: ControlProps) => {
+  return useControl(
+    props,
+    mapStateToMultiEnumControlProps,
+    mapDispatchToMultiEnumProps
+  );
+};
+
 export interface LayoutProps extends RendererProps {
   uischema: Layout;
 }
@@ -353,14 +374,24 @@ export const useJsonFormsRenderer = (props: RendererProps) => {
 
   const rootSchema = computed(() => rawProps.value.rootSchema);
   const renderer = computed(() => {
-    const { rootSchema, ...rest} = rawProps.value;
+    const { rootSchema: _rootSchema, ...rest } = rawProps.value;
     return rest;
   });
 
   return {
     renderer,
-    rootSchema
+    rootSchema,
   };
+};
+
+/**
+ * Provides bindings for 'Label' elements.
+ *
+ * Access bindings via the provided reactive `label` object.
+ */
+export const useJsonFormsLabel = (props: RendererProps<LabelElement>) => {
+  const { control, ...other } = useControl(props, mapStateToLabelProps);
+  return { label: control, ...other };
 };
 
 /**
@@ -390,6 +421,22 @@ export const useJsonFormsEnumCell = (props: ControlProps) => {
   const { control, ...other } = useControl(
     props,
     defaultMapStateToEnumCellProps,
+    mapDispatchToControlProps
+  );
+  return { cell: control, ...other };
+};
+
+/**
+ * Provides bindings for 'oneOf' enum cell elements. Cells are meant to show simple inputs,
+ * for example without error validation, within a larger structure like tables.
+ *
+ * Access bindings via the provided reactive 'cell' object.
+ * Dispatch changes via the provided `handleChange` method.
+ */
+export const useJsonFormsOneOfEnumCell = (props: ControlProps) => {
+  const { control, ...other } = useControl(
+    props,
+    mapStateToOneOfEnumCellProps,
     mapDispatchToControlProps
   );
   return { cell: control, ...other };

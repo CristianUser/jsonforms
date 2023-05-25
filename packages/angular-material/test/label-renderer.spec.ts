@@ -35,18 +35,18 @@ const schema: JsonSchema = {
   type: 'object',
   properties: {
     foo: {
-      type: 'string'
-    }
-  }
+      type: 'string',
+    },
+  },
 };
 const uischema: LabelElement = {
   type: 'Label',
-  text: 'FooBar'
+  text: 'FooBar',
 };
 
 describe('Material label field tester', () => {
   it('should succeed', () => {
-    expect(LabelRendererTester(uischema, schema)).toBe(4);
+    expect(LabelRendererTester(uischema, schema, undefined)).toBe(4);
   });
 });
 const providers = [JsonFormsAngularService];
@@ -59,7 +59,7 @@ describe('Label Renderer Base Tests', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [componentUT],
-      providers: providers
+      providers: providers,
     }).compileComponents();
   });
   beforeEach(() => {

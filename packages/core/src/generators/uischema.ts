@@ -33,9 +33,9 @@ import {
   JsonSchema,
   LabelElement,
   Layout,
-  UISchemaElement
+  UISchemaElement,
 } from '../models';
-import { deriveTypes, resolveSchema } from '../util';
+import { deriveTypes, encode, resolveSchema } from '../util';
 
 /**
  * Creates a new ILayout.
@@ -44,7 +44,7 @@ import { deriveTypes, resolveSchema } from '../util';
  */
 const createLayout = (layoutType: string): Layout => ({
   type: layoutType,
-  elements: []
+  elements: [],
 });
 
 /**
@@ -52,7 +52,7 @@ const createLayout = (layoutType: string): Layout => ({
  */
 export const createControlElement = (ref: string): ControlElement => ({
   type: 'Control',
-  scope: ref
+  scope: ref,
 });
 
 /**
@@ -91,7 +91,7 @@ const addLabel = (layout: Layout, labelName: string) => {
       // add label with name
       const label: LabelElement = {
         type: 'Label',
-        text: fixedLabel
+        text: fixedLabel,
       };
       layout.elements.push(label);
     }
@@ -122,7 +122,7 @@ const generateUISchema = (
 ): UISchemaElement => {
   if (!isEmpty(jsonSchema) && jsonSchema.$ref !== undefined) {
     return generateUISchema(
-      resolveSchema(rootSchema, jsonSchema.$ref),
+      resolveSchema(rootSchema, jsonSchema.$ref, rootSchema),
       schemaElements,
       currentRef,
       schemaName,
@@ -160,11 +160,11 @@ const generateUISchema = (
     if (!isEmpty(jsonSchema.properties)) {
       // traverse properties
       const nextRef: string = currentRef + '/properties';
-      Object.keys(jsonSchema.properties).map(propName => {
+      Object.keys(jsonSchema.properties).map((propName) => {
         let value = jsonSchema.properties[propName];
-        const ref = `${nextRef}/${propName}`;
+        const ref = `${nextRef}/${encode(propName)}`;
         if (value.$ref !== undefined) {
-          value = resolveSchema(rootSchema, value.$ref);
+          value = resolveSchema(rootSchema, value.$ref, rootSchema);
         }
         generateUISchema(
           value,
@@ -191,11 +191,12 @@ const generateUISchema = (
     /* falls through */
     case 'integer':
     /* falls through */
-    case 'boolean':
+    case 'boolean': {
       const controlObject: ControlElement = createControlElement(currentRef);
       schemaElements.push(controlObject);
 
       return controlObject;
+    }
     default:
       throw new Error('Unknown type: ' + JSON.stringify(jsonSchema));
   }

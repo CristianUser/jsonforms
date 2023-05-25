@@ -25,34 +25,40 @@
 import test from 'ava';
 import Ajv from 'ajv';
 import { coreReducer } from '../../src/reducers';
-import { init, update, updateErrors } from '../../src/actions';
+import {
+  init,
+  setSchema,
+  setValidationMode,
+  update,
+  updateCore,
+  updateErrors,
+} from '../../src/actions';
 import { JsonSchema } from '../../src/models/jsonSchema';
 import {
   errorAt,
   JsonFormsCore,
   validate,
-  subErrorsAt
+  subErrorsAt,
 } from '../../src/reducers/core';
 
-import { createAjv, updateCore } from '../../src';
-import { setSchema, setValidationMode } from '../../lib';
 import { cloneDeep } from 'lodash';
+import { createAjv } from '../../src/util/validator';
 
-test('core reducer should support v7', t => {
+test('core reducer should support v7', (t) => {
   const schema: JsonSchema = {
     type: 'object',
     properties: {
       foo: {
         type: 'string',
-        const: 'bar'
-      }
-    }
+        const: 'bar',
+      },
+    },
   };
   const after = coreReducer(
     undefined,
     init(
       {
-        foo: 'baz'
+        foo: 'baz',
       },
       schema
     )
@@ -60,103 +66,116 @@ test('core reducer should support v7', t => {
   t.is(after.errors.length, 1);
 });
 
-test('core reducer - no previous state - init without options should create new ajv', t => {
+test('core reducer - no previous state - init without options should create new ajv', (t) => {
   const schema: JsonSchema = {
     type: 'object',
     properties: {
       foo: {
         type: 'string',
-        const: 'bar'
-      }
-    }
+        const: 'bar',
+      },
+    },
   };
   const after = coreReducer(undefined, init({}, schema, undefined, undefined));
   t.true(after.ajv !== undefined);
 });
 
-test('core reducer - no previous state - init with ajv as options object should use it', t => {
+test('core reducer - no previous state - init with ajv as options object should use it', (t) => {
   const schema: JsonSchema = {
     type: 'object',
     properties: {
       foo: {
         type: 'string',
-        const: 'bar'
-      }
-    }
+        const: 'bar',
+      },
+    },
   };
   const myAjv = new Ajv();
   const after = coreReducer(undefined, init({}, schema, undefined, myAjv));
   t.deepEqual(after.ajv, myAjv);
 });
 
-test('core reducer - no previous state - init with empty options object', t => {
+test('core reducer - no previous state - init with empty options object', (t) => {
   const schema: JsonSchema = {
     type: 'object',
     properties: {
       foo: {
         type: 'string',
-        const: 'bar'
-      }
-    }
+        const: 'bar',
+      },
+    },
   };
   const after = coreReducer(undefined, init({}, schema, undefined, {}));
   t.true(after.ajv !== undefined);
 });
 
-test('core reducer - no previous state - init with options object with ajv', t => {
+test('core reducer - no previous state - init with options object with ajv', (t) => {
   const schema: JsonSchema = {
     type: 'object',
     properties: {
       foo: {
         type: 'string',
-        const: 'bar'
-      }
-    }
+        const: 'bar',
+      },
+    },
   };
   const myAjv = new Ajv();
   const after = coreReducer(
     undefined,
     init({}, schema, undefined, {
-      ajv: myAjv
+      ajv: myAjv,
     })
   );
   t.deepEqual(after.ajv, myAjv);
 });
 
-test('core reducer - previous state - init without options should keep previous objects', t => {
+test('core reducer - previous state - init without options should keep previous objects', (t) => {
   const schema: JsonSchema = {
     type: 'object',
     properties: {
       foo: {
         type: 'string',
-        const: 'bar'
-      }
-    }
+        const: 'bar',
+      },
+    },
   };
   const myAjv = new Ajv();
+  const additionalErrors = [
+    {
+      instancePath: '',
+      dataPath: '',
+      schemaPath: '#/required',
+      keyword: 'required',
+      params: {
+        missingProperty: 'foo',
+      },
+    },
+  ];
   const after = coreReducer(
     {
       data: {},
       schema: {},
       uischema: {
-        type: 'Label'
+        type: 'Label',
       },
       ajv: myAjv,
+      additionalErrors,
     },
     init({}, schema)
   );
   t.deepEqual(after.ajv, myAjv);
+  t.deepEqual(after.additionalErrors, additionalErrors);
 });
 
-test('core reducer - previous state - init with ajv options object should overwrite ajv', t => {
+test('core reducer - previous state - init with ajv options object should overwrite ajv', (t) => {
   const schema: JsonSchema = {
     type: 'object',
     properties: {
       foo: {
         type: 'string',
-        const: 'bar'
-      }
-    }
+        const: 'bar',
+      },
+    },
   };
   const previousAjv = new Ajv();
   const newAjv = new Ajv();
@@ -165,7 +184,7 @@ test('core reducer - previous state - init with ajv options object should overwr
       data: {},
       schema: {},
       uischema: {
-        type: 'Label'
+        type: 'Label',
       },
       ajv: previousAjv,
     },
@@ -174,42 +193,102 @@ test('core reducer - previous state - init with ajv options object should overwr
   t.deepEqual(after.ajv, newAjv);
 });
 
-test('core reducer - previous state - init with empty options should not overwrite', t => {
+test('core reducer - previous state - init with additionalErrors option object should overwrite additionalErrors', (t) => {
   const schema: JsonSchema = {
     type: 'object',
     properties: {
       foo: {
         type: 'string',
-        const: 'bar'
-      }
-    }
+        const: 'bar',
+      },
+    },
   };
-  const myAjv = new Ajv();
+
+  const prevAdditionalErrors = [
+    {
+      instancePath: '',
+      dataPath: '',
+      schemaPath: '#/required',
+      keyword: 'required',
+      params: {
+        missingProperty: 'foo',
+      },
+    },
+  ];
+  const currentAdditionalErrors = [
+    {
+      instancePath: '',
+      dataPath: '',
+      schemaPath: '#/required',
+      keyword: 'required',
+      params: {
+        missingProperty: 'bar',
+      },
+    },
+  ];
   const after = coreReducer(
     {
       data: {},
       schema: {},
       uischema: {
-        type: 'Label'
+        type: 'Label',
+      },
+      additionalErrors: prevAdditionalErrors,
+    },
+    init({}, schema, undefined, { additionalErrors: currentAdditionalErrors })
+  );
+  t.deepEqual(after.additionalErrors, currentAdditionalErrors);
+});
+
+test('core reducer - previous state - init with empty options should not overwrite', (t) => {
+  const schema: JsonSchema = {
+    type: 'object',
+    properties: {
+      foo: {
+        type: 'string',
+        const: 'bar',
+      },
+    },
+  };
+  const myAjv = new Ajv();
+  const additionalErrors = [
+    {
+      instancePath: '',
+      dataPath: '',
+      schemaPath: '#/required',
+      keyword: 'required',
+      params: {
+        missingProperty: 'foo',
+      },
+    },
+  ];
+  const after = coreReducer(
+    {
+      data: {},
+      schema: {},
+      uischema: {
+        type: 'Label',
       },
       ajv: myAjv,
+      additionalErrors,
     },
     init({}, schema, undefined, {})
   );
   t.deepEqual(after.ajv, myAjv);
+  t.deepEqual(after.additionalErrors, additionalErrors);
 });
 
-test('core reducer - previous state - init with undefined data should not change data', t => {
+test('core reducer - previous state - init with undefined data should not change data', (t) => {
   const schema = {
     type: 'object',
     properties: {
       animal: {
-        type: 'string'
+        type: 'string',
       },
       color: {
-        type: 'string'
-      }
-    }
+        type: 'string',
+      },
+    },
   };
 
   const after = coreReducer(
@@ -217,23 +296,23 @@ test('core reducer - previous state - init with undefined data should not change
       data: undefined,
       schema: {},
       uischema: {
-        type: 'Label'
-      }
+        type: 'Label',
+      },
     },
     init(undefined, schema, undefined, {})
   );
   t.deepEqual(after.data, undefined);
 });
 
-test('core reducer - previous state - init schema with id', t => {
+test('core reducer - previous state - init schema with id', (t) => {
   const schema: JsonSchema = {
     $id: 'https://www.jsonforms.io/example.json',
     type: 'object',
     properties: {
       animal: {
-        type: 'string'
-      }
-    }
+        type: 'string',
+      },
+    },
   };
   const updatedSchema = cloneDeep(schema);
   updatedSchema.properties.animal.minLength = 5;
@@ -250,63 +329,63 @@ test('core reducer - previous state - init schema with id', t => {
   t.is(after.schema.properties.animal.minLength, 5);
 });
 
-test('core reducer - update - undefined data should update for given path', t => {
+test('core reducer - update - undefined data should update for given path', (t) => {
   const schema = {
     type: 'object',
     properties: {
       foo: {
-        type: 'string'
-      }
-    }
+        type: 'string',
+      },
+    },
   };
 
   const before: JsonFormsCore = {
     data: undefined,
     schema: schema,
     uischema: {
-      type: 'Label'
+      type: 'Label',
     },
     errors: [],
-    validator: new Ajv().compile(schema)
+    validator: new Ajv().compile(schema),
   };
 
   const after = coreReducer(
     before,
-    update('foo', _ => {
+    update('foo', (_) => {
       return 'bar';
     })
   );
 
   t.not(before, after);
   t.not(before.data, after.data);
-  t.deepEqual(after, { ...before, data: { foo: 'bar'} });
+  t.deepEqual(after, { ...before, data: { foo: 'bar' } });
 });
 
-test('core reducer - update - path is undefined state should remain same', t => {
+test('core reducer - update - path is undefined state should remain same', (t) => {
   const before: JsonFormsCore = {
     data: {
       foo: 'bar',
       baz: {
-        bar: 'bar'
-      }
+        bar: 'bar',
+      },
     },
     schema: {
       type: 'object',
       properties: {
         foo: {
           type: 'string',
-          const: 'bar'
-        }
-      }
+          const: 'bar',
+        },
+      },
     },
     uischema: {
-      type: 'Label'
-    }
+      type: 'Label',
+    },
   };
 
   const after = coreReducer(
     before,
-    update(undefined, _ => {
+    update(undefined, (_) => {
       return { foo: 'anything' };
     })
   );
@@ -317,31 +396,31 @@ test('core reducer - update - path is undefined state should remain same', t => 
   t.deepEqual(before, after);
 });
 
-test('core reducer - update - path is null state should remain same', t => {
+test('core reducer - update - path is null state should remain same', (t) => {
   const before: JsonFormsCore = {
     data: {
       foo: 'bar',
       baz: {
-        bar:'bar'
-      }
+        bar: 'bar',
+      },
     },
     schema: {
       type: 'object',
       properties: {
         foo: {
           type: 'string',
-          const: 'bar'
-        }
-      }
+          const: 'bar',
+        },
+      },
     },
     uischema: {
-      type: 'Label'
-    }
+      type: 'Label',
+    },
   };
 
   const after = coreReducer(
     before,
-    update(null, _ => {
+    update(null, (_) => {
       return { foo: 'anything' };
     })
   );
@@ -352,34 +431,34 @@ test('core reducer - update - path is null state should remain same', t => {
   t.deepEqual(before, after);
 });
 
-test('core reducer - update - empty path should update root state', t => {
+test('core reducer - update - empty path should update root state', (t) => {
   const schema = {
     type: 'object',
     properties: {
       foo: {
-        type: 'string'
-      }
-    }
+        type: 'string',
+      },
+    },
   };
 
   const before: JsonFormsCore = {
     data: {
       foo: 'bar',
       baz: {
-        bar:'bar'
-      }
+        bar: 'bar',
+      },
     },
     errors: [],
     schema,
     uischema: {
-      type: 'Label'
+      type: 'Label',
     },
-    validator: new Ajv().compile(schema)
+    validator: new Ajv().compile(schema),
   };
 
   const after = coreReducer(
     before,
-    update('', _ => {
+    update('', (_) => {
       return { foo: 'xyz' };
     })
   );
@@ -389,17 +468,17 @@ test('core reducer - update - empty path should update root state', t => {
   t.deepEqual(after, { ...before, data: { foo: 'xyz' } });
 });
 
-test('core reducer - update - providing a path should update data only belonging to path', t => {
+test('core reducer - update - providing a path should update data only belonging to path', (t) => {
   const schema = {
     type: 'object',
     properties: {
       animal: {
-        type: 'string'
+        type: 'string',
       },
       color: {
-        type: 'string'
-      }
-    }
+        type: 'string',
+      },
+    },
   };
 
   const before: JsonFormsCore = {
@@ -407,20 +486,20 @@ test('core reducer - update - providing a path should update data only belonging
       animal: 'Sloth',
       color: 'Blue',
       baz: {
-        bar: 'bar'
-      }
+        bar: 'bar',
+      },
     },
     errors: [],
     schema,
     uischema: {
-      type: 'Label'
+      type: 'Label',
     },
-    validator: new Ajv().compile(schema)
+    validator: new Ajv().compile(schema),
   };
 
   const after = coreReducer(
     before,
-    update('color', _ => {
+    update('color', (_) => {
       return 'Green';
     })
   );
@@ -431,18 +510,18 @@ test('core reducer - update - providing a path should update data only belonging
   t.deepEqual(after, { ...before, data: { ...before.data, color: 'Green' } });
 });
 
-test('core reducer - update - should update errors', t => {
+test('core reducer - update - should update errors', (t) => {
   const schema = {
     type: 'object',
     properties: {
       animal: {
-        type: 'string'
+        type: 'string',
       },
       color: {
         type: 'string',
-        enum: ['Blue', 'Green']
-      }
-    }
+        enum: ['Blue', 'Green'],
+      },
+    },
   };
 
   const before: JsonFormsCore = {
@@ -453,14 +532,14 @@ test('core reducer - update - should update errors', t => {
     errors: [],
     schema,
     uischema: {
-      type: 'Label'
+      type: 'Label',
     },
-    validator: new Ajv().compile(schema)
+    validator: new Ajv().compile(schema),
   };
 
   const after = coreReducer(
     before,
-    update('color', _ => {
+    update('color', (_) => {
       return 'Yellow';
     })
   );
@@ -474,31 +553,31 @@ test('core reducer - update - should update errors', t => {
         keyword: 'enum',
         message: 'must be equal to one of the allowed values',
         params: {
-          allowedValues: ['Blue', 'Green']
+          allowedValues: ['Blue', 'Green'],
         },
-        schemaPath: '#/properties/color/enum'
-      }
-    ]
+        schemaPath: '#/properties/color/enum',
+      },
+    ],
   });
 });
 
-test('core reducer - updateErrors - should update errors with empty list', t => {
+test('core reducer - updateErrors - should update errors with empty list', (t) => {
   const before: JsonFormsCore = {
     data: {},
     schema: {},
-    uischema: undefined
+    uischema: undefined,
   };
 
   const after = coreReducer(before, updateErrors([]));
   t.deepEqual(after, { ...before, errors: [] });
 });
 
-test('core reducer - updateErrors - should update errors with error', t => {
+test('core reducer - updateErrors - should update errors with error', (t) => {
   const before: JsonFormsCore = {
     data: {},
     schema: {},
     uischema: undefined,
-    errors: []
+    errors: [],
   };
 
   const error = {
@@ -506,41 +585,41 @@ test('core reducer - updateErrors - should update errors with error', t => {
     keyword: 'enum',
     message: 'should be equal to one of the allowed values',
     params: {
-      allowedValues: ['Blue', 'Green']
+      allowedValues: ['Blue', 'Green'],
     },
-    schemaPath: '#/properties/color/enum'
+    schemaPath: '#/properties/color/enum',
   };
 
   const after = coreReducer(before, updateErrors([error]));
   t.deepEqual(after, { ...before, errors: [error] });
 });
 
-test('core reducer - updateErrors - should update errors with undefined', t => {
+test('core reducer - updateErrors - should update errors with undefined', (t) => {
   const before: JsonFormsCore = {
     data: {},
     schema: {},
     uischema: undefined,
-    errors: []
+    errors: [],
   };
 
   const after = coreReducer(before, updateErrors(undefined));
   t.deepEqual(after, { ...before, errors: undefined });
 });
 
-test('errorAt filters enum', t => {
+test('errorAt filters enum', (t) => {
   const ajv = createAjv();
   const schema: JsonSchema = {
     type: 'object',
     properties: {
       bar: {
         type: 'string',
-        enum: ['f', 'b']
+        enum: ['f', 'b'],
       },
       foo: {
         type: 'string',
-        enum: ['f', 'b']
-      }
-    }
+        enum: ['f', 'b'],
+      },
+    },
   };
   const data = { foo: '', bar: '' };
   const v = ajv.compile(schema);
@@ -550,28 +629,28 @@ test('errorAt filters enum', t => {
     data,
     schema,
     uischema: undefined,
-    errors
+    errors,
   };
   const filtered = errorAt('foo', schema.properties.foo)(state);
   t.is(filtered.length, 1);
   t.deepEqual(filtered[0], state.errors[1]);
 });
 
-test('errorAt filters required', t => {
+test('errorAt filters required', (t) => {
   const ajv = createAjv();
   const schema: JsonSchema = {
     type: 'object',
     properties: {
       bar: {
         type: 'string',
-        enum: ['f', 'b']
+        enum: ['f', 'b'],
       },
       foo: {
         type: 'string',
-        enum: ['f', 'b']
-      }
+        enum: ['f', 'b'],
+      },
     },
-    required: ['bar', 'foo']
+    required: ['bar', 'foo'],
   };
   const data = {};
   const v = ajv.compile(schema);
@@ -581,14 +660,14 @@ test('errorAt filters required', t => {
     data,
     schema,
     uischema: undefined,
-    errors
+    errors,
   };
   const filtered = errorAt('foo', schema.properties.foo)(state);
   t.is(filtered.length, 1);
   t.deepEqual(filtered[0], state.errors[1]);
 });
 
-test('errorAt filters required in oneOf object', t => {
+test('errorAt filters required in oneOf object', (t) => {
   const ajv = createAjv();
   const schema: JsonSchema = {
     type: 'object',
@@ -600,29 +679,29 @@ test('errorAt filters required in oneOf object', t => {
             type: 'object',
             properties: {
               foo: {
-                type: 'string'
-              }
+                type: 'string',
+              },
             },
             required: ['foo'],
-            additionalProperties: false
+            additionalProperties: false,
           },
           {
             title: 'Bar',
             type: 'object',
             properties: {
               bar: {
-                type: 'number'
-              }
+                type: 'number',
+              },
             },
             required: ['bar'],
-            additionalProperties: false
-          }
-        ]
-      }
+            additionalProperties: false,
+          },
+        ],
+      },
     },
-    additionalProperties: false
+    additionalProperties: false,
   };
-  const data = { fooOrBar: { } };
+  const data = { fooOrBar: {} };
   const v = ajv.compile(schema);
   const errors = validate(v, data);
 
@@ -630,7 +709,7 @@ test('errorAt filters required in oneOf object', t => {
     data,
     schema,
     uischema: undefined,
-    errors
+    errors,
   };
   const filtered = errorAt(
     'fooOrBar.foo',
@@ -640,7 +719,7 @@ test('errorAt filters required in oneOf object', t => {
   t.deepEqual(filtered[0].keyword, 'required');
 });
 
-test('errorAt filters required in anyOf object', t => {
+test('errorAt filters required in anyOf object', (t) => {
   const ajv = createAjv();
   const schema: JsonSchema = {
     type: 'object',
@@ -652,29 +731,29 @@ test('errorAt filters required in anyOf object', t => {
             type: 'object',
             properties: {
               foo: {
-                type: 'string'
-              }
+                type: 'string',
+              },
             },
             required: ['foo'],
-            additionalProperties: false
+            additionalProperties: false,
           },
           {
             title: 'Bar',
             type: 'object',
             properties: {
               bar: {
-                type: 'number'
-              }
+                type: 'number',
+              },
             },
             required: ['bar'],
-            additionalProperties: false
-          }
-        ]
-      }
+            additionalProperties: false,
+          },
+        ],
+      },
     },
-    additionalProperties: false
+    additionalProperties: false,
   };
-  const data = { fooOrBar: { } };
+  const data = { fooOrBar: {} };
   const v = ajv.compile(schema);
   const errors = validate(v, data);
 
@@ -682,7 +761,7 @@ test('errorAt filters required in anyOf object', t => {
     data,
     schema,
     uischema: undefined,
-    errors
+    errors,
   };
   const filtered = errorAt(
     'fooOrBar.foo',
@@ -692,7 +771,7 @@ test('errorAt filters required in anyOf object', t => {
   t.deepEqual(filtered[0].keyword, 'required');
 });
 
-test('errorAt filters array minItems', t => {
+test('errorAt filters array minItems', (t) => {
   const ajv = createAjv();
   const schema: JsonSchema = {
     type: 'object',
@@ -703,9 +782,9 @@ test('errorAt filters array minItems', t => {
         items: {
           title: 'Type',
           type: 'string',
-          enum: ['One', 'Two', 'Three']
+          enum: ['One', 'Two', 'Three'],
         },
-        minItems: 1
+        minItems: 1,
       },
       colours: {
         title: 'Colours',
@@ -713,15 +792,15 @@ test('errorAt filters array minItems', t => {
         items: {
           title: 'Type',
           type: 'string',
-          enum: ['Red', 'Green', 'Blue']
+          enum: ['Red', 'Green', 'Blue'],
         },
-        minItems: 1
-      }
-    }
+        minItems: 1,
+      },
+    },
   };
   const data: { colours: string[]; numbers: string[] } = {
     colours: [],
-    numbers: []
+    numbers: [],
   };
   const v = ajv.compile(schema);
   const errors = validate(v, data);
@@ -730,14 +809,14 @@ test('errorAt filters array minItems', t => {
     data,
     schema,
     uischema: undefined,
-    errors
+    errors,
   };
   const filtered = errorAt('colours', schema.properties.colours)(state);
   t.is(filtered.length, 1);
   t.deepEqual(filtered[0], state.errors[1]);
 });
 
-test('errorAt filters array inner value', t => {
+test('errorAt filters array inner value', (t) => {
   const ajv = createAjv();
   const schema: JsonSchema = {
     type: 'object',
@@ -748,9 +827,9 @@ test('errorAt filters array inner value', t => {
         items: {
           title: 'Type',
           type: 'string',
-          enum: ['One', 'Two', 'Three']
+          enum: ['One', 'Two', 'Three'],
         },
-        minItems: 1
+        minItems: 1,
       },
       colours: {
         title: 'Colours',
@@ -758,15 +837,15 @@ test('errorAt filters array inner value', t => {
         items: {
           title: 'Type',
           type: 'string',
-          enum: ['Red', 'Green', 'Blue']
+          enum: ['Red', 'Green', 'Blue'],
         },
-        minItems: 1
-      }
-    }
+        minItems: 1,
+      },
+    },
   };
   const data: { colours: string[]; numbers: string[] } = {
     colours: ['Foo'],
-    numbers: ['Bar']
+    numbers: ['Bar'],
   };
   const v = ajv.compile(schema);
   const errors = validate(v, data);
@@ -775,14 +854,88 @@ test('errorAt filters array inner value', t => {
     data,
     schema,
     uischema: undefined,
-    errors
+    errors,
   };
   const filtered = errorAt('colours.0', schema.properties.colours)(state);
   t.is(filtered.length, 1);
   t.deepEqual(filtered[0], state.errors[1]);
 });
 
-test('errorAt filters oneOf simple', t => {
+test('errorAt filters oneOf enum', (t) => {
+  const ajv = createAjv();
+  const schema: JsonSchema = {
+    type: 'object',
+    properties: {
+      oneOfEnum: {
+        type: 'string',
+        oneOf: [
+          { title: 'Number', const: '1' },
+          { title: 'Color', const: '2' },
+        ],
+      },
+    },
+  };
+  const data: { oneOfEnum: string } = { oneOfEnum: '3' };
+  const v = ajv.compile(schema);
+  const errors = validate(v, data);
+
+  const state: JsonFormsCore = {
+    data,
+    schema,
+    uischema: undefined,
+    errors,
+  };
+  const filtered = errorAt('oneOfEnum', schema.properties.oneOfEnum)(state);
+  t.is(filtered.length, 1);
+  // in the state, we get 3 errors: one for each const value in the oneOf (we have two consts here) and one for the oneOf property itself
+  // we only display the last error on the control
+  t.deepEqual(filtered[0], state.errors[2]);
+});
+
+test('errorAt filters array with inner oneOf enum', (t) => {
+  const ajv = createAjv();
+  const schema = {
+    type: 'object',
+    properties: {
+      parentArray: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            oneOfEnumWithError: {
+              type: 'string',
+              oneOf: [
+                { title: 'Number', const: '1' },
+                { title: 'Color', const: '2' },
+              ],
+            },
+          },
+        },
+      },
+    },
+  };
+  const data: { parentArray: { oneOfEnumWithError: string }[] } = {
+    parentArray: [{ oneOfEnumWithError: 'test' }],
+  };
+  const v = ajv.compile(schema);
+  const errors = validate(v, data);
+  const state: JsonFormsCore = {
+    data,
+    schema,
+    uischema: undefined,
+    errors,
+  };
+  const filtered = errorAt(
+    'parentArray.0.oneOfEnumWithError',
+    schema.properties.parentArray.items.properties.oneOfEnumWithError
+  )(state);
+  t.is(filtered.length, 1);
+  // in the state, we get 3 errors: one for each const value in the oneOf (we have two consts here) and one for the oneOf property itself
+  // we only display the last error on the control
+  t.deepEqual(filtered[0], state.errors[2]);
+});
+
+test('errorAt filters oneOf simple', (t) => {
   const ajv = createAjv();
   const schema: JsonSchema = {
     type: 'object',
@@ -792,16 +945,16 @@ test('errorAt filters oneOf simple', t => {
           {
             title: 'Numbers',
             type: 'string',
-            enum: ['One', 'Two', 'Three']
+            enum: ['One', 'Two', 'Three'],
           },
           {
             title: 'Colours',
             type: 'string',
-            enum: ['Red', 'Green', 'Blue']
-          }
-        ]
-      }
-    }
+            enum: ['Red', 'Green', 'Blue'],
+          },
+        ],
+      },
+    },
   };
   const data: { coloursOrNumbers: string } = { coloursOrNumbers: 'Foo' };
   const v = ajv.compile(schema);
@@ -811,7 +964,7 @@ test('errorAt filters oneOf simple', t => {
     data,
     schema,
     uischema: undefined,
-    errors
+    errors,
   };
   const filtered = errorAt(
     'coloursOrNumbers',
@@ -821,7 +974,7 @@ test('errorAt filters oneOf simple', t => {
   t.deepEqual(filtered[0], state.errors[1]);
 });
 
-test('errorAt filters anyOf simple', t => {
+test('errorAt filters anyOf simple', (t) => {
   const ajv = createAjv();
   const schema: JsonSchema = {
     type: 'object',
@@ -831,16 +984,16 @@ test('errorAt filters anyOf simple', t => {
           {
             title: 'Numbers',
             type: 'string',
-            enum: ['One', 'Two', 'Three']
+            enum: ['One', 'Two', 'Three'],
           },
           {
             title: 'Colours',
             type: 'string',
-            enum: ['Red', 'Green', 'Blue']
-          }
-        ]
-      }
-    }
+            enum: ['Red', 'Green', 'Blue'],
+          },
+        ],
+      },
+    },
   };
   const data: { coloursOrNumbers: string } = { coloursOrNumbers: 'Foo' };
   const v = ajv.compile(schema);
@@ -850,7 +1003,7 @@ test('errorAt filters anyOf simple', t => {
     data,
     schema,
     uischema: undefined,
-    errors
+    errors,
   };
   const filtered = errorAt(
     'coloursOrNumbers',
@@ -860,7 +1013,7 @@ test('errorAt filters anyOf simple', t => {
   t.deepEqual(filtered[0], state.errors[1]);
 });
 
-test('errorAt filters oneOf objects', t => {
+test('errorAt filters oneOf objects', (t) => {
   const ajv = createAjv();
   const schema: JsonSchema = {
     type: 'object',
@@ -874,10 +1027,10 @@ test('errorAt filters oneOf objects', t => {
               number: {
                 title: 'Type',
                 type: 'string',
-                enum: ['One', 'Two', 'Three']
-              }
+                enum: ['One', 'Two', 'Three'],
+              },
             },
-            additionalProperties: false
+            additionalProperties: false,
           },
           {
             title: 'Colours',
@@ -886,15 +1039,15 @@ test('errorAt filters oneOf objects', t => {
               colour: {
                 title: 'Type',
                 type: 'string',
-                enum: ['Red', 'Green', 'Blue']
-              }
+                enum: ['Red', 'Green', 'Blue'],
+              },
             },
-            additionalProperties: false
-          }
-        ]
-      }
+            additionalProperties: false,
+          },
+        ],
+      },
     },
-    additionalProperties: false
+    additionalProperties: false,
   };
   const data = { coloursOrNumbers: { colour: 'Foo' } };
   const v = ajv.compile(schema);
@@ -904,7 +1057,7 @@ test('errorAt filters oneOf objects', t => {
     data,
     schema,
     uischema: undefined,
-    errors
+    errors,
   };
   const filtered = errorAt(
     'coloursOrNumbers.colour',
@@ -915,7 +1068,7 @@ test('errorAt filters oneOf objects', t => {
   t.deepEqual(filtered[0], state.errors[1]);
 });
 
-test('errorAt filters oneOf objects same properties', t => {
+test('errorAt filters oneOf objects same properties', (t) => {
   const ajv = createAjv();
   const schema: JsonSchema = {
     type: 'object',
@@ -929,9 +1082,9 @@ test('errorAt filters oneOf objects same properties', t => {
               colourOrNumber: {
                 title: 'Type',
                 type: 'string',
-                enum: ['One', 'Two', 'Three']
-              }
-            }
+                enum: ['One', 'Two', 'Three'],
+              },
+            },
           },
           {
             title: 'Colours',
@@ -940,13 +1093,13 @@ test('errorAt filters oneOf objects same properties', t => {
               colourOrNumber: {
                 title: 'Type',
                 type: 'string',
-                enum: ['Red', 'Green', 'Blue']
-              }
-            }
-          }
-        ]
-      }
-    }
+                enum: ['Red', 'Green', 'Blue'],
+              },
+            },
+          },
+        ],
+      },
+    },
   };
   const data = { coloursOrNumbers: { colourOrNumber: 'Foo' } };
   const v = ajv.compile(schema);
@@ -956,7 +1109,7 @@ test('errorAt filters oneOf objects same properties', t => {
     data,
     schema,
     uischema: undefined,
-    errors
+    errors,
   };
   const filtered = errorAt(
     'coloursOrNumbers.colourOrNumber',
@@ -966,7 +1119,7 @@ test('errorAt filters oneOf objects same properties', t => {
   t.deepEqual(filtered[0], state.errors[1]);
 });
 
-test('errorAt filters oneOf array', t => {
+test('errorAt filters oneOf array', (t) => {
   const ajv = createAjv();
   const schema: JsonSchema = {
     type: 'object',
@@ -979,9 +1132,9 @@ test('errorAt filters oneOf array', t => {
             items: {
               title: 'Type',
               type: 'string',
-              enum: ['One', 'Two', 'Three']
+              enum: ['One', 'Two', 'Three'],
             },
-            minItems: 1
+            minItems: 1,
           },
           {
             title: 'Colours',
@@ -989,13 +1142,13 @@ test('errorAt filters oneOf array', t => {
             items: {
               title: 'Type',
               type: 'string',
-              enum: ['Red', 'Green', 'Blue']
+              enum: ['Red', 'Green', 'Blue'],
             },
-            minItems: 1
-          }
-        ]
-      }
-    }
+            minItems: 1,
+          },
+        ],
+      },
+    },
   };
   const data: { coloursOrNumbers: string[] } = { coloursOrNumbers: [] };
   const v = ajv.compile(schema);
@@ -1005,7 +1158,7 @@ test('errorAt filters oneOf array', t => {
     data,
     schema,
     uischema: undefined,
-    errors
+    errors,
   };
   const filtered = errorAt(
     'coloursOrNumbers',
@@ -1015,7 +1168,7 @@ test('errorAt filters oneOf array', t => {
   t.deepEqual(filtered[0], state.errors[1]);
 });
 
-test('errorAt filters oneOf array inner', t => {
+test('errorAt filters oneOf array inner', (t) => {
   const ajv = createAjv();
   const schema: JsonSchema = {
     type: 'object',
@@ -1028,9 +1181,9 @@ test('errorAt filters oneOf array inner', t => {
             items: {
               title: 'Type',
               type: 'string',
-              enum: ['One', 'Two', 'Three']
+              enum: ['One', 'Two', 'Three'],
             },
-            minItems: 1
+            minItems: 1,
           },
           {
             title: 'Colours',
@@ -1038,13 +1191,13 @@ test('errorAt filters oneOf array inner', t => {
             items: {
               title: 'Type',
               type: 'string',
-              enum: ['Red', 'Green', 'Blue']
+              enum: ['Red', 'Green', 'Blue'],
             },
-            minItems: 1
-          }
-        ]
-      }
-    }
+            minItems: 1,
+          },
+        ],
+      },
+    },
   };
   const data: { coloursOrNumbers: string[] } = { coloursOrNumbers: ['Foo'] };
   const v = ajv.compile(schema);
@@ -1054,7 +1207,7 @@ test('errorAt filters oneOf array inner', t => {
     data,
     schema,
     uischema: undefined,
-    errors
+    errors,
   };
   const filtered = errorAt(
     'coloursOrNumbers',
@@ -1063,7 +1216,7 @@ test('errorAt filters oneOf array inner', t => {
   t.is(filtered.length, 0);
 });
 
-test('subErrorsAt filters array inner', t => {
+test('subErrorsAt filters array inner', (t) => {
   const ajv = createAjv();
   const schema: JsonSchema = {
     type: 'object',
@@ -1074,9 +1227,9 @@ test('subErrorsAt filters array inner', t => {
         items: {
           title: 'Type',
           type: 'string',
-          enum: ['One', 'Two', 'Three']
+          enum: ['One', 'Two', 'Three'],
         },
-        minItems: 1
+        minItems: 1,
       },
       colours: {
         title: 'Colours',
@@ -1084,15 +1237,15 @@ test('subErrorsAt filters array inner', t => {
         items: {
           title: 'Type',
           type: 'string',
-          enum: ['Red', 'Green', 'Blue']
+          enum: ['Red', 'Green', 'Blue'],
         },
-        minItems: 1
-      }
-    }
+        minItems: 1,
+      },
+    },
   };
   const data: { colours: string[]; numbers: string[] } = {
     colours: ['Foo'],
-    numbers: ['Bar']
+    numbers: ['Bar'],
   };
   const v = ajv.compile(schema);
   const errors = validate(v, data);
@@ -1101,7 +1254,7 @@ test('subErrorsAt filters array inner', t => {
     data,
     schema,
     uischema: undefined,
-    errors
+    errors,
   };
   const filtered = subErrorsAt(
     'colours',
@@ -1111,7 +1264,43 @@ test('subErrorsAt filters array inner', t => {
   t.deepEqual(filtered[0], state.errors[1]);
 });
 
-test('subErrorsAt filters oneOf array inner', t => {
+test('subErrorsAt only returning suberrors', (t) => {
+  const ajv = createAjv();
+  const schema: JsonSchema = {
+    type: 'object',
+    properties: {
+      numbers: {
+        title: 'Numbers',
+        type: 'array',
+        minItems: 1,
+        items: {
+          title: 'Type',
+          type: 'string',
+          enum: ['One', 'Two', 'Three'],
+        },
+      },
+    },
+  };
+  const data: { numbers: string[] } = {
+    numbers: [],
+  };
+  const v = ajv.compile(schema);
+  const errors = validate(v, data);
+
+  const state: JsonFormsCore = {
+    data,
+    schema,
+    uischema: undefined,
+    errors,
+  };
+  const subErrors = subErrorsAt(
+    'numbers',
+    schema.properties.numbers.items as JsonSchema
+  )(state);
+  t.is(subErrors.length, 0);
+});
+
+test('subErrorsAt filters oneOf array inner', (t) => {
   const ajv = createAjv();
   const schema: JsonSchema = {
     type: 'object',
@@ -1124,9 +1313,9 @@ test('subErrorsAt filters oneOf array inner', t => {
             items: {
               title: 'Type',
               type: 'string',
-              enum: ['One', 'Two', 'Three']
+              enum: ['One', 'Two', 'Three'],
             },
-            minItems: 1
+            minItems: 1,
           },
           {
             title: 'Colours',
@@ -1134,13 +1323,13 @@ test('subErrorsAt filters oneOf array inner', t => {
             items: {
               title: 'Type',
               type: 'string',
-              enum: ['Red', 'Green', 'Blue']
+              enum: ['Red', 'Green', 'Blue'],
             },
-            minItems: 1
-          }
-        ]
-      }
-    }
+            minItems: 1,
+          },
+        ],
+      },
+    },
   };
   const data: { coloursOrNumbers: string[] } = { coloursOrNumbers: ['Foo'] };
   const v = ajv.compile(schema);
@@ -1150,7 +1339,7 @@ test('subErrorsAt filters oneOf array inner', t => {
     data,
     schema,
     uischema: undefined,
-    errors
+    errors,
   };
   const filtered = subErrorsAt(
     'coloursOrNumbers',
@@ -1160,18 +1349,18 @@ test('subErrorsAt filters oneOf array inner', t => {
   t.deepEqual(filtered[0], state.errors[1]);
 });
 
-test('errorAt respects hide validation mode', t => {
+test('errorAt respects hide validation mode', (t) => {
   const schema = {
     type: 'object',
     properties: {
       animal: {
-        type: 'string'
-      }
-    }
+        type: 'string',
+      },
+    },
   };
 
   const data = {
-    animal: 100
+    animal: 100,
   };
 
   const core: JsonFormsCore = coreReducer(
@@ -1180,20 +1369,134 @@ test('errorAt respects hide validation mode', t => {
   );
   t.is(core.errors.length, 1);
   t.is(errorAt('animal', schema)(core).length, 0);
-})
+});
 
-test('core reducer - setValidationMode - No validation should not produce errors', t => {
+test('errorAt contains additionalErrors', (t) => {
   const schema = {
     type: 'object',
     properties: {
       animal: {
-        type: 'string'
-      }
-    }
+        type: 'string',
+      },
+    },
   };
 
   const data = {
-    animal: 100
+    animal: 100,
+  };
+
+  const additionalErrors = [
+    {
+      instancePath: '',
+      dataPath: '',
+      schemaPath: '#/required',
+      keyword: 'required',
+      params: {
+        missingProperty: 'animal',
+      },
+    },
+  ];
+  const core: JsonFormsCore = coreReducer(
+    undefined,
+    init(data, schema, undefined, { additionalErrors })
+  );
+  t.is(core.errors.length, 1);
+  t.is(core.additionalErrors.length, 1);
+  const errorsAt = errorAt('animal', schema)(core);
+  t.is(errorsAt.length, 2);
+  t.true(errorsAt.indexOf(additionalErrors[0]) > -1);
+});
+
+test('errorAt contains additionalErrors for validation mode NoValidation ', (t) => {
+  const schema = {
+    type: 'object',
+    properties: {
+      animal: {
+        type: 'string',
+      },
+    },
+  };
+
+  const data = {
+    animal: 100,
+  };
+
+  const additionalErrors = [
+    {
+      instancePath: '',
+      dataPath: '',
+      schemaPath: '#/required',
+      keyword: 'required',
+      params: {
+        missingProperty: 'animal',
+      },
+    },
+  ];
+  const core: JsonFormsCore = coreReducer(
+    undefined,
+    init(data, schema, undefined, {
+      additionalErrors,
+      validationMode: 'NoValidation',
+    })
+  );
+  t.is(core.errors.length, 0);
+  t.is(core.additionalErrors.length, 1);
+  const errorsAt = errorAt('animal', schema)(core);
+  t.is(errorsAt.length, 1);
+  t.is(errorsAt.indexOf(additionalErrors[0]), 0);
+});
+
+test('errorAt contains additionalErrors for validation mode ValidateAndHide ', (t) => {
+  const schema = {
+    type: 'object',
+    properties: {
+      animal: {
+        type: 'string',
+      },
+    },
+  };
+
+  const data = {
+    animal: 100,
+  };
+
+  const additionalErrors = [
+    {
+      instancePath: '',
+      dataPath: '',
+      schemaPath: '#/required',
+      keyword: 'required',
+      params: {
+        missingProperty: 'animal',
+      },
+    },
+  ];
+  const core: JsonFormsCore = coreReducer(
+    undefined,
+    init(data, schema, undefined, {
+      additionalErrors,
+      validationMode: 'ValidateAndHide',
+    })
+  );
+  t.is(core.errors.length, 1);
+  t.is(core.additionalErrors.length, 1);
+  const errorsAt = errorAt('animal', schema)(core);
+  t.is(errorsAt.length, 1);
+  t.is(errorsAt.indexOf(additionalErrors[0]), 0);
+});
+
+test('core reducer - setValidationMode - No validation should not produce errors', (t) => {
+  const schema = {
+    type: 'object',
+    properties: {
+      animal: {
+        type: 'string',
+      },
+    },
+  };
+
+  const data = {
+    animal: 100,
   };
 
   const core: JsonFormsCore = coreReducer(
@@ -1204,18 +1507,18 @@ test('core reducer - setValidationMode - No validation should not produce errors
   t.is(core.validationMode, 'NoValidation');
 });
 
-test('core reducer - setValidationMode - No validation should remove errors', t => {
+test('core reducer - setValidationMode - No validation should remove errors', (t) => {
   const schema = {
     type: 'object',
     properties: {
       animal: {
-        type: 'string'
-      }
-    }
+        type: 'string',
+      },
+    },
   };
 
   const data = {
-    animal: 100
+    animal: 100,
   };
 
   const before: JsonFormsCore = coreReducer(undefined, init(data, schema));
@@ -1226,27 +1529,27 @@ test('core reducer - setValidationMode - No validation should remove errors', t 
   t.is(after.validationMode, 'NoValidation');
 });
 
-test('core reducer - init - ValidateAndShow should be default validationMode', t => {
+test('core reducer - init - ValidateAndShow should be default validationMode', (t) => {
   const data = {
-    animal: 100
+    animal: 100,
   };
 
   const core: JsonFormsCore = coreReducer(undefined, init(data));
   t.is(core.validationMode, 'ValidateAndShow');
 });
 
-test('core reducer - init - Validation should produce errors', t => {
+test('core reducer - init - Validation should produce errors', (t) => {
   const schema = {
     type: 'object',
     properties: {
       animal: {
-        type: 'string'
-      }
-    }
+        type: 'string',
+      },
+    },
   };
 
   const data = {
-    animal: 100
+    animal: 100,
   };
 
   const coreShow: JsonFormsCore = coreReducer(
@@ -1264,18 +1567,18 @@ test('core reducer - init - Validation should produce errors', t => {
   t.is(coreHide.validationMode, 'ValidateAndHide');
 });
 
-test('core reducer - setValidationMode - Validation should produce errors', t => {
+test('core reducer - setValidationMode - Validation should produce errors', (t) => {
   const schema = {
     type: 'object',
     properties: {
       animal: {
-        type: 'string'
-      }
-    }
+        type: 'string',
+      },
+    },
   };
 
   const data = {
-    animal: 100
+    animal: 100,
   };
 
   const before: JsonFormsCore = coreReducer(
@@ -1297,24 +1600,21 @@ test('core reducer - setValidationMode - Validation should produce errors', t =>
   t.is(coreHide.errors.length, 1);
 });
 
-test('core reducer - setValidationMode - Hide validation should preserve errors', t => {
+test('core reducer - setValidationMode - Hide validation should preserve errors', (t) => {
   const schema = {
     type: 'object',
     properties: {
       animal: {
-        type: 'string'
-      }
-    }
+        type: 'string',
+      },
+    },
   };
 
   const data = {
-    animal: 100
+    animal: 100,
   };
 
-  const before: JsonFormsCore = coreReducer(
-    undefined,
-    init(data, schema)
-  );
+  const before: JsonFormsCore = coreReducer(undefined, init(data, schema));
   t.is(before.errors.length, 1);
 
   const after: JsonFormsCore = coreReducer(
@@ -1324,18 +1624,18 @@ test('core reducer - setValidationMode - Hide validation should preserve errors'
   t.is(after.errors.length, 1);
 });
 
-test('core reducer - update - NoValidation should not produce errors', t => {
+test('core reducer - update - NoValidation should not produce errors', (t) => {
   const schema = {
     type: 'object',
     properties: {
       animal: {
-        type: 'string'
-      }
-    }
+        type: 'string',
+      },
+    },
   };
 
   const data = {
-    animal: 'dog'
+    animal: 'dog',
   };
 
   const before: JsonFormsCore = coreReducer(
@@ -1351,18 +1651,18 @@ test('core reducer - update - NoValidation should not produce errors', t => {
   t.is(after.errors.length, 0);
 });
 
-test('core reducer - update - ValidateAndHide should produce errors', t => {
+test('core reducer - update - ValidateAndHide should produce errors', (t) => {
   const schema = {
     type: 'object',
     properties: {
       animal: {
-        type: 'string'
-      }
-    }
+        type: 'string',
+      },
+    },
   };
 
   const data = {
-    animal: 'dog'
+    animal: 'dog',
   };
 
   const before: JsonFormsCore = coreReducer(
@@ -1378,23 +1678,20 @@ test('core reducer - update - ValidateAndHide should produce errors', t => {
   t.is(after.errors.length, 1);
 });
 
-test('core reducer - update core - state should be unchanged when nothing changes', t => {
+test('core reducer - update core - state should be unchanged when nothing changes', (t) => {
   const schema = {
     type: 'object',
     properties: {
       animal: {
-        type: 'string'
-      }
-    }
+        type: 'string',
+      },
+    },
   };
 
   const data = {
-    animal: 'dog'
+    animal: 'dog',
   };
-  const before: JsonFormsCore = coreReducer(
-    undefined,
-    init(data, schema)
-    );
+  const before: JsonFormsCore = coreReducer(undefined, init(data, schema));
 
   const after: JsonFormsCore = coreReducer(
     before,
@@ -1403,29 +1700,31 @@ test('core reducer - update core - state should be unchanged when nothing change
   t.true(before === after);
 });
 
-test('core reducer - update core - unchanged state properties should be unchanged when state changes', t => {
+test('core reducer - update core - unchanged state properties should be unchanged when state changes', (t) => {
   const schema = {
     type: 'object',
     properties: {
       animal: {
-        type: 'string'
-      }
-    }
+        type: 'string',
+      },
+    },
   };
 
   const data = {
-    animal: 'dog'
+    animal: 'dog',
   };
-  const before: JsonFormsCore = coreReducer(
-    undefined,
-    init(data, schema)
-    );
+  const before: JsonFormsCore = coreReducer(undefined, init(data, schema));
 
   const afterDataUpdate: JsonFormsCore = coreReducer(
     before,
-    updateCore({
-      animal: 'cat'
-    }, before.schema, before.uischema, before.ajv)
+    updateCore(
+      {
+        animal: 'cat',
+      },
+      before.schema,
+      before.uischema,
+      { ajv: before.ajv, additionalErrors: before.additionalErrors }
+    )
   );
   t.true(before.schema === afterDataUpdate.schema);
   t.true(before.ajv === afterDataUpdate.ajv);
@@ -1433,35 +1732,74 @@ test('core reducer - update core - unchanged state properties should be unchange
   t.true(before.uischema === afterDataUpdate.uischema);
   t.true(before.validationMode === afterDataUpdate.validationMode);
   t.true(before.validator === afterDataUpdate.validator);
+  t.true(before.additionalErrors === afterDataUpdate.additionalErrors);
 
   const updatedSchema = {
     type: 'object',
     properties: {
       animal: {
-        type: 'string'
+        type: 'string',
       },
       id: {
-        type: 'number'
-      }
-    }
+        type: 'number',
+      },
+    },
   };
   // check that data stays unchanged as well
-  const afterSchemaUpdate : JsonFormsCore = coreReducer(
+  const afterSchemaUpdate: JsonFormsCore = coreReducer(
     before,
     updateCore(before.data, updatedSchema, before.uischema, before.ajv)
   );
   t.true(before.data === afterSchemaUpdate.data);
 });
 
-test('core reducer - setSchema - schema with id', t => {
+test('core reducer - update core - additionalErrors should update', (t) => {
+  const schema = {
+    type: 'object',
+    properties: {
+      animal: {
+        type: 'string',
+      },
+    },
+  };
+
+  const data = {
+    animal: 'dog',
+  };
+  const before: JsonFormsCore = coreReducer(
+    undefined,
+    init(data, schema, undefined, { additionalErrors: [] })
+  );
+
+  const additionalErrors = [
+    {
+      instancePath: '',
+      dataPath: '',
+      schemaPath: '#/required',
+      keyword: 'required',
+      params: {
+        missingProperty: 'animal',
+      },
+    },
+  ];
+  const after: JsonFormsCore = coreReducer(
+    before,
+    updateCore(before.data, before.schema, before.uischema, {
+      additionalErrors,
+    })
+  );
+  t.true(after.additionalErrors === additionalErrors);
+});
+
+test('core reducer - setSchema - schema with id', (t) => {
   const schema: JsonSchema = {
     $id: 'https://www.jsonforms.io/example.json',
     type: 'object',
     properties: {
       animal: {
-        type: 'string'
-      }
-    }
+        type: 'string',
+      },
+    },
   };
   const updatedSchema = cloneDeep(schema);
   updatedSchema.properties.animal.minLength = 5;
@@ -1471,11 +1809,6 @@ test('core reducer - setSchema - schema with id', t => {
     init(undefined, schema, undefined, undefined)
   );
 
-  const after: JsonFormsCore = coreReducer(
-    before,
-    setSchema(updatedSchema)
-  );
+  const after: JsonFormsCore = coreReducer(before, setSchema(updatedSchema));
   t.is(after.schema.properties.animal.minLength, 5);
 });
-
-

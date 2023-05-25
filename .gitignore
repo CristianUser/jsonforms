@@ -5,6 +5,7 @@ dist
 lib
 docs
 *.log
+stats.html
 
 .idea/
 .vscode/*
@@ -12,4 +13,4 @@ docs
 !.vscode/settings.json
 
 .coveralls.yml
-packages/example/build
+packages/examples-react/build

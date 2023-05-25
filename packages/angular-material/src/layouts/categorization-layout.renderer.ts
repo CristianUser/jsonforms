@@ -26,16 +26,22 @@ import {
   and,
   Categorization,
   categorizationHasCategory,
+  Category,
+  defaultJsonFormsI18nState,
+  deriveLabelForUISchemaElement,
+  getAjv,
+  isVisible,
   JsonFormsState,
+  Labelable,
   mapStateToLayoutProps,
   RankedTester,
   rankWith,
-  uiTypeIs
+  uiTypeIs,
 } from '@jsonforms/core';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   JsonFormsAngularService,
-  JsonFormsBaseRenderer
+  JsonFormsBaseRenderer,
 } from '@jsonforms/angular';
 import { Subscription } from 'rxjs';
 
@@ -44,21 +50,28 @@ import { Subscription } from 'rxjs';
   template: `
     <mat-tab-group dynamicHeight="true" [fxHide]="hidden">
       <mat-tab
-        *ngFor="let category of uischema.elements"
-        [label]="category.label"
+        *ngFor="let category of visibleCategories; let i = index"
+        [label]="categoryLabels[i]"
       >
         <div *ngFor="let element of category.elements">
-          <jsonforms-outlet [uischema]="element" [path]="path" [schema]="schema"></jsonforms-outlet>
+          <jsonforms-outlet
+            [uischema]="element"
+            [path]="path"
+            [schema]="schema"
+          ></jsonforms-outlet>
         </div>
       </mat-tab>
     </mat-tab-group>
-  `
+  `,
 })
 export class CategorizationTabLayoutRenderer
   extends JsonFormsBaseRenderer<Categorization>
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   hidden: boolean;
+  visibleCategories: (Category | Categorization)[];
   private subscription: Subscription;
+  categoryLabels: string[];
 
   constructor(private jsonFormsService: JsonFormsAngularService) {
     super();
@@ -69,7 +82,18 @@ export class CategorizationTabLayoutRenderer
       next: (state: JsonFormsState) => {
         const props = mapStateToLayoutProps(state, this.getOwnProps());
         this.hidden = !props.visible;
-      }
+        this.visibleCategories = this.uischema.elements.filter(
+          (category: Category | Categorization) =>
+            isVisible(category, props.data, undefined, getAjv(state))
+        );
+        this.categoryLabels = this.visibleCategories.map((element) =>
+          deriveLabelForUISchemaElement(
+            element as Labelable<boolean>,
+            state.jsonforms.i18n?.translate ??
+              defaultJsonFormsI18nState.translate
+          )
+        );
+      },
     });
   }
 

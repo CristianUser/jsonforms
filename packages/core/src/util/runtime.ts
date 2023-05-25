@@ -27,19 +27,19 @@ import has from 'lodash/has';
 import {
   AndCondition,
   Condition,
+  JsonSchema,
   LeafCondition,
   OrCondition,
   RuleEffect,
   SchemaBasedCondition,
   Scopable,
-  UISchemaElement
+  UISchemaElement,
 } from '../models';
 import { resolveData } from './resolvers';
 import { composeWithUi } from './path';
-import Ajv from 'ajv';
+import type Ajv from 'ajv';
 import { getAjv } from '../reducers';
-import { JsonFormsState } from '../store';
-import { JsonSchema } from '../models/jsonSchema';
+import type { JsonFormsState } from '../store';
 
 const isOrCondition = (condition: Condition): condition is OrCondition =>
   condition.type === 'OR';
@@ -191,7 +191,7 @@ export const isInherentlyEnabled = (
   state: JsonFormsState,
   ownProps: any,
   uischema: UISchemaElement,
-  schema: JsonSchema & { readOnly?: boolean } | undefined,
+  schema: (JsonSchema & { readOnly?: boolean }) | undefined,
   rootData: any,
   config: any
 ) => {

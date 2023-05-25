@@ -1,7 +1,7 @@
 <template>
   <fieldset v-if="layout.visible" :class="styles.group.root">
-    <legend v-if="layout.uischema.label" :class="styles.group.label">
-      {{ layout.uischema.label }}
+    <legend v-if="layout.label" :class="styles.group.label">
+      {{ layout.label }}
     </legend>
     <div
       v-for="(element, index) in layout.uischema.elements"
@@ -27,34 +27,34 @@ import {
   rankWith,
   and,
   isLayout,
-  uiTypeIs
+  uiTypeIs,
 } from '@jsonforms/core';
-import { defineComponent } from '../../config/vue';
+import { defineComponent } from 'vue';
 import {
   DispatchRenderer,
   rendererProps,
   useJsonFormsLayout,
-  RendererProps
+  RendererProps,
 } from '../../config/jsonforms';
 import { useVanillaLayout } from '../util';
 
 const layoutRenderer = defineComponent({
-  name: 'group-renderer',
+  name: 'GroupRenderer',
   components: {
-    DispatchRenderer
+    DispatchRenderer,
   },
   props: {
-    ...rendererProps<Layout>()
+    ...rendererProps<Layout>(),
   },
   setup(props: RendererProps<Layout>) {
     return useVanillaLayout(useJsonFormsLayout(props));
-  }
+  },
 });
 
 export default layoutRenderer;
 
 export const entry: JsonFormsRendererRegistryEntry = {
   renderer: layoutRenderer,
-  tester: rankWith(2, and(isLayout, uiTypeIs('Group')))
+  tester: rankWith(2, and(isLayout, uiTypeIs('Group'))),
 };
 </script>

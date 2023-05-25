@@ -1,6 +1,6 @@
 # JSON Forms - More Forms. Less Code
 
-*Complex forms in the blink of an eye*
+_Complex forms in the blink of an eye_
 
 JSON Forms eliminates the tedious task of writing fully-featured forms by hand by leveraging the capabilities of JSON, JSON Schema and Javascript.
 
@@ -25,11 +25,11 @@ Use the `json-forms` component for each form you want to render and hand over th
 Example component file `app.component.ts`:
 
 ```ts
-import { Component } from "@angular/core";
-import { angularMaterialRenderers } from "@jsonforms/angular-material";
+import { Component } from '@angular/core';
+import { angularMaterialRenderers } from '@jsonforms/angular-material';
 
 @Component({
-  selector: "app-root",
+  selector: 'app-root',
   template: `<jsonforms
     [data]="data"
     [schema]="schema"
@@ -39,19 +39,67 @@ import { angularMaterialRenderers } from "@jsonforms/angular-material";
 })
 export class AppComponent {
   renderers = angularMaterialRenderers;
+  uischema = {
+    type: 'VerticalLayout',
+    elements: [
+      {
+        type: 'Control',
+        label: false,
+        scope: '#/properties/done',
+      },
+      {
+        type: 'Control',
+        scope: '#/properties/name',
+      },
+      {
+        type: 'HorizontalLayout',
+        elements: [
+          {
+            type: 'Control',
+            scope: '#/properties/due_date',
+          },
+          {
+            type: 'Control',
+            scope: '#/properties/recurrence',
+          },
+        ],
+      },
+    ],
+  };
+  schema = {
+    type: 'object',
+    properties: {
+      name: {
+        type: 'string',
+        minLength: 1,
+      },
+      done: {
+        type: 'boolean',
+      },
+      due_date: {
+        type: 'string',
+        format: 'date',
+      },
+      recurrence: {
+        type: 'string',
+        enum: ['Never', 'Daily', 'Weekly', 'Monthly'],
+      },
+    },
+    required: ['name', 'due_date'],
+  };
   data = {};
 }
 ```
 
-Example module file:
+Example module file `app.module.ts`:
 
 ```ts
-import { NgModule } from "@angular/core";
-import { BrowserModule } from "@angular/platform-browser";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { JsonFormsModule } from "@jsonforms/angular";
-import { JsonFormsAngularMaterialModule } from "@jsonforms/angular-material";
-import { AppComponent } from "./app.component";
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { JsonFormsModule } from '@jsonforms/angular';
+import { JsonFormsAngularMaterialModule } from '@jsonforms/angular-material';
+import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [AppComponent],
@@ -64,7 +112,7 @@ import { AppComponent } from "./app.component";
   schemas: [],
   bootstrap: [AppComponent],
 })
-
+export class AppModule {}
 ```
 
 ## License
@@ -83,3 +131,7 @@ If you encounter any problems feel free to [open an issue](https://github.com/ec
 For questions and discussions please use the [JSON Forms board](https://jsonforms.discourse.group).
 You can also reach us via [email](mailto:jsonforms@eclipsesource.com?subject=JSON%20Forms).
 In addition, EclipseSource also offers [professional support](https://jsonforms.io/support) for JSON Forms.
+
+## Migration
+
+See our [migration guide](https://github.com/eclipsesource/jsonforms/blob/master/MIGRATION.md) when updating JSON Forms.
