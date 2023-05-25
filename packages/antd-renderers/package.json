@@ -1,6 +1,6 @@
 {
   "name": "@cristianuser/antd-renderers",
-  "version": "0.14.1",
+  "version": "0.15.1",
   "description": "Ant Design Renderer Set for JSON Forms",
   "repository": "https://github.com/eclipsesource/jsonforms",
   "bugs": "https://github.com/eclipsesource/jsonforms/issues",
@@ -73,19 +73,19 @@
     "uuid": "^3.3.3"
   },
   "peerDependencies": {
-    "@ant-design/icons": "^4.6.2",
+    "@ant-design/icons": "^4.8.0",
     "@jsonforms/core": "3.1.0-alpha.3",
     "@jsonforms/react": "3.1.0-alpha.3",
-    "antd": "^4.16.2"
+    "antd": "^4.24.10"
   },
   "devDependencies": {
-    "@ant-design/icons": "^4.6.2",
+    "@ant-design/icons": "^4.8.0",
     "@jsonforms/core": "3.1.0-alpha.3",
     "@jsonforms/react": "3.1.0-alpha.3",
     "@types/enzyme": "^3.10.3",
     "@types/react-dom": "^17.0.9",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.6.3",
-    "antd": "^4.16.2",
+    "antd": "^4.24.10",
     "copy-webpack-plugin": "^5.0.5",
     "enzyme": "^3.10.0",
     "eslint": "^7.32.0",
