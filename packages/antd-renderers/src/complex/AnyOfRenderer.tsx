@@ -30,8 +30,7 @@ import {
   JsonSchema,
   RankedTester,
   rankWith,
-  resolveSubSchemas,
-  StatePropsOfCombinator
+  StatePropsOfCombinator,
 } from '@jsonforms/core';
 import { JsonFormsDispatch, withJsonFormsAnyOfProps } from '@jsonforms/react';
 import CombinatorProperties from './CombinatorProperties';
@@ -47,7 +46,7 @@ const AnyOfRenderer = ({
   renderers,
   cells,
   uischema,
-  uischemas
+  uischemas,
 }: StatePropsOfCombinator) => {
   const [selectedAnyOf, setSelectedAnyOf] = useState(indexOfFittingSchema || 0);
   const handleChange = useCallback(
@@ -55,9 +54,8 @@ const AnyOfRenderer = ({
     [setSelectedAnyOf]
   );
   const anyOf = 'anyOf';
-  const _schema = resolveSubSchemas(schema, rootSchema, anyOf);
   const anyOfRenderInfos = createCombinatorRenderInfos(
-    (_schema as JsonSchema).anyOf,
+    (schema as JsonSchema).anyOf,
     rootSchema,
     anyOf,
     uischema,
@@ -68,7 +66,7 @@ const AnyOfRenderer = ({
   return (
     <Hidden hidden={!visible}>
       <CombinatorProperties
-        schema={_schema}
+        schema={schema}
         combinatorKeyword={'anyOf'}
         path={path}
       />
@@ -94,8 +92,5 @@ const AnyOfRenderer = ({
   );
 };
 
-export const anyOfControlTester: RankedTester = rankWith(
-  3,
-  isAnyOfControl
-);
+export const anyOfControlTester: RankedTester = rankWith(3, isAnyOfControl);
 export default withJsonFormsAnyOfProps(AnyOfRenderer);

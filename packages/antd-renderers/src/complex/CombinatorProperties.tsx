@@ -24,7 +24,12 @@
 */
 import React from 'react';
 import _ from 'lodash';
-import { Generate, JsonSchema, Layout, UISchemaElement } from '@jsonforms/core';
+import {
+  Generate,
+  isLayout,
+  JsonSchema,
+  UISchemaElement,
+} from '@jsonforms/core';
 import { JsonFormsDispatch } from '@jsonforms/react';
 
 interface CombinatorPropertiesProps {
@@ -33,17 +38,23 @@ interface CombinatorPropertiesProps {
   path: string;
 }
 
-export const isLayout = (uischema: UISchemaElement): uischema is Layout =>
-  uischema.hasOwnProperty('elements');
-
-export class CombinatorProperties extends React.Component<CombinatorPropertiesProps, {}> {
-
+export class CombinatorProperties extends React.Component<
+  CombinatorPropertiesProps,
+  // TODO fix @typescript-eslint/ban-types
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  {}
+> {
   render() {
-
     const { schema, combinatorKeyword, path } = this.props;
 
-    const otherProps: JsonSchema = _.omit(schema, combinatorKeyword) as JsonSchema;
-    const foundUISchema: UISchemaElement = Generate.uiSchema(otherProps, 'VerticalLayout');
+    const otherProps: JsonSchema = _.omit(
+      schema,
+      combinatorKeyword
+    ) as JsonSchema;
+    const foundUISchema: UISchemaElement = Generate.uiSchema(
+      otherProps,
+      'VerticalLayout'
+    );
     let isLayoutWithElements = false;
     if (foundUISchema !== null && isLayout(foundUISchema)) {
       isLayoutWithElements = foundUISchema.elements.length > 0;

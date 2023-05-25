@@ -11,7 +11,7 @@ import {
   rankWith,
   schemaMatches,
   schemaSubPathMatches,
-  uiTypeIs
+  uiTypeIs,
 } from '@jsonforms/core';
 import { withJsonFormsMultiEnumProps } from '@jsonforms/react';
 
@@ -87,12 +87,12 @@ export const enumArrayRendererTester: RankedTester = rankWith(
     uiTypeIs('Control'),
     and(
       schemaMatches(
-        schema =>
+        (schema) =>
           hasType(schema, 'array') &&
           !Array.isArray(schema.items) &&
           schema.uniqueItems
       ),
-      schemaSubPathMatches('items', schema => {
+      schemaSubPathMatches('items', (schema) => {
         return hasOneOfItems(schema) || hasEnumItems(schema);
       })
     )

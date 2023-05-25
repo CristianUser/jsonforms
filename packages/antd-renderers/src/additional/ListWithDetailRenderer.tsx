@@ -30,11 +30,11 @@ import {
   findUISchema,
   RankedTester,
   rankWith,
-  uiTypeIs
+  uiTypeIs,
 } from '@jsonforms/core';
 import {
   JsonFormsDispatch,
-  withJsonFormsArrayLayoutProps
+  withJsonFormsArrayLayoutProps,
 } from '@jsonforms/react';
 import { Col, Empty, List, Row } from 'antd';
 import range from 'lodash/range';
@@ -59,7 +59,8 @@ export const ListWithDetailRenderer = ({
   data,
   renderers,
   cells,
-  config
+  config,
+  translations,
 }: ArrayLayoutProps) => {
   const [selectedIndex, setSelectedIndex] = useState(undefined);
   const handleRemoveItem = useCallback(
@@ -98,6 +99,7 @@ export const ListWithDetailRenderer = ({
   return (
     <Hidden hidden={!visible}>
       <ArrayLayoutToolbar
+        translations={translations}
         label={computeLabel(
           label,
           required,
@@ -112,8 +114,9 @@ export const ListWithDetailRenderer = ({
         <Col xs={6}>
           <List
             dataSource={range(data)}
-            renderItem={(_item, index) =>
+            renderItem={(_item, index) => (
               <ListWithDetailMasterItem
+                translations={translations}
                 index={index}
                 path={path}
                 schema={schema}
@@ -122,7 +125,7 @@ export const ListWithDetailRenderer = ({
                 selected={selectedIndex === index}
                 key={index}
               />
-            }
+            )}
           />
         </Col>
         <Col xs={18}>
@@ -136,7 +139,7 @@ export const ListWithDetailRenderer = ({
               path={composePaths(path, `${selectedIndex}`)}
             />
           ) : (
-            <Empty description='No Selection'/>
+            <Empty description='No Selection' />
           )}
         </Col>
       </Row>

@@ -35,14 +35,17 @@ export const ArrayControlRenderer = (props: ArrayLayoutProps) => {
   const [rowData, setRowData] = useState(undefined);
   const { removeItems, visible } = props;
 
-  const openDeleteDialog = useCallback((p: string, rowIndex: number) => {
-    setOpen(true);
-    setPath(p);
-    setRowData(rowIndex);
-  }, [setOpen, setPath, setRowData]);
+  const openDeleteDialog = useCallback(
+    (p: string, rowIndex: number) => {
+      setOpen(true);
+      setPath(p);
+      setRowData(rowIndex);
+    },
+    [setOpen, setPath, setRowData]
+  );
   const deleteCancel = useCallback(() => setOpen(false), [setOpen]);
   const deleteConfirm = useCallback(() => {
-    const p = path.substring(0, path.lastIndexOf(('.')));
+    const p = path.substring(0, path.lastIndexOf('.'));
     removeItems(p, [rowData])();
     setOpen(false);
   }, [setOpen, path, rowData]);
@@ -50,10 +53,7 @@ export const ArrayControlRenderer = (props: ArrayLayoutProps) => {
 
   return (
     <Hidden hidden={!visible}>
-      <TableControl
-        {...props}
-        openDeleteDialog={openDeleteDialog}
-      />
+      <TableControl {...props} openDeleteDialog={openDeleteDialog} />
       <DeleteDialog
         open={open}
         onCancel={deleteCancel}

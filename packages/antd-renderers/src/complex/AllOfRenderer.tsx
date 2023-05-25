@@ -31,8 +31,7 @@ import {
   JsonSchema,
   RankedTester,
   rankWith,
-  resolveSubSchemas,
-  StatePropsOfCombinator
+  StatePropsOfCombinator,
 } from '@jsonforms/core';
 import { JsonFormsDispatch, withJsonFormsAllOfProps } from '@jsonforms/react';
 import Hidden from '../util/Hidden';
@@ -45,11 +44,10 @@ const AllOfRenderer = ({
   cells,
   path,
   uischemas,
-  uischema
+  uischema,
 }: StatePropsOfCombinator) => {
-  const _schema = resolveSubSchemas(schema, rootSchema, 'allOf');
   const delegateUISchema = findMatchingUISchema(uischemas)(
-    _schema,
+    schema,
     uischema.scope,
     path
   );
@@ -57,7 +55,7 @@ const AllOfRenderer = ({
     return (
       <Hidden hidden={!visible}>
         <JsonFormsDispatch
-          schema={_schema}
+          schema={schema}
           uischema={delegateUISchema}
           path={path}
           renderers={renderers}
@@ -67,7 +65,7 @@ const AllOfRenderer = ({
     );
   }
   const allOfRenderInfos = createCombinatorRenderInfos(
-    (_schema as JsonSchema).allOf,
+    (schema as JsonSchema).allOf,
     rootSchema,
     'allOf',
     uischema,
@@ -91,8 +89,5 @@ const AllOfRenderer = ({
   );
 };
 
-export const allOfControlTester: RankedTester = rankWith(
-  3,
-  isAllOfControl
-);
+export const allOfControlTester: RankedTester = rankWith(3, isAllOfControl);
 export default withJsonFormsAllOfProps(AllOfRenderer);

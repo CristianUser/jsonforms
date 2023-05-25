@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 /*
   The MIT License
   
@@ -26,28 +27,30 @@ import React from 'react';
 import { Modal } from 'antd';
 
 export interface DeleteDialogProps {
-    open: boolean;
-    onClose(): void;
-    onConfirm(): void;
-    onCancel(): void;
+  open: boolean;
+  onClose(): void;
+  onConfirm(): void;
+  onCancel(): void;
 }
 
 export interface WithDeleteDialogSupport {
-    openDeleteDialog(path: string, data: number): void;
+  openDeleteDialog(path: string, data: number): void;
 }
 
-export const DeleteDialog = React.memo(({ open, onClose, onConfirm, onCancel }: DeleteDialogProps) => {
+export const DeleteDialog = React.memo(
+  ({ open, onClose, onConfirm, onCancel }: DeleteDialogProps) => {
     return (
-        <Modal
-            title='Confirm Deletion'
-            visible={open}
-            afterClose={onClose}
-            onOk={onConfirm}
-            onCancel={onCancel}
-            okText='Yes'
-            cancelText='No'
-        >
-            <p> Are you sure you want to delete the selected entry?</p>
-        </Modal>
+      <Modal
+        title='Confirm Deletion'
+        visible={open}
+        afterClose={onClose}
+        onOk={onConfirm}
+        onCancel={onCancel}
+        okText='Yes'
+        cancelText='No'
+      >
+        <p> Are you sure you want to delete the selected entry?</p>
+      </Modal>
     );
-});
+  }
+);

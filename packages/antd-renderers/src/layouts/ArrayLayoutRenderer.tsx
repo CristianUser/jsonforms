@@ -28,7 +28,7 @@ import {
   ArrayLayoutProps,
   isObjectArrayWithNesting,
   RankedTester,
-  rankWith
+  rankWith,
 } from '@jsonforms/core';
 import { ArrayLayout } from './ArrayLayout';
 import { withJsonFormsArrayLayoutProps } from '@jsonforms/react';
@@ -48,15 +48,18 @@ export const ArrayLayoutRenderer = ({
   path,
   errors,
   uischemas,
-  addItem
+  addItem,
+  translations,
 }: ArrayLayoutProps) => {
-  const addItemCb = useCallback((p: string, value: any) => addItem(p, value), [
-    addItem
-  ]);
+  const addItemCb = useCallback(
+    (p: string, value: any) => addItem(p, value),
+    [addItem]
+  );
   return (
     <Hidden hidden={!visible}>
       <ArrayLayout
         label={label}
+        translations={translations}
         uischema={uischema}
         schema={schema}
         id={id}

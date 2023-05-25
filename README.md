@@ -52,6 +52,7 @@ As an alternative to the first time setup, you can use the provided [VS Code dev
 - Clean (delete `dist` folder of all packages): `npm run clean`
 - Run React Vanilla examples: `cd packages/vanilla && npm run dev`
 - Run React Material examples: `cd packages/material && npm run dev`
+- Run React AntDesign examples: `cd packages/antd && npm run dev`
 - Run Angular Material examples: `cd packages/angular-material && npm run dev`
 - Run Vue Vanilla dev setup: `cd packages/vue/vue-vanilla && npm run serve`
 
