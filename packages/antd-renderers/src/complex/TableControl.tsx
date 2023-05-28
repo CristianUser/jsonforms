@@ -60,15 +60,15 @@ const RenderActionsCell = (
   props: ArrayLayoutProps & WithDeleteDialogSupport & any
 ) => {
   const {
+    data,
     config,
     uischema,
     path,
     index,
     moveUp,
-    enableUp,
     moveDown,
-    enableDown,
     openDeleteDialog,
+    translations,
   } = props;
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
   const childPath = Paths.compose(path, `${index}`);
@@ -80,23 +80,26 @@ const RenderActionsCell = (
           <Tooltip title='Move up'>
             <Button
               shape='circle'
+              aria-label={translations.upAriaLabel}
               icon={<ArrowUpOutlined />}
-              onClick={moveUp}
-              disabled={!enableUp}
+              onClick={moveUp(path, index)}
+              disabled={index < data - 1}
             />
           </Tooltip>
           <Tooltip title='Move down'>
             <Button
               shape='circle'
+              aria-label={translations.downAriaLabel}
               icon={<ArrowDownOutlined />}
-              onClick={moveDown}
-              disabled={!enableDown}
+              onClick={moveDown(path, index)}
+              disabled={index !== 0}
             />
           </Tooltip>
         </Fragment>
       ) : null}
       <Tooltip title='Delete'>
         <Button
+          aria-label={translations.removeAriaLabel}
           icon={<DeleteFilled />}
           onClick={() => openDeleteDialog(childPath, index)}
         />
@@ -303,6 +306,7 @@ export class TableControl extends React.Component<
       visible,
       enabled,
       data,
+      translations,
     } = this.props;
 
     const controlElement = uischema as ControlElement;
@@ -315,6 +319,7 @@ export class TableControl extends React.Component<
     return (
       <Hidden hidden={!visible}>
         <TableToolbar
+          translations={translations}
           errors={errors}
           label={label}
           addItem={this.addItem}

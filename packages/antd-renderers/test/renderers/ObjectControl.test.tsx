@@ -63,48 +63,64 @@ const uischema2: ControlElement = {
   scope: '#/properties/foo',
 };
 
-describe('Material object renderer tester', () => {
+describe('Ant Design object renderer tester', () => {
   test('should fail', () => {
-    expect(objectControlTester(undefined, undefined)).toBe(NOT_APPLICABLE);
-    expect(objectControlTester(null, undefined)).toBe(NOT_APPLICABLE);
-    expect(objectControlTester({ type: 'Foo' }, undefined)).toBe(
+    expect(objectControlTester(undefined, undefined, undefined)).toBe(
       NOT_APPLICABLE
     );
-    expect(objectControlTester({ type: 'Control' }, undefined)).toBe(
+    expect(objectControlTester(null, undefined, undefined)).toBe(
+      NOT_APPLICABLE
+    );
+    expect(objectControlTester({ type: 'Foo' }, undefined, undefined)).toBe(
+      NOT_APPLICABLE
+    );
+    expect(objectControlTester({ type: 'Control' }, undefined, undefined)).toBe(
       NOT_APPLICABLE
     );
     expect(
-      objectControlTester(uischema2, {
-        type: 'object',
-        properties: {
-          foo: { type: 'string' },
+      objectControlTester(
+        uischema2,
+        {
+          type: 'object',
+          properties: {
+            foo: { type: 'string' },
+          },
         },
-      })
+        undefined
+      )
     ).toBe(NOT_APPLICABLE);
     expect(
-      objectControlTester(uischema2, {
-        type: 'object',
-        properties: {
-          foo: { type: 'string' },
-          bar: schema.properties.bar,
+      objectControlTester(
+        uischema2,
+        {
+          type: 'object',
+          properties: {
+            foo: { type: 'string' },
+            bar: schema.properties.bar,
+          },
         },
-      })
+        undefined
+      )
     ).toBe(NOT_APPLICABLE);
   });
 
   it('should succeed', () => {
     expect(
-      objectControlTester(uischema2, {
-        type: 'object',
-        properties: {
-          foo: schema.properties.foo,
+      objectControlTester(
+        uischema2,
+        {
+          type: 'object',
+          properties: {
+            foo: schema.properties.foo,
+          },
         },
-      })
+        undefined
+      )
     ).toBe(2);
   });
 });
 
-describe('Material object control', () => {
+describe('Ant Design object control', () => {
   let wrapper: ReactWrapper;
 
   afterEach(() => wrapper.unmount());

@@ -35,10 +35,12 @@ import { initCore, TestEmitter } from './util';
 Enzyme.configure({ adapter: new Adapter() });
 
 const waitForAsync = () => new Promise((resolve) => setImmediate(resolve));
+const waitForMs = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
 
 const clickAddButton = (wrapper: ReactWrapper, times: number) => {
   const buttons = wrapper.find('button');
-  const addButton = buttons.at(2);
+  const addButton = buttons.at(1);
   for (let i = 0; i < times; i++) {
     addButton.simulate('click');
   }
@@ -46,8 +48,8 @@ const clickAddButton = (wrapper: ReactWrapper, times: number) => {
 };
 
 const selectanyOfTab = (wrapper: ReactWrapper, at: number) => {
-  const buttons = wrapper.find('button');
-  buttons.at(at).simulate('click');
+  const tabs = wrapper.find('.ant-tabs-tab');
+  tabs.at(at).simulate('click');
   wrapper.update();
 };
 
@@ -56,7 +58,7 @@ describe('Material anyOf renderer', () => {
 
   afterEach(() => wrapper.unmount());
 
-  it('should add an item at correct path', () => {
+  it('should add an item at correct path', async () => {
     const schema = {
       type: 'object',
       properties: {
@@ -79,9 +81,7 @@ describe('Material anyOf renderer', () => {
       label: 'Value',
       scope: '#/properties/value',
     };
-    const onChangeData: any = {
-      data: undefined,
-    };
+    let onChangeData: any = {};
     wrapper = mount(
       <JsonForms
         data={undefined}
@@ -89,14 +89,16 @@ describe('Material anyOf renderer', () => {
         uischema={uischema}
         renderers={renderers}
         onChange={({ data }) => {
-          onChangeData.data = data;
+          onChangeData = { data };
         }}
       />
     );
     expect(wrapper.find(AnyOfRenderer).length).toBeTruthy();
     const input = wrapper.find('input').first();
     input.simulate('change', { target: { value: 'test' } });
+    await waitForMs(10);
     wrapper.update();
+
     expect(onChangeData.data).toEqual({
       value: 'test',
     });
@@ -164,10 +166,10 @@ describe('Material anyOf renderer', () => {
     clickAddButton(wrapper, 2);
     const nrOfRowsAfterAdd = wrapper.find('tr');
 
-    // 2 header row + 1 no data row
-    expect(nrOfRowsBeforeAdd.length).toBe(3);
-    // 2 header row + 2 data rows (one is replacing the 'No data' one)
-    expect(nrOfRowsAfterAdd.length).toBe(4);
+    // 1 header row + 1 no data row
+    expect(nrOfRowsBeforeAdd.length).toBe(2);
+    // 1 header row + 2 data rows (one is replacing the 'No data' one)
+    expect(nrOfRowsAfterAdd.length).toBe(3);
   });
 
   it('should switch to "yourThing" edit, then switch back, then edit', async () => {

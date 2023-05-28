@@ -29,12 +29,12 @@ import SliderControl, {
   sliderControlTester,
 } from '../../src/controls/SliderControl';
 import { renderers } from '../../src';
-import { Slider } from '@material-ui/core';
 
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { JsonForms, JsonFormsStateProvider } from '@jsonforms/react';
 import { initCore } from './util';
+import { Slider } from 'antd';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -60,122 +60,158 @@ const uischema: ControlElement = {
 
 describe('Material slider tester', () => {
   it('should fail', () => {
-    expect(sliderControlTester(undefined, undefined)).toBe(NOT_APPLICABLE);
-    expect(sliderControlTester(null, undefined)).toBe(NOT_APPLICABLE);
-    expect(sliderControlTester({ type: 'Foo' }, undefined)).toBe(
+    expect(sliderControlTester(undefined, undefined, undefined)).toBe(
       NOT_APPLICABLE
     );
-    expect(sliderControlTester({ type: 'Control' }, undefined)).toBe(
+    expect(sliderControlTester(null, undefined, undefined)).toBe(
+      NOT_APPLICABLE
+    );
+    expect(sliderControlTester({ type: 'Foo' }, undefined, undefined)).toBe(
+      NOT_APPLICABLE
+    );
+    expect(sliderControlTester({ type: 'Control' }, undefined, undefined)).toBe(
       NOT_APPLICABLE
     );
   });
 
   it('should fail with wrong schema type', () => {
     expect(
-      sliderControlTester(uischema, {
-        type: 'object',
-        properties: {
-          foo: { type: 'string' },
+      sliderControlTester(
+        uischema,
+        {
+          type: 'object',
+          properties: {
+            foo: { type: 'string' },
+          },
         },
-      })
+        undefined
+      )
     ).toBe(NOT_APPLICABLE);
   });
 
   it('should fail if only sibling has correct prop type', () => {
     expect(
-      sliderControlTester(uischema, {
-        type: 'object',
-        properties: {
-          foo: { type: 'string' },
-          bar: { type: 'number' },
+      sliderControlTester(
+        uischema,
+        {
+          type: 'object',
+          properties: {
+            foo: { type: 'string' },
+            bar: { type: 'number' },
+          },
         },
-      })
+        undefined
+      )
     ).toBe(NOT_APPLICABLE);
   });
 
   it('should fail if maximum and minimum are missing', () => {
     expect(
-      sliderControlTester(uischema, {
-        type: 'object',
-        properties: {
-          foo: { type: 'number' },
+      sliderControlTester(
+        uischema,
+        {
+          type: 'object',
+          properties: {
+            foo: { type: 'number' },
+          },
         },
-      })
+        undefined
+      )
     ).toBe(NOT_APPLICABLE);
   });
 
   it('should fail if maximum is missing', () => {
     expect(
-      sliderControlTester(uischema, {
-        type: 'object',
-        properties: {
-          foo: {
-            type: 'number',
-            minimum: 2,
+      sliderControlTester(
+        uischema,
+        {
+          type: 'object',
+          properties: {
+            foo: {
+              type: 'number',
+              minimum: 2,
+            },
           },
         },
-      })
+        undefined
+      )
     ).toBe(NOT_APPLICABLE);
   });
 
   it('should fail if minimum is missing', () => {
     expect(
-      sliderControlTester(uischema, {
-        type: 'object',
-        properties: {
-          foo: {
-            type: 'number',
-            maximum: 10,
+      sliderControlTester(
+        uischema,
+        {
+          type: 'object',
+          properties: {
+            foo: {
+              type: 'number',
+              maximum: 10,
+            },
           },
         },
-      })
+        undefined
+      )
     ).toBe(NOT_APPLICABLE);
   });
 
   it('should fail is default is missing', () => {
     expect(
-      sliderControlTester(uischema, {
-        type: 'object',
-        properties: {
-          foo: {
-            type: 'number',
-            maximum: 10,
-            minimum: 2,
+      sliderControlTester(
+        uischema,
+        {
+          type: 'object',
+          properties: {
+            foo: {
+              type: 'number',
+              maximum: 10,
+              minimum: 2,
+            },
           },
         },
-      })
+        undefined
+      )
     ).toBe(NOT_APPLICABLE);
   });
 
   it('should succeed with number type', () => {
     expect(
-      sliderControlTester(uischema, {
-        type: 'object',
-        properties: {
-          foo: {
-            type: 'number',
-            maximum: 10,
-            minimum: 2,
-            default: 6,
+      sliderControlTester(
+        uischema,
+        {
+          type: 'object',
+          properties: {
+            foo: {
+              type: 'number',
+              maximum: 10,
+              minimum: 2,
+              default: 6,
+            },
           },
         },
-      })
+        undefined
+      )
     ).toBe(4);
   });
 
   it('should succeed with integer type', () => {
     expect(
-      sliderControlTester(uischema, {
-        type: 'object',
-        properties: {
-          foo: {
-            type: 'integer',
-            maximum: 10,
-            minimum: 2,
-            default: 6,
+      sliderControlTester(
+        uischema,
+        {
+          type: 'object',
+          properties: {
+            foo: {
+              type: 'integer',
+              maximum: 10,
+              minimum: 2,
+              default: 6,
+            },
           },
         },
-      })
+        undefined
+      )
     ).toBe(4);
   });
 });

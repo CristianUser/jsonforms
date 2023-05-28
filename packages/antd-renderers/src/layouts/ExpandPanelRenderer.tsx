@@ -9,6 +9,7 @@ import {
   withJsonFormsContext,
 } from '@jsonforms/react';
 import {
+  ArrayTranslations,
   composePaths,
   ControlElement,
   findUISchema,
@@ -34,7 +35,7 @@ interface OwnPropsOfExpandPanel {
   index: number;
   path: string;
   disabled?: boolean;
-  collapsible?: boolean;
+  collapsible?: any;
   uischema: ControlElement;
   schema: JsonSchema;
   expanded?: boolean;
@@ -48,6 +49,7 @@ interface OwnPropsOfExpandPanel {
   childLabelProp?: string;
   isExpanded?: boolean;
   handleChange?(index: number): void;
+  translations: ArrayTranslations;
 }
 
 interface StatePropsOfExpandPanel extends OwnPropsOfExpandPanel {
@@ -63,17 +65,18 @@ interface StatePropsOfExpandPanel extends OwnPropsOfExpandPanel {
  */
 export interface DispatchPropsOfExpandPanel {
   disabled?: boolean;
-  collapsible?: boolean;
+  collapsible?: any;
   removeItems(path: string, toDelete: number[]): (event: any) => void;
   moveUp(path: string, toMove: number): (event: any) => void;
   moveDown(path: string, toMove: number): (event: any) => void;
+  [additionalProps: string]: any;
 }
 
 export interface ExpandPanelProps
   extends StatePropsOfExpandPanel,
     DispatchPropsOfExpandPanel {}
 
-const ExpandPanelRenderer = (props: ExpandPanelProps & any) => {
+const ExpandPanelRenderer = (props: ExpandPanelProps) => {
   const {
     childLabel,
     childPath,

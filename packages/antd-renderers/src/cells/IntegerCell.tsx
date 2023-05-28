@@ -36,6 +36,6 @@ import { AntdInputInteger } from '../antd-controls/AntdInputInteger';
 export const IntegerCell = (props: CellProps & WithClassname) => (
   <AntdInputInteger {...props} />
 );
-export const IntegerCellTester: RankedTester = rankWith(3, isIntegerControl);
+export const IntegerCellTester: RankedTester = rankWith(2, isIntegerControl);
 
 export default withJsonFormsCellProps(IntegerCell);

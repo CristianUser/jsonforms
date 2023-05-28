@@ -55,6 +55,7 @@ export const ArrayControlRenderer = (props: ArrayLayoutProps) => {
     <Hidden hidden={!visible}>
       <TableControl {...props} openDeleteDialog={openDeleteDialog} />
       <DeleteDialog
+        translations={props.translations}
         open={open}
         onCancel={deleteCancel}
         onConfirm={deleteConfirm}
