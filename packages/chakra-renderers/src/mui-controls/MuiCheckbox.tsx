@@ -24,11 +24,11 @@
 */
 import React from 'react';
 import { CellProps, WithClassname } from '@jsonforms/core';
-import { Checkbox, InputProps } from '@mui/material';
+import { Checkbox } from '@chakra-ui/react';
 import merge from 'lodash/merge';
 
 interface MuiCheckboxInputProps {
-  inputProps?: InputProps['inputProps'];
+  inputProps?: any;
 }
 
 export const MuiCheckbox = React.memo(function MuiCheckbox(
@@ -54,8 +54,8 @@ export const MuiCheckbox = React.memo(function MuiCheckbox(
 
   return (
     <Checkbox
-      checked={checked}
-      onChange={(_ev, isChecked) => handleChange(path, isChecked)}
+      isChecked={checked}
+      onChange={(_ev) => handleChange(path, !checked)}
       className={className}
       id={id}
       disabled={!enabled}
