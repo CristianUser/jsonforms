@@ -13,6 +13,7 @@ const packagesDir = join(__dirname, '..');
 const examples = {
   'react-vanilla': join(packagesDir, 'vanilla-renderers', 'example', 'dist'),
   'react-material': join(packagesDir, 'material-renderers', 'example', 'dist'),
+  'react-chakra': join(packagesDir, 'chakra-renderers', 'example', 'dist'),
   'angular-material': join(packagesDir, 'angular-material', 'example', 'dist'),
   'vue-vanilla': join(packagesDir, 'vue', 'vue-vanilla', 'example', 'dist'),
 };
