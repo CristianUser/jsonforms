@@ -47,8 +47,7 @@ export class RendererComponent<
  *
  * @template P type of any renderer props
  */
-export type StatelessRenderer<P extends RendererProps> =
-  React.StatelessComponent<P>;
+export type StatelessRenderer<P extends RendererProps> = React.Component<P>;
 
 /**
  * Represents a Renderer, which might either be a component or a function.
