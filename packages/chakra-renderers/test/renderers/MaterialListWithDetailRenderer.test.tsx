@@ -31,7 +31,7 @@ import MaterialListWithDetailRenderer, {
   materialListWithDetailTester,
 } from '../../src/additional/MaterialListWithDetailRenderer';
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+import Adapter from '@cfaester/enzyme-adapter-react-18';
 import { JsonFormsStateProvider } from '@jsonforms/react';
 import { ListItem } from '@mui/material';
 import { initCore } from './util';

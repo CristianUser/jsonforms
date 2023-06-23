@@ -24,5 +24,6 @@
 */
 import { renderExample } from '../../examples-react/src/index';
 import { materialRenderers, materialCells } from '../src';
+// import { ChakraProvider } from '@chakra-ui/react';
 
 renderExample(materialRenderers, materialCells);

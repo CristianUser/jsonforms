@@ -22,19 +22,26 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import React from 'react';
 import App from './App';
 import { RankedTester } from '@jsonforms/core';
 import { getExamples } from '@jsonforms/examples';
 
+const defaultWrapper = ({ children }: any) => <div>{children}</div>;
+
 export const renderExample = (
   renderers: { tester: RankedTester; renderer: any }[],
-  cells: { tester: RankedTester; cell: any }[]
+  cells: { tester: RankedTester; cell: any }[],
+  Wrapper: any = defaultWrapper
 ) => {
   const examples = getExamples();
-  ReactDOM.render(
-    <App examples={examples} renderers={renderers} cells={cells} />,
-    document.getElementById('root')
+
+  const container = document.getElementById('root');
+  const root = createRoot(container);
+  root.render(
+    <Wrapper>
+      <App examples={examples} renderers={renderers} cells={cells} />
+    </Wrapper>
   );
 };
