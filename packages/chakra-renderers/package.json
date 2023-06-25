@@ -80,6 +80,7 @@
     "dayjs": "1.10.6"
   },
   "peerDependencies": {
+    "@chakra-ui/icons": "^2.0.17",
     "@chakra-ui/react": "^2.7.1",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
@@ -88,16 +89,14 @@
     "@mui/icons-material": "~5.11.16",
     "@mui/material": "~5.13.5",
     "@mui/x-date-pickers": "^5.0.0-beta.5",
-    "framer-motion": "^10.12.16"
+    "framer-motion": "^6.5.1"
   },
   "devDependencies": {
     "@cfaester/enzyme-adapter-react-18": "^0.7.0",
     "@chakra-ui/icons": "^2.0.17",
-    "@chakra-ui/react": "2.5.1",
-    "@chakra-ui/system": "^2.5.1",
-    "@chakra-ui/theme-tools": "^2.0.16",
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
+    "@chakra-ui/react": "^2.7.1",
+    "@emotion/react": "^11.4.1",
+    "@emotion/styled": "^11.3.0",
     "@jsonforms/core": "^3.1.0-alpha.3",
     "@jsonforms/react": "^3.1.0-alpha.3",
     "@mui/icons-material": "~5.11.16",
@@ -118,7 +117,7 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
-    "framer-motion": "^10.12.16",
+    "framer-motion": "^6.5.1",
     "jest": "^26.6.3",
     "nyc": "^15.1.0",
     "prettier": "^2.8.4",
