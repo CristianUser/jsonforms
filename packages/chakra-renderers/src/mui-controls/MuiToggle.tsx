@@ -24,11 +24,11 @@
 */
 import React from 'react';
 import { CellProps, WithClassname } from '@jsonforms/core';
-import { Switch, InputProps } from '@mui/material';
 import merge from 'lodash/merge';
+import { Switch } from '@chakra-ui/react';
 
 interface MuiToggleInputProps {
-  inputProps?: InputProps['inputProps'];
+  inputProps?: any;
 }
 
 export const MuiToggle = React.memo(function MuiToggle(
@@ -49,16 +49,17 @@ export const MuiToggle = React.memo(function MuiToggle(
   const inputPropsMerged = merge({}, inputProps, {
     autoFocus: !!appliedUiSchemaOptions.focus,
   });
+  console.log('MuiToggle: inputPropsMerged:', inputPropsMerged);
   const checked = !!data;
 
   return (
     <Switch
-      checked={checked}
-      onChange={(_ev, isChecked) => handleChange(path, isChecked)}
+      variant='outline'
+      isChecked={checked}
+      onChange={(event) => handleChange(path, event.target.checked)}
       className={className}
       id={id}
       disabled={!enabled}
-      inputProps={inputPropsMerged}
     />
   );
 });

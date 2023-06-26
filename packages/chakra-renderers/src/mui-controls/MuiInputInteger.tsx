@@ -24,9 +24,9 @@
 */
 import React from 'react';
 import { CellProps, WithClassname } from '@jsonforms/core';
-import { Input } from '@mui/material';
 import merge from 'lodash/merge';
 import { useDebouncedChange } from '../util';
+import { Input } from '@chakra-ui/react';
 
 const toNumber = (value: string) =>
   value === '' ? undefined : parseInt(value, 10);
@@ -37,7 +37,6 @@ export const MuiInputInteger = React.memo(function MuiInputInteger(
 ) {
   const { data, className, id, enabled, uischema, path, handleChange, config } =
     props;
-  const inputProps = { step: '1' };
 
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
 
@@ -56,10 +55,9 @@ export const MuiInputInteger = React.memo(function MuiInputInteger(
       onChange={onChange}
       className={className}
       id={id}
-      disabled={!enabled}
+      isDisabled={!enabled}
+      step='1'
       autoFocus={appliedUiSchemaOptions.focus}
-      inputProps={inputProps}
-      fullWidth={true}
     />
   );
 });

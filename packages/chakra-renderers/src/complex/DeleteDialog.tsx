@@ -24,13 +24,14 @@
 */
 import React from 'react';
 import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from '@mui/material';
+} from '@chakra-ui/react';
 
 export interface DeleteDialogProps {
   open: boolean;
@@ -57,28 +58,44 @@ export const DeleteDialog = React.memo(function DeleteDialog({
   acceptText,
   declineText,
 }: DeleteDialogProps) {
+  const cancelRef = React.useRef();
   return (
-    <Dialog
-      open={open}
-      keepMounted
+    <AlertDialog
+      isOpen={open}
       onClose={onClose}
       aria-labelledby='alert-dialog-confirmdelete-title'
       aria-describedby='alert-dialog-confirmdelete-description'
+      leastDestructiveRef={cancelRef}
     >
-      <DialogTitle id='alert-dialog-confirmdelete-title'>{title}</DialogTitle>
-      <DialogContent>
-        <DialogContentText id='alert-dialog-confirmdelete-description'>
-          {message}
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onCancel} color='primary'>
-          {declineText}
-        </Button>
-        <Button onClick={onConfirm} color='primary'>
-          {acceptText}
-        </Button>
-      </DialogActions>
-    </Dialog>
+      <AlertDialogOverlay>
+        <AlertDialogContent>
+          <AlertDialogHeader
+            fontSize='lg'
+            fontWeight='bold'
+            id='alert-dialog-confirmdelete-title'
+          >
+            {title}
+          </AlertDialogHeader>
+
+          <AlertDialogBody id='alert-dialog-confirmdelete-description'>
+            {message}
+          </AlertDialogBody>
+
+          <AlertDialogFooter>
+            <Button
+              ref={cancelRef}
+              colorScheme='red'
+              onClick={onCancel}
+              color='primary'
+            >
+              {declineText}
+            </Button>
+            <Button onClick={onConfirm} color='primary'>
+              {acceptText}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialogOverlay>
+    </AlertDialog>
   );
 });

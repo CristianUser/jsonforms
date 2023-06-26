@@ -34,7 +34,8 @@ import {
   OwnPropsOfRenderer,
 } from '@jsonforms/core';
 import { JsonFormsDispatch, useJsonForms } from '@jsonforms/react';
-import { Grid, Hidden } from '@mui/material';
+import { Hidden } from '@mui/material';
+import { Flex, SimpleGrid } from '@chakra-ui/react';
 
 export const renderLayoutElements = (
   elements: UISchemaElement[],
@@ -45,7 +46,7 @@ export const renderLayoutElements = (
   cells?: JsonFormsCellRendererRegistryEntry[]
 ) => {
   return elements.map((child, index) => (
-    <Grid item key={`${path}-${index}`} xs>
+    <Flex key={`${path}-${index}`} w='100%'>
       <JsonFormsDispatch
         uischema={child}
         schema={schema}
@@ -54,15 +55,15 @@ export const renderLayoutElements = (
         renderers={renderers}
         cells={cells}
       />
-    </Grid>
+    </Flex>
   ));
 };
 
-export interface MaterialLayoutRendererProps extends OwnPropsOfRenderer {
+export interface LayoutRendererProps extends OwnPropsOfRenderer {
   elements: UISchemaElement[];
   direction: 'row' | 'column';
 }
-const MaterialLayoutRendererComponent = ({
+const LayoutRendererComponent = ({
   visible,
   elements,
   schema,
@@ -71,15 +72,15 @@ const MaterialLayoutRendererComponent = ({
   direction,
   renderers,
   cells,
-}: MaterialLayoutRendererProps) => {
+}: LayoutRendererProps) => {
   if (isEmpty(elements)) {
     return null;
   } else {
     return (
       <Hidden xsUp={!visible}>
-        <Grid
-          container
-          direction={direction}
+        <SimpleGrid
+          w='100%'
+          dir={direction}
           spacing={direction === 'row' ? 2 : 0}
         >
           {renderLayoutElements(
@@ -90,14 +91,12 @@ const MaterialLayoutRendererComponent = ({
             renderers,
             cells
           )}
-        </Grid>
+        </SimpleGrid>
       </Hidden>
     );
   }
 };
-export const MaterialLayoutRenderer = React.memo(
-  MaterialLayoutRendererComponent
-);
+export const LayoutRenderer = React.memo(LayoutRendererComponent);
 
 export interface AjvProps {
   ajv: Ajv;
@@ -115,7 +114,6 @@ export const withAjvProps = <P extends {}>(
     return <Component {...props} ajv={ajv} />;
   };
 
-export interface MaterialLabelableLayoutRendererProps
-  extends MaterialLayoutRendererProps {
+export interface LabelableLayoutRendererProps extends LayoutRendererProps {
   label?: string;
 }

@@ -25,7 +25,7 @@
 import { ExpandPanelRenderer as ExpandPanelRendererUnwrapped } from './ExpandPanelRenderer';
 import { MaterializedGroupLayoutRenderer } from './MaterialGroupLayout';
 import { MaterialHorizontalLayoutRenderer } from './MaterialHorizontalLayout';
-import { MaterialVerticalLayoutRenderer } from './MaterialVerticalLayout';
+import { VerticalLayoutRenderer } from './MaterialVerticalLayout';
 import { MaterialCategorizationLayoutRenderer } from './MaterialCategorizationLayout';
 import { MaterialArrayLayoutRenderer } from './MaterialArrayLayoutRenderer';
 
@@ -35,7 +35,7 @@ export const UnwrappedLayouts = {
   MaterialCategorizationLayout: MaterialCategorizationLayoutRenderer,
   MaterialGroupLayout: MaterializedGroupLayoutRenderer,
   MaterialHorizontalLayout: MaterialHorizontalLayoutRenderer,
-  MaterialVerticalLayout: MaterialVerticalLayoutRenderer,
+  MaterialVerticalLayout: VerticalLayoutRenderer,
 };
 
 export * from './ArrayToolbar';

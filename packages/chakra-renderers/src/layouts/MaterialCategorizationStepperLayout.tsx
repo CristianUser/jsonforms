@@ -45,8 +45,8 @@ import {
 } from '@jsonforms/react';
 import {
   AjvProps,
-  MaterialLayoutRenderer,
-  MaterialLayoutRendererProps,
+  LayoutRenderer,
+  LayoutRendererProps,
   withAjvProps,
 } from '../util/layout';
 
@@ -111,7 +111,7 @@ export const MaterialCategorizationStepperLayoutRenderer = (
       ),
     [categorization, data, ajv]
   );
-  const childProps: MaterialLayoutRendererProps = {
+  const childProps: LayoutRendererProps = {
     elements: categories[activeCategory].elements,
     schema,
     path,
@@ -135,7 +135,7 @@ export const MaterialCategorizationStepperLayoutRenderer = (
         ))}
       </Stepper>
       <div>
-        <MaterialLayoutRenderer {...childProps} />
+        <LayoutRenderer {...childProps} />
       </div>
       {appliedUiSchemaOptions.showNavButtons ? (
         <div style={buttonWrapperStyle}>

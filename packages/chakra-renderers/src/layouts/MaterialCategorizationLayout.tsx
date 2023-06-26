@@ -44,8 +44,8 @@ import {
 } from '@jsonforms/react';
 import {
   AjvProps,
-  MaterialLayoutRenderer,
-  MaterialLayoutRendererProps,
+  LayoutRenderer,
+  LayoutRendererProps,
   withAjvProps,
 } from '../util/layout';
 
@@ -119,7 +119,7 @@ export const MaterialCategorizationLayoutRenderer = (
   const safeCategory =
     activeCategory >= categorization.elements.length ? 0 : activeCategory;
 
-  const childProps: MaterialLayoutRendererProps = {
+  const childProps: LayoutRendererProps = {
     elements: categories[safeCategory] ? categories[safeCategory].elements : [],
     schema,
     path,
@@ -156,7 +156,7 @@ export const MaterialCategorizationLayoutRenderer = (
         </Tabs>
       </AppBar>
       <div style={{ marginTop: '0.5em' }}>
-        <MaterialLayoutRenderer {...childProps} key={safeCategory} />
+        <LayoutRenderer {...childProps} key={safeCategory} />
       </div>
     </Hidden>
   );
