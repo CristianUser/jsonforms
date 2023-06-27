@@ -1,12 +1,12 @@
 var webpack = require('webpack');
-const merge = require('webpack-merge');
+const path = require('path');
+const merge = require('webpack-merge').default;
 const baseConfig = require('./webpack.base.js');
 
 module.exports = merge(baseConfig, {
   mode: 'development',
   entry: [
     'webpack-dev-server/client?http://localhost:8080',
-    'webpack/hot/dev-server',
     './src/index.ts',
     '../examples/src/index.ts',
     './example/index.ts',
@@ -17,9 +17,12 @@ module.exports = merge(baseConfig, {
   },
 
   devServer: {
-    contentBase: './example',
+    hot: true,
+    static: {
+      directory: './example',
+      serveIndex: true,
+    },
   },
-  plugins: [new webpack.HotModuleReplacementPlugin()],
   module: {
     rules: [
       {

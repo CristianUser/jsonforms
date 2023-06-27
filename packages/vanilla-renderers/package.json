@@ -12,7 +12,7 @@
   "scripts": {
     "build": "rollup -c rollup.config.js",
     "build:examples-app": "rollup -c rollup.example.config.js",
-    "dev": "webpack --config ./webpack/webpack.dev.js && webpack-dev-server --config webpack/webpack.dev.js --env=dev --inline",
+    "dev": "webpack --config ./webpack/webpack.dev.js && webpack-dev-server --config webpack/webpack.dev.js --env=dev",
     "clean": "rimraf lib coverage dist .nyc_output example/dist 2> /dev/null",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
@@ -87,7 +87,7 @@
     "typedoc": "^0.19.2",
     "webpack": "^4.46.0",
     "webpack-cli": "^4.10.0",
-    "webpack-dev-server": "^3.9.0"
+    "webpack-dev-server": "^4.15.1"
   },
   "jest": {
     "moduleFileExtensions": [

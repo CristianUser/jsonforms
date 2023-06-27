@@ -1,13 +1,12 @@
 var webpack = require('webpack');
 const path = require('path');
-const merge = require('webpack-merge');
+const merge = require('webpack-merge').default;
 var copyWebpackPlugin = require('copy-webpack-plugin');
 const baseConfig = require('../../../webpack/webpack.base.js');
 
 module.exports = merge(baseConfig, {
   entry: [
     'webpack-dev-server/client?http://localhost:8080',
-    'webpack/hot/dev-server',
     './example/main.ts',
   ],
   output: {
@@ -16,10 +15,12 @@ module.exports = merge(baseConfig, {
   },
 
   devServer: {
-    contentBase: './example',
+    hot: true,
+    static: {
+      directory: './example',
+    },
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
     new copyWebpackPlugin([
       {
         from: '../../node_modules/@angular/material/prebuilt-themes/indigo-pink.css',
