@@ -18,7 +18,7 @@ module.exports = {
         enforce: 'pre',
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'source-map-loader',
+        use: 'source-map-loader',
       },
       {
         test: /\.tsx?$/, // All ts and tsx files will be process by
@@ -39,13 +39,17 @@ module.exports = {
       },
       {
         test: /\.jsx?$/, // all js and jsx files will be processed by
-        loader: 'babel-loader', // babel-loader
-        options: {
-          plugins: [
-            '@babel/plugin-proposal-optional-chaining',
-            '@babel/plugin-proposal-nullish-coalescing-operator',
-          ],
-        },
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              plugins: [
+                '@babel/plugin-proposal-optional-chaining',
+                '@babel/plugin-proposal-nullish-coalescing-operator',
+              ],
+            },
+          },
+        ],
         exclude: /node_modules/, // ignore node_modules
       },
     ],

@@ -34,7 +34,7 @@ module.exports = merge(baseConfig, {
       {
         test: /\.html$/,
         exclude: /node_modules/,
-        loader: 'html-loader?exportAsEs6Default',
+        use: 'html-loader?exportAsEs6Default',
       },
     ],
   },
