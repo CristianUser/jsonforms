@@ -4,7 +4,9 @@ var copyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = merge(baseConfig, {
   plugins: [
-    new copyWebpackPlugin([{ from: '../examples-react/src/logo.svg' }]),
+    new copyWebpackPlugin({
+      patterns: [{ from: '../examples-react/src/logo.svg' }],
+    }),
   ],
   resolve: {
     // Add '.ts' as resolvable extensions.

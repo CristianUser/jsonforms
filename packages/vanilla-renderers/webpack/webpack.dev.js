@@ -4,10 +4,12 @@ var copyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = merge(baseConfig, {
   plugins: [
-    new copyWebpackPlugin([
-      { from: './example/example.css' },
-      { from: './example/example.dark.css' },
-      { from: '../examples-react/src/logo.svg' },
-    ]),
+    new copyWebpackPlugin({
+      patterns: [
+        { from: './example/example.css' },
+        { from: './example/example.dark.css' },
+        { from: '../examples-react/src/logo.svg' },
+      ],
+    }),
   ],
 });

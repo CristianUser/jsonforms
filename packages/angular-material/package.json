@@ -106,7 +106,7 @@
     "@typescript-eslint/eslint-plugin": "^5.54.1",
     "@typescript-eslint/parser": "^5.54.1",
     "angular2-template-loader": "^0.6.2",
-    "copy-webpack-plugin": "^5.0.5",
+    "copy-webpack-plugin": "^6.4.0",
     "core-js": "^2.5.3",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.7.0",
